@@ -36,7 +36,8 @@ sudo systemctl enable --now vnstat
 sudo dnf install polybar
 
 ## using polybar themes 
-
+## install picmon to effect glass effect blur
+sudo dnf install picom
 ## Downloading Wallpaper
 ---
 ## Setting initial stow
