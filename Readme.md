@@ -11,3 +11,17 @@ xfce4-panel &
 
 or Setting > Panel 
 ![alt text](image.png)
+## Downloading themes and icons 
+## installing murring engine
+sudo dnf install gtk-murrine-engine
+## installing plnak
+## installing conky
+## install conky manager 
+sudo dnf copr enable geraldosimiao/conky-manager2
+sudo dnf install conky-manager2
+## Downloading Wallpaper
+---
+## Setting initial stow
+
+
+
