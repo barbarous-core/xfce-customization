@@ -19,6 +19,8 @@ sudo dnf install gtk-murrine-engine
 ## install conky manager 
 sudo dnf copr enable geraldosimiao/conky-manager2
 sudo dnf install conky-manager2
+## installing other packages to avoid warning 
+sudo dnf install gtk3-devel pkgconf-pkg-config
 ## Downloading Wallpaper
 ---
 ## Setting initial stow
