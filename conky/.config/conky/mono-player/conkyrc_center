@@ -1,0 +1,108 @@
+-- =============================================================================
+-- conkyrc_center
+-- Mono Player — GBA-style Conky Theme
+-- https://github.com/mirzamstar/mono-player
+--
+-- Center panel: calendar + MOCP player.
+-- Launch: conky -c ~/.conky/Mono\ Player/conkyrc_center
+-- License: MIT
+-- =============================================================================
+
+conky.config = {
+
+    -- -------------------------------------------------------------------------
+    -- WINDOW BEHAVIOUR
+    -- -------------------------------------------------------------------------
+
+    own_window             = true,
+    own_window_type        = 'normal',
+    own_window_hints       = 'undecorated,sticky,skip_taskbar,skip_pager',
+    own_window_transparent = false,
+    own_window_argb_visual = true,
+    own_window_argb_value  = 0,
+    double_buffer          = true,
+    background             = false,
+
+    -- -------------------------------------------------------------------------
+    -- POSITION & SIZE
+    -- Centered on a 1920px screen with a 280px panel.
+    -- gap_x from LEFT edge when alignment = top_left.
+    -- Formula: (screen_width - panel_width) / 2 = (1920 - 280) / 2 = 820
+    -- Adjust if your taskbar or other panels occupy horizontal space.
+    -- -------------------------------------------------------------------------
+
+    alignment              = 'top_right',
+    gap_x                  = 360,   -- 10 (margin) + 340 (right panel) + 10 (gap)
+    gap_y                  = 30,
+
+    minimum_width          = 320,
+    maximum_width          = 320,
+    minimum_height         = 1020,
+
+    -- -------------------------------------------------------------------------
+    -- UPDATE
+    -- 2 seconds matches the execi interval used for MOCP queries.
+    -- -------------------------------------------------------------------------
+
+    update_interval        = 2.0,
+    total_run_times        = 0,
+
+    -- -------------------------------------------------------------------------
+    -- FONTS & DISPLAY
+    -- -------------------------------------------------------------------------
+
+    use_xft                = true,
+    font                   = 'DejaVu Sans Mono:size=7',
+    xftalpha               = 1,
+    override_utf8_locale   = true,
+
+    -- -------------------------------------------------------------------------
+    -- COLOURS (fallback for any plain-text variables)
+    -- -------------------------------------------------------------------------
+
+    default_color          = '8B7BAB',      -- dusty violet
+    default_outline_color  = '000000',
+    default_shade_color    = '000000',
+    color1                 = 'C8B8E8',      -- highlight
+    color2                 = '6A5A8A',      -- mid
+    color3                 = '3A2A5A',      -- dim
+
+    -- -------------------------------------------------------------------------
+    -- BORDERS & DRAWING
+    -- -------------------------------------------------------------------------
+
+    draw_borders           = false,
+    draw_graph_borders     = false,
+    draw_outline           = false,
+    draw_shades            = false,
+    border_width           = 0,
+
+    -- -------------------------------------------------------------------------
+    -- LUA
+    -- -------------------------------------------------------------------------
+
+    lua_load               = '/home/mohamed/.conky/MonoPlayer/lua/panel_center.lua',
+    lua_draw_hook_post     = 'draw_center',
+
+    -- -------------------------------------------------------------------------
+    -- MISC
+    -- -------------------------------------------------------------------------
+
+    cpu_avg_samples        = 2,
+    net_avg_samples        = 2,
+    no_buffers             = true,
+    short_units            = true,
+    use_spacer             = 'none',
+    uppercase              = false,
+
+}
+
+-- =============================================================================
+-- conky.text
+-- All rendering is handled by Lua/Cairo.
+-- The ${lua} call triggers conky_draw_center() on each update cycle.
+-- NOTE: mocp --info is called directly inside panel_center.lua via
+--       conky_parse("${execi 2 mocp --info ...}") — no extra variables needed.
+-- =============================================================================
+
+conky.text = [[]]

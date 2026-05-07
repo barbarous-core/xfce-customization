@@ -1,0 +1,102 @@
+-- =============================================================================
+-- conkyrc_left
+-- Mono Player — GBA-style Conky Theme
+-- https://github.com/mirzamstar/mono-player
+--
+-- Left panel: vnstat network monitor.
+-- Launch: conky -c ~/.conky/Mono\ Player/conkyrc_left
+-- License: MIT
+-- =============================================================================
+
+conky.config = {
+
+    -- -------------------------------------------------------------------------
+    -- WINDOW BEHAVIOUR
+    -- -------------------------------------------------------------------------
+
+    own_window             = true,
+    own_window_type        = 'normal',
+    own_window_hints       = 'undecorated,sticky,skip_taskbar,skip_pager',
+    own_window_transparent = false,
+    own_window_argb_visual = true,
+    own_window_argb_value  = 0,
+    double_buffer          = true,
+    background             = false,
+
+    -- -------------------------------------------------------------------------
+    -- POSITION & SIZE
+    -- Anchored top-left. gap_x = 10 leaves a small margin from the screen edge.
+    -- -------------------------------------------------------------------------
+
+    alignment              = 'top_left',
+    gap_x                  = 10,
+    gap_y                  = 30,
+
+    minimum_width          = 340,
+    maximum_width          = 340,
+    minimum_height         = 1020,
+
+    -- -------------------------------------------------------------------------
+    -- UPDATE
+    -- vnstat queries use ${execi 60 ...} so they refresh every 60 seconds.
+    -- Live speed uses standard Conky variables that refresh every 2 seconds.
+    -- -------------------------------------------------------------------------
+
+    update_interval        = 2.0,
+    total_run_times        = 0,
+
+    -- -------------------------------------------------------------------------
+    -- FONTS & DISPLAY
+    -- -------------------------------------------------------------------------
+
+    use_xft                = true,
+    font                   = 'DejaVu Sans Mono:size=7',
+    xftalpha               = 1,
+    override_utf8_locale   = true,
+
+    -- -------------------------------------------------------------------------
+    -- COLOURS (fallback for plain-text variables)
+    -- -------------------------------------------------------------------------
+
+    default_color          = '5A7A4A',      -- moss green
+    default_outline_color  = '000000',
+    default_shade_color    = '000000',
+    color1                 = '7AAA6A',      -- highlight
+    color2                 = '4A6A4A',      -- mid
+    color3                 = '2A4A2A',      -- dim
+
+    -- -------------------------------------------------------------------------
+    -- BORDERS & DRAWING
+    -- -------------------------------------------------------------------------
+
+    draw_borders           = false,
+    draw_graph_borders     = false,
+    draw_outline           = false,
+    draw_shades            = false,
+    border_width           = 0,
+
+    -- -------------------------------------------------------------------------
+    -- LUA
+    -- -------------------------------------------------------------------------
+
+    lua_load               = '/home/mohamed/.conky/MonoPlayer/lua/panel_left.lua',
+    lua_draw_hook_post     = 'draw_left',
+
+    -- -------------------------------------------------------------------------
+    -- NETWORK
+    -- -------------------------------------------------------------------------
+
+    net_avg_samples        = 2,
+    no_buffers             = true,
+    short_units            = true,
+    use_spacer             = 'none',
+    uppercase              = false,
+
+}
+
+-- =============================================================================
+-- conky.text
+-- All rendering is handled by Lua/Cairo.
+-- =============================================================================
+
+conky.text = [[]]

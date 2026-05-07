@@ -19,8 +19,20 @@ sudo dnf install gtk-murrine-engine
 ## install conky manager 
 sudo dnf copr enable geraldosimiao/conky-manager2
 sudo dnf install conky-manager2
+
 ## installing other packages to avoid warning 
 sudo dnf install gtk3-devel pkgconf-pkg-config
+## install package to run conky Mono Player
+sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
+sudo dnf install -y vnstat moc
+sudo systemctl enable --now vnstat
+
+What if you don't want to add extra repositories?
+If you prefer to keep your system minimal and only want the network stats for Conky, you can just install vnstat alone (which is in the standard Fedora repo):
+bash
+sudo dnf install -y vnstat
+sudo systemctl enable --now vnstat
+
 ## Downloading Wallpaper
 ---
 ## Setting initial stow

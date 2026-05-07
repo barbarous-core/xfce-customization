@@ -1,0 +1,117 @@
+-- =============================================================================
+-- conkyrc_right
+-- Mono Player — GBA-style Conky Theme
+-- https://github.com/mirzamstar/mono-player
+--
+-- Right panel: clock, temperatures, processes, system stats.
+-- Launch: conky -c ~/.config/conky/mono-player/conkyrc_right
+-- License: MIT
+-- =============================================================================
+
+conky.config = {
+
+    -- -------------------------------------------------------------------------
+    -- WINDOW BEHAVIOUR
+    -- -------------------------------------------------------------------------
+
+    own_window            = true,
+    own_window_type       = 'normal',       -- 'desktop' non funziona su Wayland
+    own_window_hints      = 'undecorated,sticky,skip_taskbar,skip_pager',
+    own_window_transparent = false,
+    own_window_argb_visual = true,
+    own_window_argb_value  = 0,
+    double_buffer         = true,           -- no flicker
+    background            = false,
+
+    -- -------------------------------------------------------------------------
+    -- POSITION & SIZE
+    -- Anchor: top-right corner of the screen.
+    -- gap_x is measured from the RIGHT edge when alignment contains 'r'.
+    -- Adjust gap_x if you have a different screen width or want more margin.
+    -- -------------------------------------------------------------------------
+
+    alignment             = 'top_right',
+    gap_x                 = 10,             -- px from right screen edge
+    gap_y                 = 30,             -- px from top (clears the topbar)
+
+    minimum_width         = 340,
+    maximum_width         = 340,
+    minimum_height        = 1020,
+
+    -- -------------------------------------------------------------------------
+    -- UPDATE
+    -- -------------------------------------------------------------------------
+
+    update_interval       = 2.0,            -- seconds between refreshes
+    total_run_times       = 0,              -- run forever
+
+    -- -------------------------------------------------------------------------
+    -- FONTS
+    -- DejaVu Sans Mono is native on all Ubuntu installs.
+    -- The Lua script handles all text rendering — this font entry is kept
+    -- as a fallback for any plain-text Conky variables used in conky.text.
+    -- -------------------------------------------------------------------------
+
+    use_xft               = true,
+    font                  = 'DejaVu Sans Mono:size=7',
+    xftalpha              = 1,
+    override_utf8_locale  = true,
+
+    -- -------------------------------------------------------------------------
+    -- COLOURS (used only by conky.text plain-text fallback, not by Lua)
+    -- -------------------------------------------------------------------------
+
+    default_color         = 'C86040',       -- brick orange
+    default_outline_color = '000000',
+    default_shade_color   = '000000',
+    color1                = 'E8A080',       -- highlight
+    color2                = 'A86050',       -- mid
+    color3                = '6A3A2A',       -- dim
+
+    -- -------------------------------------------------------------------------
+    -- BORDERS & DRAWING
+    -- Lua handles all drawing — these are disabled to avoid double borders.
+    -- -------------------------------------------------------------------------
+
+    draw_borders          = false,
+    draw_graph_borders    = false,
+    draw_outline          = false,
+    draw_shades           = false,
+    border_width          = 0,
+
+    -- -------------------------------------------------------------------------
+    -- LUA
+    -- panel_right.lua does all the Cairo drawing.
+    -- conky_draw_right() is called after each conky.text render pass.
+    -- -------------------------------------------------------------------------
+
+    lua_load              = '/home/mohamed/.conky/MonoPlayer/lua/panel_right.lua',
+    lua_draw_hook_post    = 'draw_right',
+
+    -- -------------------------------------------------------------------------
+    -- MISC
+    -- -------------------------------------------------------------------------
+
+    cpu_avg_samples       = 2,
+    net_avg_samples       = 2,
+    no_buffers            = true,           -- exclude buffers from RAM count
+    short_units           = true,           -- "G" instead of "GiB"
+    use_spacer            = 'none',
+    uppercase             = false,
+    temperature_unit      = 'celsius',
+    pad_percents          = 2,
+    top_name_width        = 16,
+    top_name_verbose      = false,
+
+}
+
+-- =============================================================================
+-- conky.text
+-- This block is intentionally minimal — all rendering is done in Lua/Cairo.
+-- A single transparent pixel placeholder is enough to keep the Conky window
+-- alive and trigger the lua_draw_hook on each update cycle.
+-- Variables listed here are parsed and made available to the Lua script
+-- via conky_parse() calls inside panel_right.lua.
+-- =============================================================================
+
+conky.text = [[]]
