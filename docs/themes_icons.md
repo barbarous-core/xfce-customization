@@ -39,3 +39,6 @@ Since you're managing multiple environments (Debian VM and Fedora-based Barbarou
 * **Icons:** `mkdir -p ~/.icons`
 
 If you are using these for your SCADA/IoT distribution, **Papirus** or **Graphite** usually offer the best readability for technical dashboards. Are you planning to script the installation of these themes into your distribution's build process?
+
+## Polybar Themes
+https://github.com/adi1090x/polybar-themes.git

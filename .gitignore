@@ -1,1 +1,5 @@
 /xx - Inputs
+
+# Polybar — runtime-generated files (not tracked)
+polybar/.config/polybar/polybar.log
+polybar/.config/polybar/config.runtime.ini
