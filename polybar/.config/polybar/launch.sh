@@ -12,6 +12,10 @@ while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
 CONFIG_DIR="$(dirname "$(realpath "$0")")"
 polybar -c "$CONFIG_DIR/config.ini" main & 
 
+# Launch workspace notifier
+killall -q ws_notifier.sh
+"$CONFIG_DIR/scripts/ws_notifier.sh" &
+
 # Optional: To launch on a second display, uncomment the following line
 # polybar secondary & 
 
