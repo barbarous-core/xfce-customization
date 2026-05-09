@@ -19,15 +19,14 @@ if [ "$CHOICE" = "$RENAME_OPTION" ]; then
     NEW_NAME=$(rofi -dmenu -p "New Name for WS $((INDEX+1)):" -location 1 -xoffset "$X_POS" -yoffset "$Y_OFFSET")
     
     if [ -n "$NEW_NAME" ]; then
-        # Get existing names into a temp file
-        NAMES_FILE=$(mktemp)
-        xfconf-query -c xfwm4 -p /general/workspace_names -v > "$NAMES_FILE"
-        
-        # Read names into an array
-        mapfile -t NAMES < "$NAMES_FILE"
+        # Get existing names and filter out technical jargon
+        mapfile -t NAMES < <(xfconf-query -c xfwm4 -p /general/workspace_names -v | grep -v "Value is an array" | sed 's/^[ \t]*//' | grep -v "^$")
         
         # Update the name at the specific index
         NAMES[$INDEX]="$NEW_NAME"
+        
+        # Reset the property first to ensure a clean array
+        xfconf-query -c xfwm4 -p /general/workspace_names -r
         
         # Build the xfconf-query command to update the whole array
         CMD="xfconf-query -c xfwm4 -p /general/workspace_names -n"
@@ -35,8 +34,6 @@ if [ "$CHOICE" = "$RENAME_OPTION" ]; then
             CMD="$CMD -t string -s \"$name\""
         done
         eval "$CMD"
-        
-        rm "$NAMES_FILE"
     fi
 
 elif [ "$CHOICE" = "$DELETE_OPTION" ]; then

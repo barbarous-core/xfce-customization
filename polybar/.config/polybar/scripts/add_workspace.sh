@@ -1,8 +1,6 @@
 #!/bin/bash
 
 # Configuration
-# The user observed that at 19 workspaces, the centered date starts moving.
-# We set the limit to 18 to keep the date perfectly centered.
 MAX_WORKSPACES=18
 
 # Get current count
@@ -14,10 +12,8 @@ if [ "$CURRENT_COUNT" -ge "$MAX_WORKSPACES" ]; then
     exit 0
 fi
 
-# --- Proceed with adding workspace ---
-
 # Ask for the name
-WS_NAME=$(rofi -dmenu -p "New Workspace Name (Max $MAX_WORKSPACES):" -location 0 -width 30)
+WS_NAME=$(rofi -dmenu -p "New Workspace Name:" -location 0 -width 30)
 if [ $? -ne 0 ]; then exit 0; fi
 
 # Increment count
@@ -29,13 +25,19 @@ if [ -z "$WS_NAME" ]; then
     WS_NAME="Workspace $NEW_COUNT"
 fi
 
-# Update names array
-NAMES_FILE=$(mktemp)
-xfconf-query -c xfwm4 -p /general/workspace_names -v > "$NAMES_FILE"
+# Get existing names and filter out technical jargon
+mapfile -t NAMES < <(xfconf-query -c xfwm4 -p /general/workspace_names -v | grep -v "Value is an array" | sed 's/^[ \t]*//' | grep -v "^$")
+
+# Reset the property first to ensure a clean array
+xfconf-query -c xfwm4 -p /general/workspace_names -r
+
+# Build the command to update the whole array
 CMD="xfconf-query -c xfwm4 -p /general/workspace_names -n"
-while read -r name; do
+for name in "${NAMES[@]}"; do
     CMD="$CMD -t string -s \"$name\""
-done < "$NAMES_FILE"
+done
+# Add the new name
 CMD="$CMD -t string -s \"$WS_NAME\""
+
+# Execute the command
 eval "$CMD"
-rm "$NAMES_FILE"

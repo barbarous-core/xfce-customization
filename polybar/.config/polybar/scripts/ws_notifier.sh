@@ -5,7 +5,6 @@ LOG="/tmp/ws_notifier.log"
 
 # Prevent multiple instances
 if pgrep -f "$(basename "$0")" | grep -v $$ > /dev/null; then
-    echo "Notifier already running, exiting." >> "$LOG"
     exit 0
 fi
 
@@ -19,18 +18,22 @@ THEME="window { width: 33%; height: 33%; border: 4px; border-color: #61afef; bor
        textbox { font: \"JetBrainsMono Nerd Font 48\"; text-color: #c5c8c6; horizontal-align: 0.5; vertical-align: 0.5; }"
 
 while true; do
-    # Get current workspace
+    # Get current workspace index
     CURRENT_WS=$(xprop -root _NET_CURRENT_DESKTOP | awk '{print $3}')
     
     # If it changed, show OSD
     if [ "$CURRENT_WS" != "$LAST_WS" ]; then
         echo "Workspace changed from $LAST_WS to $CURRENT_WS" >> "$LOG"
         
-        # Get the name
-        WS_NAME=$(wmctrl -d | grep "^$CURRENT_WS " | sed 's/.*  //')
+        # Get the name using wmctrl but with a robust extraction method
+        # We look for the line starting with our index and grab everything after the workarea geometry
+        WS_NAME=$(wmctrl -d | grep "^$CURRENT_WS " | sed 's/.*WA: [0-9,]* [0-9x]*  //')
         
-        # If name is default or empty, use only the number
-        if [[ "$WS_NAME" == "Workspace "* || -z "$WS_NAME" ]]; then
+        # Trim whitespace
+        WS_NAME=$(echo "$WS_NAME" | sed 's/^[ \t]*//;s/[ \t]*$//')
+
+        # FINAL PROTECTION: If name contains "Value is an array" or is empty or default, use number
+        if [[ "$WS_NAME" == "Value is an array"* || "$WS_NAME" == "Workspace "* || -z "$WS_NAME" ]]; then
             WS_NAME="$((CURRENT_WS + 1))"
         fi
         
