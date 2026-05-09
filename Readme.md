@@ -36,9 +36,19 @@ sudo systemctl enable --now vnstat
 sudo dnf install polybar
 
 ## using polybar themes 
+
 ## install picmon to effect glass effect blur
 sudo dnf install picom
 ## Downloading Wallpaper
+
+## install nerd font 
+curl -OL https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.tar.xz 
+sudo mkdir -p /usr/local/share/fonts/nerd-fonts
+sudo mv * /usr/local/share/fonts/nerd-fonts
+sudo chmod -R 644 /usr/local/share/fonts/nerd-fonts
+sudo chmod 755 /usr/local/share/fonts/nerd-fonts
+sudo fc-cache -fv
+for only user : ~/.local/share/fonts/
 ---
 ## Setting initial stow
 
