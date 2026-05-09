@@ -10,7 +10,7 @@ CURRENT_COUNT=$(xfconf-query -c xfwm4 -p /general/workspace_count)
 
 # If we reached exactly 10, show the productivity warning
 if [ "$CURRENT_COUNT" -eq 10 ]; then
-    zenity --warning --text "You reach productivity ws but u can add up to 18 ws" --title "Productivity Milestone" --width 300
+    zenity --warning --text "You reach productivity workspaces limitation but u can add up to 18 workspaces" --title "Productivity Limitation" --width 300
 fi
 
 # If we reached the final limit, stop
