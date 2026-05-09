@@ -16,11 +16,11 @@ CHOICE=$(echo -e "$RENAME_OPTION\n$DELETE_OPTION\n$WINDOWS" | rofi -dmenu -marku
 
 if [ "$CHOICE" = "$RENAME_OPTION" ]; then
     # Ask for the new name
-    NEW_NAME=$(rofi -dmenu -p "New Name for WS $((INDEX+1)):" -location 1 -xoffset "$X_POS" -yoffset "$Y_OFFSET")
+    NEW_NAME=$(rofi -dmenu -p "New Name for WS $((INDEX+1)):" -location 1 -xoffset "$X_POS" -yoffset "$Y_OFFSET" -pid /tmp/rofi_rename.pid)
     
     if [ -n "$NEW_NAME" ]; then
         # Get existing names and filter out technical jargon
-        mapfile -t NAMES < <(xfconf-query -c xfwm4 -p /general/workspace_names -v | grep -v "Value is an array" | sed 's/^[ \t]*//' | grep -v "^$")
+        mapfile -t NAMES < <(xfconf-query -c xfwm4 -p /general/workspace_names -v 2>/dev/null | grep -v "Value is an array" | sed 's/^[ \t]*//' | grep -v "^$")
         
         # Update the name at the specific index
         NAMES[$INDEX]="$NEW_NAME"
@@ -40,7 +40,21 @@ elif [ "$CHOICE" = "$DELETE_OPTION" ]; then
     # Confirmation dialog
     if zenity --question --text "Are you sure you want to delete workspace $((INDEX+1))?" --title "Delete Workspace"; then
         WS_COUNT=$(xfconf-query -c xfwm4 -p /general/workspace_count)
-        xfconf-query -c xfwm4 -p /general/workspace_count -s $((WS_COUNT - 1))
+        
+        # 1. Get existing names
+        mapfile -t NAMES < <(xfconf-query -c xfwm4 -p /general/workspace_names -v 2>/dev/null | grep -v "Value is an array" | sed 's/^[ \t]*//' | grep -v "^$")
+        
+        # 2. Reduce the count
+        NEW_COUNT=$((WS_COUNT - 1))
+        xfconf-query -c xfwm4 -p /general/workspace_count -s "$NEW_COUNT"
+
+        # 3. Update the names array (truncate)
+        xfconf-query -c xfwm4 -p /general/workspace_names -r
+        CMD="xfconf-query -c xfwm4 -p /general/workspace_names -n"
+        for (( i=0; i<$NEW_COUNT; i++ )); do
+            CMD="$CMD -t string -s \"${NAMES[$i]}\""
+        done
+        eval "$CMD"
     fi
 
 elif [ -n "$CHOICE" ]; then
