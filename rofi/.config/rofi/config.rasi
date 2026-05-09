@@ -1,0 +1,48 @@
+configuration {
+    modi: "window,drun,run";
+    font: "JetBrainsMono Nerd Font 12";
+    show-icons: true;
+    terminal: "xfce4-terminal";
+    drun-display-format: "{icon} {name}";
+    location: 0;
+    disable-history: false;
+    hide-scrollbar: true;
+    display-window: "   Windows:";
+    display-run: "   Run:";
+    display-drun: "   Apps:";
+    sidebar-mode: true;
+}
+
+@theme "/usr/share/rofi/themes/sidebar.rasi"
+
+/* Custom styling to match your theme */
+window {
+    width: 30%;
+    border: 2px;
+    border-color: #61afef;
+    border-radius: 12px;
+    background-color: #282a2e;
+}
+
+mainbox {
+    background-color: transparent;
+}
+
+listview {
+    border: 0px;
+    padding: 5px 0px 0px;
+    margin: 5px 0px 0px;
+    columns: 1;
+    lines: 10;
+    fixed-height: false;
+}
+
+element {
+    padding: 8px;
+    border-radius: 8px;
+}
+
+element selected {
+    background-color: #61afef;
+    text-color: #282a2e;
+}

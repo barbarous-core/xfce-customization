@@ -26,7 +26,7 @@ for i in $(seq 1 $WS_COUNT); do
     
     # Action tags: Left click to switch, Middle click for the new handle_ws script
     HANDLE_SCRIPT="/home/mohamed/Linux_Data/Git_Projects/xfce-customization/polybar/.config/polybar/scripts/handle_ws.sh"
-    ACTION_START="%{A1:wmctrl -s $INDEX:}%{A2:$HANDLE_SCRIPT $INDEX $X_POS $Y_OFFSET:}"
+    ACTION_START="%{A1:wmctrl -s $INDEX:}%{A3:$HANDLE_SCRIPT $INDEX $X_POS $Y_OFFSET:}"
     ACTION_END="%{A}%{A}"
     
     if [ "$INDEX" -eq "$CURRENT_WS" ]; then
