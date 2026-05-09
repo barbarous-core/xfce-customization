@@ -29,9 +29,15 @@ while true; do
         
         echo "Displaying OSD for: $WS_NAME" >> "$LOG"
         
-        # Launch Rofi OSD
-        (sleep 2 && pkill -f "rofi -name WS_OSD") &
+        # Kill any existing OSDs first
+        pkill -f "rofi -name WS_OSD" 2>/dev/null
+        
+        # Launch Rofi OSD and capture its PID
         rofi -e "$WS_NAME" -name "WS_OSD" -theme-str "$THEME" &
+        ROFI_PID=$!
+        
+        # Start a background timer to kill THIS specific PID after 2 seconds
+        (sleep 2 && kill $ROFI_PID 2>/dev/null) &
         
         LAST_WS=$CURRENT_WS
     fi
