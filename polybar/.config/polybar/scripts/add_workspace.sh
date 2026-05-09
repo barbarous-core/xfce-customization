@@ -10,7 +10,9 @@ CURRENT_COUNT=$(xfconf-query -c xfwm4 -p /general/workspace_count)
 
 # If we reached exactly 10, show the productivity warning
 if [ "$CURRENT_COUNT" -eq 10 ]; then
-    zenity --warning --text "You reach productivity workspaces limitation but u can add up to 18 workspaces" --title "Productivity Limitation" --width 300
+    THEME="window { width: 33%; height: 33%; border: 4px; border-color: #F0C674; border-radius: 20px; background-color: #282a2e; } 
+           textbox { font: \"JetBrainsMono Nerd Font 18\"; text-color: #c5c8c6; horizontal-align: 0.5; vertical-align: 0.5; }"
+    rofi -e "You reach productivity workspaces limitation but u can add up to 18 workspaces" -theme-str "$THEME" -location 0 -monitor -1 -pid /tmp/rofi_warn.pid
 fi
 
 # If we reached the final limit, stop
@@ -43,10 +45,14 @@ done
 
 # 3. Select name and check for duplicates
 while true; do
-    rm -f /tmp/rofi_add.pid
+    # Define theme for selection color sync
+    THEME="element { background-color: transparent; }
+           element-text { text-color: #c5c8c6; }
+           element selected { background-color: #61afef; }
+           element-text selected { text-color: #282a2e; }"
     
     # Launch Rofi with Pango markup support
-    WS_NAME=$(echo -e "$OPTIONS" | rofi -dmenu -markup-rows -p "Select Category or Type Name:" -location 0 -width 40 -monitor -1 -pid /tmp/rofi_add.pid)
+    WS_NAME=$(echo -e "$OPTIONS" | rofi -dmenu -markup-rows -p "Select Category or Type Name:" -theme-str "$THEME" -location 0 -width 40 -monitor -1 -pid /tmp/rofi_add.pid)
 
     # If cancelled, exit
     if [ $? -ne 0 ]; then

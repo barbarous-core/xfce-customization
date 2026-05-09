@@ -11,7 +11,22 @@ while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
 # Use the config file in the same directory as the script
 CONFIG_DIR="$(dirname "$(realpath "$0")")"
 # Ask to load presets
-if zenity --question --text "Do you want to load the Professional Workspace Preset?\n(Web, Code, Terminal, Chat, Design, Video, Office, PKM)" --title "Workspace Setup"; then
+# Define Rofi Theme for Startup
+THEME="window { width: 33%; border: 0px; border-radius: 20px; background-color: #282a2e; } 
+       listview { lines: 2; }
+       element { padding: 15px; background-color: transparent; }
+       element-text { font: \"JetBrainsMono Nerd Font 18\"; horizontal-align: 0.5; text-color: #c5c8c6; }
+       element selected { background-color: #61afef; }
+       element-text selected { text-color: #282a2e; }
+       inputbar { enabled: false; }"
+
+# Ask to load presets using Rofi
+YES_OPT="🚀 Load Productivity WS presets"
+NO_OPT="🧹 Clean Slate (Only one WS)"
+OPTIONS="${YES_OPT}\n${NO_OPT}"
+CHOICE=$(echo -e "$OPTIONS" | rofi -dmenu -p "Workspace Setup" -theme-str "$THEME" -location 0 -monitor -1 -pid /tmp/rofi_startup.pid)
+
+if [ "$CHOICE" == "$YES_OPT" ]; then
     # Load Preset: 9 workspaces starting with 'free workspace'
     xfconf-query -c xfwm4 -p /general/workspace_count -s 9
     xfconf-query -c xfwm4 -p /general/workspace_names -r

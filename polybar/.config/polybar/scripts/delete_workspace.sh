@@ -15,8 +15,24 @@ fi
 mapfile -t NAMES < <(xfconf-query -c xfwm4 -p /general/workspace_names -v 2>/dev/null | grep -v "Value is an array" | sed 's/^[ \t]*//' | grep -v "^$")
 CURRENT_NAME="${NAMES[$CURRENT_WS_INDEX]}"
 
-# Confirmation dialog
-if zenity --question --text "Are you sure you want to delete your ACTIVE workspace $WS_NUM: '$CURRENT_NAME'?" --title "Delete Active Workspace"; then
+# Define Rofi Theme (Matches OSD notification size and position)
+THEME="window { width: 33%; border: 0px; border-radius: 20px; background-color: #282a2e; } 
+       listview { lines: 2; }
+       element { padding: 20px; background-color: transparent; }
+       element-text { font: \"JetBrainsMono Nerd Font 18\"; horizontal-align: 0.5; text-color: #c5c8c6; }
+       element selected { background-color: #61afef; }
+       element-text selected { text-color: #282a2e; }
+       inputbar { enabled: false; }"
+
+# Rofi options
+YES_OPT="✅ Yes, Delete Workspace $WS_NUM ($CURRENT_NAME)"
+NO_OPT="❌ No, Cancel"
+OPTIONS="${YES_OPT}\n${NO_OPT}"
+
+# Launch Rofi Confirmation (Same size/position as OSD)
+CHOICE=$(echo -e "$OPTIONS" | rofi -dmenu -p "Confirm Deletion" -theme-str "$THEME" -location 0 -monitor -1 -pid /tmp/rofi_delete.pid)
+
+if [ "$CHOICE" == "$YES_OPT" ]; then
     # 1. Create a new names array without the current index
     NEW_NAMES=()
     for i in "${!NAMES[@]}"; do
@@ -37,5 +53,5 @@ if zenity --question --text "Are you sure you want to delete your ACTIVE workspa
     done
     eval "$CMD"
 
-    notify-send "Workspace Management" "Workspace '$CURRENT_NAME' deleted. Total is now $NEW_COUNT."
+    notify-send "Workspace Management" "Workspace '$CURRENT_NAME' deleted."
 fi

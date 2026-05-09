@@ -42,8 +42,8 @@ while true; do
         # Kill any existing OSDs first
         pkill -f "rofi -name WS_OSD" 2>/dev/null
         
-        # Launch Rofi OSD with a strict 2-second timeout and a private PID file
-        timeout 2s rofi -e "$WS_NAME" -name "WS_OSD" -pid /tmp/rofi_osd.pid -theme-str "$THEME" &
+        # Launch Rofi OSD with a strict 0.6-second timeout and a private PID file
+        timeout 0.5s rofi -e "$WS_NAME" -name "WS_OSD" -pid /tmp/rofi_osd.pid -theme-str "$THEME" &
         
         LAST_WS=$CURRENT_WS
     fi

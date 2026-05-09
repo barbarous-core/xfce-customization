@@ -37,8 +37,28 @@ if [ "$CHOICE" = "$RENAME_OPTION" ]; then
     fi
 
 elif [ "$CHOICE" = "$DELETE_OPTION" ]; then
-    # Confirmation dialog
-    if zenity --question --text "Are you sure you want to delete workspace $((INDEX+1))?" --title "Delete Workspace"; then
+    # Define Rofi Theme (Matches OSD notification size and position)
+    THEME="window { width: 33%; border: 0px; border-radius: 20px; background-color: #282a2e; } 
+           listview { lines: 2; }
+           element { padding: 20px; background-color: transparent; }
+           element-text { font: \"JetBrainsMono Nerd Font 18\"; horizontal-align: 0.5; text-color: #c5c8c6; }
+           element selected { background-color: #61afef; }
+           element-text selected { text-color: #282a2e; }
+           inputbar { enabled: false; }"
+    
+    # Get current names to find the name of the workspace at INDEX
+    mapfile -t NAMES < <(xfconf-query -c xfwm4 -p /general/workspace_names -v 2>/dev/null | grep -v "Value is an array" | sed 's/^[ \t]*//' | grep -v "^$")
+    CURRENT_NAME="${NAMES[$INDEX]}"
+    WS_NUM=$((INDEX + 1))
+    
+    YES_OPT="✅ Yes, Delete Workspace $WS_NUM ($CURRENT_NAME)"
+    NO_OPT="❌ No, Cancel"
+    OPTIONS="${YES_OPT}\n${NO_OPT}"
+    
+    # Launch Rofi Confirmation
+    CONFIRM=$(echo -e "$OPTIONS" | rofi -dmenu -p "Confirm Deletion" -theme-str "$THEME" -location 0 -monitor -1 -pid /tmp/rofi_delete.pid)
+    
+    if [ "$CONFIRM" == "$YES_OPT" ]; then
         WS_COUNT=$(xfconf-query -c xfwm4 -p /general/workspace_count)
         
         # 1. Get existing names
