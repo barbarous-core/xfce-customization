@@ -24,10 +24,9 @@ for i in $(seq 1 $WS_COUNT); do
     INDEX=$((i-1))
     X_POS=$((BAR_START + WHISKER_WIDTH + (INDEX * WS_WIDTH)))
     
-    # Action tags: Left click to switch, Middle click for filtered Rofi at X_POS
-    # The middle-click command filters wmctrl -l by workspace index and pipes to rofi
-    ROFI_CMD="wmctrl -l | awk -v ws=$INDEX '\$2 == ws {print \$0}' | cut -d' ' -f5- | rofi -dmenu -p 'WS $((INDEX+1))' -location 1 -xoffset $X_POS -yoffset $Y_OFFSET | xargs -I{} wmctrl -a '{}'"
-    ACTION_START="%{A1:wmctrl -s $INDEX:}%{A2:$ROFI_CMD:}"
+    # Action tags: Left click to switch, Middle click for the new handle_ws script
+    HANDLE_SCRIPT="/home/mohamed/Linux_Data/Git_Projects/xfce-customization/polybar/.config/polybar/scripts/handle_ws.sh"
+    ACTION_START="%{A1:wmctrl -s $INDEX:}%{A2:$HANDLE_SCRIPT $INDEX $X_POS $Y_OFFSET:}"
     ACTION_END="%{A}%{A}"
     
     if [ "$INDEX" -eq "$CURRENT_WS" ]; then
