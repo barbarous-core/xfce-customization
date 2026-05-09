@@ -5,7 +5,7 @@
   <property name="last-window-maximized" type="bool" value="true"/>
   <property name="last-show-hidden" type="bool" value="false"/>
   <property name="last-details-view-zoom-level" type="string" value="THUNAR_ZOOM_LEVEL_38_PERCENT"/>
-  <property name="last-details-view-column-widths" type="string" value="50,50,118,113,50,146,50,50,1095,50,50,75,50,461"/>
+  <property name="last-details-view-column-widths" type="string" value="50,50,118,113,50,146,50,50,1099,50,50,71,50,461"/>
   <property name="last-view" type="string" value="ThunarDetailsView"/>
   <property name="last-sort-column" type="string" value="THUNAR_COLUMN_DATE_MODIFIED"/>
   <property name="last-sort-order" type="string" value="GTK_SORT_DESCENDING"/>
