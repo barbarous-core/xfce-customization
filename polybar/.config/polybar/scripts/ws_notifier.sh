@@ -2,6 +2,13 @@
 
 # Log file for debugging
 LOG="/tmp/ws_notifier.log"
+
+# Prevent multiple instances
+if pgrep -f "$(basename "$0")" | grep -v $$ > /dev/null; then
+    echo "Notifier already running, exiting." >> "$LOG"
+    exit 0
+fi
+
 echo "Notifier started at $(date)" > "$LOG"
 
 # Keep track of the last seen workspace
@@ -19,12 +26,12 @@ while true; do
     if [ "$CURRENT_WS" != "$LAST_WS" ]; then
         echo "Workspace changed from $LAST_WS to $CURRENT_WS" >> "$LOG"
         
-        # Get the name using a simpler method
+        # Get the name
         WS_NAME=$(wmctrl -d | grep "^$CURRENT_WS " | sed 's/.*  //')
         
-        # If name is default or empty, use "Workspace N"
+        # If name is default or empty, use only the number
         if [[ "$WS_NAME" == "Workspace "* || -z "$WS_NAME" ]]; then
-            WS_NAME="Workspace $((CURRENT_WS + 1))"
+            WS_NAME="$((CURRENT_WS + 1))"
         fi
         
         echo "Displaying OSD for: $WS_NAME" >> "$LOG"
@@ -32,12 +39,8 @@ while true; do
         # Kill any existing OSDs first
         pkill -f "rofi -name WS_OSD" 2>/dev/null
         
-        # Launch Rofi OSD and capture its PID
-        rofi -e "$WS_NAME" -name "WS_OSD" -theme-str "$THEME" &
-        ROFI_PID=$!
-        
-        # Start a background timer to kill THIS specific PID after 2 seconds
-        (sleep 2 && kill $ROFI_PID 2>/dev/null) &
+        # Launch Rofi OSD with a strict 2-second timeout and a private PID file
+        timeout 2s rofi -e "$WS_NAME" -name "WS_OSD" -pid /tmp/rofi_osd.pid -theme-str "$THEME" &
         
         LAST_WS=$CURRENT_WS
     fi

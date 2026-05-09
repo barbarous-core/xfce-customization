@@ -13,7 +13,7 @@ CONFIG_DIR="$(dirname "$(realpath "$0")")"
 polybar -c "$CONFIG_DIR/config.ini" main & 
 
 # Launch workspace notifier
-killall -q ws_notifier.sh
+pkill -f ws_notifier.sh
 "$CONFIG_DIR/scripts/ws_notifier.sh" &
 
 # Optional: To launch on a second display, uncomment the following line
