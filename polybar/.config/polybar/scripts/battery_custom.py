@@ -82,8 +82,10 @@ def main():
         else:
             if capacity < 30: 
                 color = "#FF0000" if blink_state else "#555555"
-            elif capacity < 60: 
+            elif capacity < 65: 
                 color = "#FFA500"
+            else:
+                color = "#00FF00"
 
         # Define text
         text = f"{capacity}%"
