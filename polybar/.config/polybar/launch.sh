@@ -32,16 +32,24 @@ EDP_ACTIVE=$(xfconf-query -c displays -p "/Default/eDP-1/Active" 2>/dev/null)
 if [ "$HDMI_ACTIVE" == "true" ]; then
     # Ask Position
     POS_H=$(bash "$CONFIG_DIR/scripts/bar_config.sh" "HDMI-1" "External HP 23\"")
-    # Ask Modules
-    MODS_H=$(bash "$CONFIG_DIR/scripts/bar_modules.sh" "External HP 23\"")
+    # Ask Modules if not disabled
+    if [ "$POS_H" != "none" ]; then
+        MODS_H=$(bash "$CONFIG_DIR/scripts/bar_modules.sh" "External HP 23\"")
+    else
+        MODS_H="DISABLED"
+    fi
 fi
 
 # --- eDP-1 (Laptop) ---
 if [ "$EDP_ACTIVE" == "true" ]; then
     # Ask Position
     POS_E=$(bash "$CONFIG_DIR/scripts/bar_config.sh" "eDP-1" "Laptop Screen")
-    # Ask Modules
-    MODS_E=$(bash "$CONFIG_DIR/scripts/bar_modules.sh" "Laptop Screen")
+    # Ask Modules if not disabled
+    if [ "$POS_E" != "none" ]; then
+        MODS_E=$(bash "$CONFIG_DIR/scripts/bar_modules.sh" "Laptop Screen")
+    else
+        MODS_E="DISABLED"
+    fi
 fi
 
 # 3. Ask for workspace presets

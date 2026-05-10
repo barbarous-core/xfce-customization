@@ -14,8 +14,7 @@ RESULT=$(yad --form --title="Modules for $NAME" --center \
     --field="  Show Left Section (Menu & Workspaces):CHK" TRUE \
     --field="  Show Center Section (Clock & Date):CHK" TRUE \
     --field="  Show Right Section (System Indicators):CHK" TRUE \
-    --field="  Don't show Polybar on this screen" FALSE \
-    --button="OK:0" --width=450 --height=300 \
+    --button="OK:0" --width=450 --height=260 \
     --window-icon="preferences-desktop-display" \
     --fontname="JetBrainsMono Nerd Font 10")
 
@@ -26,12 +25,6 @@ RESULT=$(yad --form --title="Modules for $NAME" --center \
 SHOW_LEFT=$(echo $RESULT | cut -d'|' -f1)
 SHOW_CENTER=$(echo $RESULT | cut -d'|' -f2)
 SHOW_RIGHT=$(echo $RESULT | cut -d'|' -f3)
-DISABLE_BAR=$(echo $RESULT | cut -d'|' -f4)
-
-if [ "$DISABLE_BAR" == "TRUE" ]; then
-    echo "DISABLED"
-    exit 0
-fi
 
 # Build strings
 OUT_LEFT=" "
