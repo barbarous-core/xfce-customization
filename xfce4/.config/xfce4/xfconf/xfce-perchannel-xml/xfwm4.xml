@@ -2,7 +2,7 @@
 
 <channel name="xfwm4" version="1.0">
   <property name="general" type="empty">
-    <property name="theme" type="string" value="Orchis-Green-Dark-Compact"/>
+    <property name="theme" type="string" value="Default"/>
     <property name="activate_action" type="string" value="bring"/>
     <property name="borderless_maximize" type="bool" value="true"/>
     <property name="box_move" type="bool" value="false"/>

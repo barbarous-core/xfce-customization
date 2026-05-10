@@ -2,8 +2,8 @@
 
 <channel name="xsettings" version="1.0">
   <property name="Net" type="empty">
-    <property name="ThemeName" type="string" value="Orchis-Green-Dark-Compact"/>
-    <property name="IconThemeName" type="string" value="Tela-circle-manjaro-dark"/>
+    <property name="ThemeName" type="empty"/>
+    <property name="IconThemeName" type="empty"/>
     <property name="DoubleClickTime" type="empty"/>
     <property name="DoubleClickDistance" type="empty"/>
     <property name="DndDragThreshold" type="empty"/>
@@ -39,8 +39,5 @@
   </property>
   <property name="Gdk" type="empty">
     <property name="WindowScalingFactor" type="empty"/>
-  </property>
-  <property name="Xfce" type="empty">
-    <property name="SyncThemes" type="bool" value="true"/>
   </property>
 </channel>
