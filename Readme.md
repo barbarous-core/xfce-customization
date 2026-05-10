@@ -52,6 +52,9 @@ for only user : ~/.local/share/fonts/
 
 ## install yad for notifications
 sudo dnf install yad 
+
+## install image editor 
+sudo dnf install kolourpaint mtpaint pinta
 ---
 ## Setting initial stow
 
