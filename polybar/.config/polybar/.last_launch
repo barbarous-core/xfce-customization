@@ -1,4 +1,7 @@
 POS_H="true"
 MODS_H="jgmenu sep xworkspaces sep add-workspace sep scroll-window sep|date|sep sys-switch sep xkeyboard sep pulseaudio mic sep battery sep powermenu"
 POS_E="false"
-MODS_E=" |date| "
+MODS_E="jgmenu sep xworkspaces sep add-workspace sep scroll-window sep|date|sep sys-switch sep xkeyboard sep pulseaudio mic sep battery sep powermenu"
+SEL_TERM=""
+SEL_BROWSER=""
+SEL_FILE=""

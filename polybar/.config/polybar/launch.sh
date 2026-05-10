@@ -9,6 +9,26 @@ while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
 # CONFIG DIR
 CONFIG_DIR="$(dirname "$(realpath "$0")")"
 
+# Function to update shortcuts
+update_shortcuts() {
+    local term=$1
+    local browser=$2
+    local file=$3
+    
+    # Update XML (Source)
+    local XML_FILE="/home/mohamed/Linux_Data/Git_Projects/xfce-customization/xfce4/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml"
+    if [ -f "$XML_FILE" ]; then
+        sed -i "s|<property name=\"&lt;Super&gt;Return\" type=\"string\" value=\".*\"/>|<property name=\"&lt;Super&gt;Return\" type=\"string\" value=\"$term\"/>|" "$XML_FILE"
+        sed -i "s|<property name=\"&lt;Super&gt;&lt;Shift&gt;b\" type=\"string\" value=\".*\"/>|<property name=\"&lt;Super&gt;&lt;Shift&gt;b\" type=\"string\" value=\"$browser\"/>|" "$XML_FILE"
+        sed -i "s|<property name=\"&lt;Super&gt;e\" type=\"string\" value=\".*\"/>|<property name=\"&lt;Super&gt;e\" type=\"string\" value=\"$file\"/>|" "$XML_FILE"
+    fi
+    
+    # Update Live Session
+    xfconf-query -c xfce4-keyboard-shortcuts -p /commands/custom/'<Super>Return' -n -t string -s "$term"
+    xfconf-query -c xfce4-keyboard-shortcuts -p /commands/custom/'<Super><Shift>b' -n -t string -s "$browser"
+    xfconf-query -c xfce4-keyboard-shortcuts -p /commands/custom/'<Super>e' -n -t string -s "$file"
+}
+
 # 1. Show display layout visualization first (Wait for user OK)
 LAST_CONF="$CONFIG_DIR/.last_launch"
 LOAD_LAST=false
@@ -71,10 +91,28 @@ POS_H="$POS_H"
 MODS_H="$MODS_H"
 POS_E="$POS_E"
 MODS_E="$MODS_E"
+SEL_TERM="$SEL_TERM"
+SEL_BROWSER="$SEL_BROWSER"
+SEL_FILE="$SEL_FILE"
 EOF
 fi
 
-# 3. Ask for workspace presets
+# 3. Application Selection
+if [ "$LOAD_LAST" != "true" ]; then
+    chmod +x "$CONFIG_DIR/scripts/app_selector.sh"
+    APPS=$(bash "$CONFIG_DIR/scripts/app_selector.sh")
+    if [ $? -eq 0 ]; then
+        SEL_TERM=$(echo "$APPS" | cut -d'|' -f1)
+        SEL_BROWSER=$(echo "$APPS" | cut -d'|' -f2)
+        SEL_FILE=$(echo "$APPS" | cut -d'|' -f3)
+        update_shortcuts "$SEL_TERM" "$SEL_BROWSER" "$SEL_FILE"
+    fi
+else
+    # Apply loaded shortcuts
+    update_shortcuts "$SEL_TERM" "$SEL_BROWSER" "$SEL_FILE"
+fi
+
+# 4. Ask for workspace presets
 if [ "$LOAD_LAST" != "true" ]; then
     chmod +x "$CONFIG_DIR/scripts/ws_presets.sh"
     "$CONFIG_DIR/scripts/ws_presets.sh"
