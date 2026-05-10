@@ -27,15 +27,25 @@ if [ -z "$BAT_INFO" ]; then
     BAT_INFO="No Battery Found"
 fi
 
-# 2. Get current brightness for the slider's starting value
-# Software brightness usually defaults to 100% (1.0). 
-# We'll set the slider to start at 100.
+# 2. Get screen dimensions for positioning
+screen_width=$(cat /sys/class/drm/card*-*/modes | head -n 1 | cut -d 'x' -f 1)
+if [ -z "$screen_width" ]; then
+    screen_width=1920
+fi
+
+# Target position (assuming battery is on the right, window width is 350)
+pos_x=$(( screen_width - 400 ))
+pos_y=40
+
+# 3. Get current brightness for the slider's starting value
+# ...
 START_VAL=100
 
-# 3. Launch yad and use process substitution to handle slider events in real-time
+# 4. Launch yad and use process substitution to handle slider events in real-time
 yad --scale \
+    --posx=$pos_x --posy=$pos_y \
     --title="Power Menu" \
-    --text="<b>Battery:</b> $BAT_INFO\n<b>Brightness:</b>" \
+    --text="<span font='JetBrainsMono Nerd Font Mono 14'><b>Battery:</b> $BAT_INFO\n<b>Brightness:</b></span>" \
     --value="$START_VAL" \
     --print-partial \
     --width=350 \
