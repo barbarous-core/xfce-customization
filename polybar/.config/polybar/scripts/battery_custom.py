@@ -65,12 +65,15 @@ def main():
                     m = 0
                 formatted_time = f"{h:02d}:{m:02d}"
 
-        # Choose icon based on capacity
-        if capacity < 20: icon = ""
-        elif capacity < 40: icon = ""
-        elif capacity < 60: icon = ""
-        elif capacity < 80: icon = ""
-        else: icon = ""
+        # Choose icon based on state and capacity
+        if status == "Charging":
+            if capacity < 30: icon = "󱊤"
+            elif capacity <= 70: icon = "󱊥"
+            else: icon = "󱊦"
+        else: # Discharging or Full
+            if capacity < 30: icon = "󱊡"
+            elif capacity <= 65: icon = "󱊢"
+            else: icon = "󱊣"
 
         # Define colors
         color = "#C5C8C6"
