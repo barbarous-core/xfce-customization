@@ -97,8 +97,11 @@ def main():
         elif formatted_time:
             text = f"{capacity}% {formatted_time}"
 
+        # Use a slightly larger font for charging icon (T4) vs discharging (T3)
+        font_index = "T4" if status == "Charging" else "T3"
+
         # Output formatted string for Polybar
-        print(f"%{{F{color}}}%{{T3}}{icon}%{{T-}} {text}%{{F-}}", flush=True)
+        print(f"%{{F{color}}}%{{{font_index}}}{icon}%{{T-}} {text}%{{F-}}", flush=True)
 
         # Determine blink speed
         sleep_time = 0.5
