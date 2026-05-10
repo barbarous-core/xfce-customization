@@ -84,8 +84,9 @@ Y_POS=50
 # Show YAD dialog with Polybar's font (JetBrainsMono Nerd Font)
 yad --picture --filename="$SVG_FILE" --size=orig \
     --title="Display Layout" --posx=$X_POS --posy=$Y_POS \
+    --button="Load Last Config:3" \
+    --button="Create New Configuration:0" \
     --button="Display Settings:2" \
-    --button="OK:0" \
     --width=500 --height=520 \
     --window-icon="video-display" \
     --skip-taskbar \
@@ -97,6 +98,8 @@ if [ "$EXIT_CODE" -eq 2 ]; then
     killall -q polybar
     xfce4-display-settings
     exit 2
+elif [ "$EXIT_CODE" -eq 3 ]; then
+    exit 3
 fi
 
 exit 0

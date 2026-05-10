@@ -10,11 +10,23 @@ while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
 CONFIG_DIR="$(dirname "$(realpath "$0")")"
 
 # 1. Show display layout visualization first (Wait for user OK)
+LAST_CONF="$CONFIG_DIR/.last_launch"
+LOAD_LAST=false
+
 chmod +x "$CONFIG_DIR/scripts/show_layout.sh"
 while true; do
     "$CONFIG_DIR/scripts/show_layout.sh"
-    if [ $? -eq 2 ]; then
+    RES=$?
+    if [ $RES -eq 2 ]; then
         continue
+    elif [ $RES -eq 3 ]; then
+        if [ -f "$LAST_CONF" ]; then
+            source "$LAST_CONF"
+            LOAD_LAST=true
+        else
+            notify-send "Polybar" "No previous configuration found."
+        fi
+        break
     else
         break
     fi
@@ -28,33 +40,45 @@ chmod +x "$CONFIG_DIR/scripts/bar_modules.sh"
 HDMI_ACTIVE=$(xfconf-query -c displays -p "/Default/HDMI-1/Active" 2>/dev/null)
 EDP_ACTIVE=$(xfconf-query -c displays -p "/Default/eDP-1/Active" 2>/dev/null)
 
-# --- HDMI-1 (Principal) ---
-if [ "$HDMI_ACTIVE" == "true" ]; then
-    # Ask Position
-    POS_H=$(bash "$CONFIG_DIR/scripts/bar_config.sh" "HDMI-1" "External HP 23\"")
-    # Ask Modules if not disabled
-    if [ "$POS_H" != "none" ]; then
-        MODS_H=$(bash "$CONFIG_DIR/scripts/bar_modules.sh" "External HP 23\"")
-    else
-        MODS_H="DISABLED"
+if [ "$LOAD_LAST" != "true" ]; then
+    # --- HDMI-1 (Principal) ---
+    if [ "$HDMI_ACTIVE" == "true" ]; then
+        # Ask Position
+        POS_H=$(bash "$CONFIG_DIR/scripts/bar_config.sh" "HDMI-1" "External HP 23\"")
+        # Ask Modules if not disabled
+        if [ "$POS_H" != "none" ]; then
+            MODS_H=$(bash "$CONFIG_DIR/scripts/bar_modules.sh" "External HP 23\"")
+        else
+            MODS_H="DISABLED"
+        fi
     fi
-fi
 
-# --- eDP-1 (Laptop) ---
-if [ "$EDP_ACTIVE" == "true" ]; then
-    # Ask Position
-    POS_E=$(bash "$CONFIG_DIR/scripts/bar_config.sh" "eDP-1" "Laptop Screen")
-    # Ask Modules if not disabled
-    if [ "$POS_E" != "none" ]; then
-        MODS_E=$(bash "$CONFIG_DIR/scripts/bar_modules.sh" "Laptop Screen")
-    else
-        MODS_E="DISABLED"
+    # --- eDP-1 (Laptop) ---
+    if [ "$EDP_ACTIVE" == "true" ]; then
+        # Ask Position
+        POS_E=$(bash "$CONFIG_DIR/scripts/bar_config.sh" "eDP-1" "Laptop Screen")
+        # Ask Modules if not disabled
+        if [ "$POS_E" != "none" ]; then
+            MODS_E=$(bash "$CONFIG_DIR/scripts/bar_modules.sh" "Laptop Screen")
+        else
+            MODS_E="DISABLED"
+        fi
     fi
+    
+    # Save for next time
+    cat <<EOF > "$LAST_CONF"
+POS_H="$POS_H"
+MODS_H="$MODS_H"
+POS_E="$POS_E"
+MODS_E="$MODS_E"
+EOF
 fi
 
 # 3. Ask for workspace presets
-chmod +x "$CONFIG_DIR/scripts/ws_presets.sh"
-"$CONFIG_DIR/scripts/ws_presets.sh"
+if [ "$LOAD_LAST" != "true" ]; then
+    chmod +x "$CONFIG_DIR/scripts/ws_presets.sh"
+    "$CONFIG_DIR/scripts/ws_presets.sh"
+fi
 
 # 4. Final Launch
 # Launch HDMI-1
