@@ -30,8 +30,8 @@ for i in $(seq 1 $WS_COUNT); do
     ACTION_END="%{A}%{A}"
     
     if [ "$INDEX" -eq "$CURRENT_WS" ]; then
-        # Active workspace styling: Blue foreground and Blue underline
-        output+="${ACTION_START}%{F#61afef}%{u#61afef}%{+u} $i %{-u}%{F-}${ACTION_END}"
+        # Active workspace styling: Blue foreground (no underline)
+        output+="${ACTION_START}%{F#61afef} $i %{F-}${ACTION_END}"
     else
         # Inactive workspace styling
         output+="${ACTION_START} $i ${ACTION_END}"
