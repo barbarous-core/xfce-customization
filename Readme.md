@@ -49,6 +49,9 @@ sudo chmod -R 644 /usr/local/share/fonts/nerd-fonts
 sudo chmod 755 /usr/local/share/fonts/nerd-fonts
 sudo fc-cache -fv
 for only user : ~/.local/share/fonts/
+
+## install yad for notifications
+sudo dnf install yad 
 ---
 ## Setting initial stow
 
