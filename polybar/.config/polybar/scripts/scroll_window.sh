@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Configuration
-LENGTH=30
+LENGTH=60
 SPACING=5
 DELAY=0.2
 
