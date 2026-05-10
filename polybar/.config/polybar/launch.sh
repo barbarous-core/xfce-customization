@@ -145,4 +145,9 @@ fi
 pkill -f ws_notifier.sh
 "$CONFIG_DIR/scripts/ws_notifier.sh" &
 
+# Launch battery monitor
+pkill -f battery_monitor.sh
+chmod +x "$CONFIG_DIR/scripts/battery_monitor.sh"
+"$CONFIG_DIR/scripts/battery_monitor.sh" &
+
 echo "Bars launched..."
