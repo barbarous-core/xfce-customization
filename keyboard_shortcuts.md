@@ -19,7 +19,9 @@ All main modules (System, Media, Connection, Battery) support the **Exclusive De
 *   **Right Click:** Open full Audio Mixer (`pavucontrol`).
 
 ### 🌐 Connectivity
+*   **Left Click (Hotspot Icon):** Disconnect Hotspot.
 *   **Middle Click:** Show WiFi SSID, Ethernet status, and Bluetooth device names.
+*   **Right Click (Hotspot Icon):** Open Hotspot Manager (View password & Create).
 
 ### 🔋 Power & Battery
 *   **Left Click:** Open the logout/shutdown menu.

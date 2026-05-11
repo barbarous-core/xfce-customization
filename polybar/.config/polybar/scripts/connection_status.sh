@@ -101,7 +101,7 @@ while true; do
 
     W_ICON="%{T4}${CLR_WIFI}${ICON_WIFI}${COLOR_RESET}%{T-}"
     E_ICON="%{T4}${CLR_ETH}${ICON_ETH}${COLOR_RESET}%{T-}"
-    H_ICON="%{T4}${CLR_HOTSPOT}${ICON_HOTSPOT}${COLOR_RESET}%{T-}"
+    H_ICON="%{A1:nmcli device disconnect wlp0s20f3:}%{A3:/home/mohamed/Linux_Data/Git_Projects/xfce-customization/polybar/.config/polybar/scripts/hotspot_manager.sh:}%{T4}${CLR_HOTSPOT}${ICON_HOTSPOT}${COLOR_RESET}%{T-}%{A}%{A}"
     B_ICON="%{T3}${CLR_BT}${ICON_BT}${COLOR_RESET}%{T-}"
 
     if [ "$CURR_NET_STATE" == "offline" ]; then
