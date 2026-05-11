@@ -12,31 +12,34 @@ if [ "$1" == "--toggle" ]; then
     else
         echo "icon" > "$STATE_FILE"
     fi
-    # Refresh polybar to show change immediately
-    polybar-msg cmd restart >/dev/null 2>&1
     exit 0
 fi
 
 # Initial state if not exists
 [ ! -f "$STATE_FILE" ] && echo "icon" > "$STATE_FILE"
-STATE=$(cat "$STATE_FILE")
 
-if [ "$STATE" == "full" ]; then
-    # Calculate speed over 1 second
-    if [ -f "/sys/class/net/$IFACE/statistics/rx_bytes" ]; then
-        R1=$(cat /sys/class/net/$IFACE/statistics/rx_bytes)
-        T1=$(cat /sys/class/net/$IFACE/statistics/tx_bytes)
-        sleep 1
-        R2=$(cat /sys/class/net/$IFACE/statistics/rx_bytes)
-        T2=$(cat /sys/class/net/$IFACE/statistics/tx_bytes)
-        
-        RX_SPEED=$(( (R2 - R1) / 1024 ))
-        TX_SPEED=$(( (T2 - T1) / 1024 ))
-        
-        echo "$ICON ↓ ${RX_SPEED}KB/s ↑ ${TX_SPEED}KB/s "
+while true; do
+    STATE=$(cat "$STATE_FILE" 2>/dev/null || echo "icon")
+
+    if [ "$STATE" == "full" ]; then
+        # Calculate speed over 1 second
+        if [ -d "/sys/class/net/$IFACE" ]; then
+            R1=$(cat /sys/class/net/$IFACE/statistics/rx_bytes 2>/dev/null || echo 0)
+            T1=$(cat /sys/class/net/$IFACE/statistics/tx_bytes 2>/dev/null || echo 0)
+            sleep 1
+            R2=$(cat /sys/class/net/$IFACE/statistics/rx_bytes 2>/dev/null || echo 0)
+            T2=$(cat /sys/class/net/$IFACE/statistics/tx_bytes 2>/dev/null || echo 0)
+            
+            RX_SPEED=$(( (R2 - R1) / 1024 ))
+            TX_SPEED=$(( (T2 - T1) / 1024 ))
+            
+            echo "$ICON ↓ ${RX_SPEED}KB/s ↑ ${TX_SPEED}KB/s"
+        else
+            echo "%{F#A54242}%{T4}󰖪%{T-}%{F-} Offline"
+            sleep 2
+        fi
     else
-        echo "%{F#A54242}󰖪 %{F-} Offline"
+        echo "$ICON"
+        sleep 2
     fi
-else
-    echo "$ICON"
-fi
+done
