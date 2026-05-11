@@ -20,6 +20,7 @@ All main modules (System, Media, Connection, Battery) support the **Exclusive De
 
 ### 🌐 Connectivity
 *   **Left Click (Hotspot Icon):** Disconnect Hotspot.
+*   **Left Click (Bluetooth Icon):** Toggle Bluetooth Power (On/Off).
 *   **Middle Click:** Show WiFi SSID, Ethernet status, and Bluetooth device names.
 *   **Right Click (Hotspot Icon):** Open Hotspot Manager (View password & Create).
 
@@ -62,6 +63,8 @@ These shortcuts use the **Super** (Windows) key for fast system navigation.
 ### 🔧 Polybar Controls
 | Shortcut | Action |
 | :--- | :--- |
+| **Super + Ctrl + Space** | **Open Theme Selector** |
+| **Super + Ctrl + ← / →** | **Cycle Themes** (Prev/Next with OSD) |
 | **Super + grave ( ` )** | **Reload Polybar** (Apply config changes) |
 | **Super + H** | Toggle Polybar visibility (Hide/Show) |
 | **Super + K** | Kill Polybar |

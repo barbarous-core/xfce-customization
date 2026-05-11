@@ -12,20 +12,23 @@ ROFI_CONFIG="/home/mohamed/Linux_Data/Git_Projects/xfce-customization/rofi/.conf
 THEMES=$(ls -1 "$THEME_DIR")
 
 if [ -z "$THEMES" ]; then
-    # Create some dummy themes if empty
-    mkdir -p "$THEME_DIR/Cyberpunk" "$THEME_DIR/Nordic" "$THEME_DIR/Premium_Gold"
-    THEMES=$(ls -1 "$THEME_DIR")
+    notify-send "Themes" "Themes folder is empty. Add a folder with colors.ini to /themes/ to get started."
+    exit 0
 fi
 
 # 2. Open Rofi
 SELECTED=$(echo "$THEMES" | rofi -dmenu -p "Select Theme" -i -config "$ROFI_CONFIG")
 
 if [ -n "$SELECTED" ]; then
-    # 3. Apply Theme (Initial logic: update state and restart bar)
+    # 3. Apply Theme
     echo "$SELECTED" > "$THEME_STATE_FILE"
     
-    # Optional: Here we will add logic to 'wal -i' or swap config files
-    # notify-send "Theme Applied" "Switched to $SELECTED"
+    # Copy the colors.ini to the polybar config folder
+    cp "$THEME_DIR/$SELECTED/colors.ini" "/home/mohamed/Linux_Data/Git_Projects/xfce-customization/polybar/.config/polybar/colors.ini"
     
+    # Sync colors to terminal and other apps using Pywal
+    /home/mohamed/.local/bin/wal -n -q -f "$THEME_DIR/$SELECTED/colors.json"
+
+    # Restart Polybar to apply colors
     polybar-msg cmd restart
 fi
