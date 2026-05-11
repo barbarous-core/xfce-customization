@@ -33,52 +33,10 @@ def main():
 
     while True:
         status = read_file(base + "status")
-        
         cap_str = read_file(base + "capacity")
         capacity = int(cap_str) if cap_str else 0
 
-        charge_now = 0.0
-        current_now = 0.0
-        charge_full = 0.0
-        
-        # Try charge variables (Ah)
-        cn = read_file(base + "charge_now")
-        curr = read_file(base + "current_now")
-        cf = read_file(base + "charge_full")
-        
-        if cn and curr and cf:
-            charge_now = float(cn)
-            current_now = float(curr)
-            charge_full = float(cf)
-        else:
-            # Try energy variables (Wh)
-            en = read_file(base + "energy_now")
-            pwr = read_file(base + "power_now")
-            ef = read_file(base + "energy_full")
-            if en and pwr and ef:
-                charge_now = float(en)
-                current_now = float(pwr)
-                charge_full = float(ef)
-
-        formatted_time = ""
-        if current_now > 0:
-            if status == "Discharging":
-                hours = charge_now / current_now
-            elif status == "Charging":
-                hours = (charge_full - charge_now) / current_now
-            else:
-                hours = 0
-                
-            if hours > 0:
-                h = int(hours)
-                m = int(round((hours - h) * 60))
-                # Handle rounding overflow
-                if m == 60:
-                    h += 1
-                    m = 0
-                formatted_time = f"{h:02d}:{m:02d}"
-
-        # Choose icon based on state and capacity
+        # Choose vertical icons (reverting to your preferred style)
         if status == "Charging":
             if capacity < 30: icon = "󱊤"
             elif capacity <= 70: icon = "󱊥"
@@ -91,7 +49,6 @@ def main():
         # Define colors
         color = "#C5C8C6"
         if status == "Charging":
-            # Toggle color every 0.5s to create a blink effect
             color = "#00FFFF" if blink_state else "#555555"
         elif status == "Full" or capacity >= 98:
             color = "#00FF00"
@@ -103,44 +60,21 @@ def main():
             else:
                 color = "#00FF00"
 
-        # Define text
-        text = f"{capacity}%"
-        if status == "Full" or capacity >= 98:
-            text = f"{capacity}% Full"
-        elif formatted_time:
-            text = f"{capacity}% {formatted_time}"
-
-        # Use a slightly larger font for charging icon (T4) vs discharging (T3)
-        font_index = "T4"
-
         # Check global state
         GLOBAL_STATE_FILE = "/tmp/polybar_active_module"
         active_module = read_file(GLOBAL_STATE_FILE)
         show_full = active_module == "battery"
 
-        # Output formatted string for Polybar
+        # Font index T3 (size 14) to keep vertical icons small
+        font_index = "T3"
+
         if show_full:
-            print(f"%{{F{color}}}%{{{font_index}}}{icon}%{{T-}} {text}%{{F-}}", flush=True)
+            print(f"%{{F{color}}}%{{{font_index}}}{icon}%{{T-}} {capacity}%%{{F-}}", flush=True)
         else:
             print(f"%{{F{color}}}%{{{font_index}}}{icon}%{{T-}}%{{F-}}", flush=True)
 
-        # Determine blink speed
-        sleep_time = 0.5
-        if status == "Charging":
-            if capacity < 30:
-                sleep_time = 1.5
-            elif capacity <= 70:
-                sleep_time = 1.0
-            else:
-                sleep_time = 0.5
-        else:
-            if capacity < 30:
-                sleep_time = 0.5 # Fast red blinking when dying
-            else:
-                sleep_time = 2.0 # Save CPU when not blinking
-
         blink_state = not blink_state
-        time.sleep(sleep_time)
+        time.sleep(0.5 if status == "Charging" or capacity < 30 else 2.0)
 
 if __name__ == "__main__":
     main()
