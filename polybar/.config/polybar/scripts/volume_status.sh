@@ -33,7 +33,13 @@ fi
 
 # Initial state
 [ ! -f "$STATE_FILE" ] && echo "icon" > "$STATE_FILE"
-STATE=$(cat "$STATE_FILE")
+# Global State
+GLOBAL_STATE_FILE="/tmp/polybar_active_module"
+active_module=$(cat "$GLOBAL_STATE_FILE" 2>/dev/null || echo "none")
+STATE="icon"
+if [ "$active_module" == "media" ]; then
+    STATE="full"
+fi
 
 # Get volume info
 VOL=$(pactl get-sink-volume @DEFAULT_SINK@ 2>/dev/null | grep -oP '\d+%' | head -1 | tr -d '%')

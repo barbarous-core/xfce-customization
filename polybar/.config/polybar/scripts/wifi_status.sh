@@ -1,27 +1,20 @@
 #!/bin/bash
 
 # Configuration
-STATE_FILE="/tmp/wifi_toggle_state"
+GLOBAL_STATE_FILE="/tmp/polybar_active_module"
 IFACE="wlp0s20f0u3"
 ICON="%{F#F0C674}%{T4}%{T-}%{F-}"
 
-# Toggle logic
+# Toggle logic (now handled by toggle_module.sh, but keeping for compatibility)
 if [ "$1" == "--toggle" ]; then
-    if [ ! -f "$STATE_FILE" ] || [ "$(cat "$STATE_FILE")" == "icon" ]; then
-        echo "full" > "$STATE_FILE"
-    else
-        echo "icon" > "$STATE_FILE"
-    fi
+    /home/mohamed/Linux_Data/Git_Projects/xfce-customization/polybar/.config/polybar/scripts/toggle_module.sh wifi
     exit 0
 fi
 
-# Initial state if not exists
-[ ! -f "$STATE_FILE" ] && echo "icon" > "$STATE_FILE"
-
 while true; do
-    STATE=$(cat "$STATE_FILE" 2>/dev/null || echo "icon")
+    ACTIVE_MODULE=$(cat "$GLOBAL_STATE_FILE" 2>/dev/null || echo "none")
 
-    if [ "$STATE" == "full" ]; then
+    if [ "$ACTIVE_MODULE" == "wifi" ]; then
         # Calculate speed over 1 second
         if [ -d "/sys/class/net/$IFACE" ]; then
             R1=$(cat /sys/class/net/$IFACE/statistics/rx_bytes 2>/dev/null || echo 0)
@@ -36,7 +29,7 @@ while true; do
             echo "$ICON ↓ ${RX_SPEED}KB/s ↑ ${TX_SPEED}KB/s"
         else
             echo "%{F#A54242}%{T4}󰖪%{T-}%{F-} Offline"
-            sleep 2
+            sleep 1
         fi
     else
         echo "$ICON"

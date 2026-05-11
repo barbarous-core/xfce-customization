@@ -113,8 +113,10 @@ def main():
         # Use a slightly larger font for charging icon (T4) vs discharging (T3)
         font_index = "T4"
 
-        # Check toggle state
-        show_full = read_file(STATE_FILE) == "full"
+        # Check global state
+        GLOBAL_STATE_FILE = "/tmp/polybar_active_module"
+        active_module = read_file(GLOBAL_STATE_FILE)
+        show_full = active_module == "battery"
 
         # Output formatted string for Polybar
         if show_full:
