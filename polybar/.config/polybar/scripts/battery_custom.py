@@ -105,7 +105,11 @@ def main():
         show_full = active_module == "battery"
 
         # Output
-        font_index = "T3"
+        # Use smaller font for charging icon because it's naturally bigger
+        if status == "Charging":
+            font_index = "T6"
+        else:
+            font_index = "T3"
         if show_full:
             text = f"{capacity}% {formatted_time}"
             print(f"%{{F{color}}}%{{{font_index}}}{icon}%{{T-}} {text}%{{F-}}", flush=True)
