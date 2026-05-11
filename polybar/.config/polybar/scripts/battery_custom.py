@@ -111,7 +111,7 @@ def main():
             text = f"{capacity}% {formatted_time}"
 
         # Use a slightly larger font for charging icon (T4) vs discharging (T3)
-        font_index = "T4" if status == "Charging" else "T3"
+        font_index = "T4"
 
         # Check toggle state
         show_full = read_file(STATE_FILE) == "full"

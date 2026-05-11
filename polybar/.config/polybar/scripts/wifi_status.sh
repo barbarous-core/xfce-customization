@@ -3,7 +3,7 @@
 # Configuration
 STATE_FILE="/tmp/wifi_toggle_state"
 IFACE="wlp0s20f0u3"
-ICON="%{F#F0C674} %{F-}"
+ICON="%{F#F0C674}%{T4}%{T-}%{F-}"
 
 # Toggle logic
 if [ "$1" == "--toggle" ]; then
