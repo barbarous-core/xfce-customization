@@ -22,21 +22,22 @@ COLOR_RESET="%{F-}"
 PREV_NET_STATE="none"
 
 while true; do
-    # 1. WiFi Status
-    WIFI_SSID=$(nmcli -t -f active,ssid dev wifi | grep '^yes' | cut -d: -f2)
+    # 1. WiFi Status (Check all wifi devices)
+    WIFI_INFO=$(nmcli -t -f active,ssid,device dev wifi | grep '^yes' | head -n 1)
+    WIFI_SSID=$(echo "$WIFI_INFO" | cut -d: -f2)
+    
     if [ -n "$WIFI_SSID" ]; then
         CLR_WIFI="$COLOR_ACTIVE"
-        WIFI_INFO="$WIFI_SSID"
         HAS_WIFI=1
     else
         CLR_WIFI="$COLOR_DIM"
-        WIFI_INFO="Disconnected"
+        WIFI_SSID="Disconnected"
         HAS_WIFI=0
     fi
 
     # 2. Ethernet Status
-    ETH_STATE=$(nmcli device status | grep 'ethernet' | awk '{print $3}')
-    if [ "$ETH_STATE" == "connected" ]; then
+    ETH_STATE=$(nmcli device status | grep 'ethernet' | awk '{print $3}' | grep 'connected' | wc -l)
+    if [ "$ETH_STATE" -gt 0 ]; then
         CLR_ETH="$COLOR_ACTIVE"
         ETH_INFO="Connected"
         HAS_ETH=1
@@ -46,8 +47,24 @@ while true; do
         HAS_ETH=0
     fi
 
-    # 3. Sound Notification Logic
-    if [ $HAS_WIFI -eq 1 ] || [ $HAS_ETH -eq 1 ]; then
+    # 3. Hotspot Status (Check for AP mode OR connection named "Hotspot")
+    # Check if machine IS a hotspot
+    IS_HOSTING=$(nmcli -t -f active,mode dev wifi | grep '^yes:ap' | wc -l)
+    # Check if CONNECTED TO a network named "Hotspot"
+    IS_CONNECTED_TO_HOTSPOT=$(nmcli -t -f NAME connection show --active | grep -i "Hotspot" | wc -l)
+
+    if [ "$IS_HOSTING" -gt 0 ] || [ "$IS_CONNECTED_TO_HOTSPOT" -gt 0 ]; then
+        CLR_HOTSPOT="$COLOR_ACTIVE"
+        HOTSPOT_INFO="Active"
+        HAS_HOTSPOT=1
+    else
+        CLR_HOTSPOT="$COLOR_DIM"
+        HOTSPOT_INFO="Off"
+        HAS_HOTSPOT=0
+    fi
+
+    # 4. Sound Notification Logic
+    if [ $HAS_WIFI -eq 1 ] || [ $HAS_ETH -eq 1 ] || [ $HAS_HOTSPOT -eq 1 ]; then
         CURR_NET_STATE="online"
     else
         CURR_NET_STATE="offline"
@@ -62,16 +79,6 @@ while true; do
     fi
     PREV_NET_STATE="$CURR_NET_STATE"
 
-    # 4. Hotspot Status
-    HOTSPOT_ACTIVE=$(nmcli -t -f active,mode dev wifi | grep '^yes:ap' | wc -l)
-    if [ "$HOTSPOT_ACTIVE" -gt 0 ]; then
-        CLR_HOTSPOT="$COLOR_ACTIVE"
-        HOTSPOT_INFO="Active"
-    else
-        CLR_HOTSPOT="$COLOR_DIM"
-        HOTSPOT_INFO="Off"
-    fi
-
     # 5. Bluetooth Status
     BT_POWERED=$(bluetoothctl show | grep "Powered: yes" | wc -l)
     BT_CONNECTED_NAME=$(bluetoothctl devices Connected | cut -d ' ' -f 3-)
@@ -82,7 +89,7 @@ while true; do
             BT_INFO="$BT_CONNECTED_NAME"
         else
             CLR_BT="$COLOR_ACTIVE"
-            BT_INFO="On (Idle)"
+            BT_INFO="On"
         fi
     else
         CLR_BT="$COLOR_DIM"
@@ -108,17 +115,17 @@ while true; do
     if [ "$ACTIVE_MODULE" == "connection" ]; then
         # Expanded View
         OUTPUT=""
-        [ -n "$WIFI_SSID" ] && OUTPUT="${W_ICON} ${WIFI_INFO}"
-        [ "$ETH_STATE" == "connected" ] && [ -n "$OUTPUT" ] && OUTPUT="${OUTPUT}  "
-        [ "$ETH_STATE" == "connected" ] && OUTPUT="${OUTPUT}${E_ICON} Wired"
-        [ "$HOTSPOT_ACTIVE" -gt 0 ] && [ -n "$OUTPUT" ] && OUTPUT="${OUTPUT}  "
-        [ "$HOTSPOT_ACTIVE" -gt 0 ] && OUTPUT="${OUTPUT}${H_ICON} Hotspot"
+        [ $HAS_WIFI -eq 1 ] && OUTPUT="${W_ICON} ${WIFI_SSID}"
+        [ $HAS_ETH -eq 1 ] && [ -n "$OUTPUT" ] && OUTPUT="${OUTPUT}  "
+        [ $HAS_ETH -eq 1 ] && OUTPUT="${OUTPUT}${E_ICON} Wired"
+        [ $HAS_HOTSPOT -eq 1 ] && [ -n "$OUTPUT" ] && OUTPUT="${OUTPUT}  "
+        [ $HAS_HOTSPOT -eq 1 ] && OUTPUT="${OUTPUT}${H_ICON} Hotspot"
         [ "$BT_POWERED" -gt 0 ] && [ -n "$OUTPUT" ] && OUTPUT="${OUTPUT}  "
         [ "$BT_POWERED" -gt 0 ] && OUTPUT="${OUTPUT}${B_ICON} ${BT_INFO}"
         [ -z "$OUTPUT" ] && OUTPUT="${ICON_STATUS} ${TEXT_STATUS}"
         echo "$OUTPUT"
     else
-        # Collapsed View (all icons)
+        # Collapsed View
         echo "${W_ICON} ${E_ICON} ${H_ICON} ${B_ICON}"
     fi
 
