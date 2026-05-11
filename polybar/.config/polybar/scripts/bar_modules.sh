@@ -3,7 +3,7 @@
 # Default modules definitions
 DEF_LEFT="jgmenu sep xworkspaces sep add-workspace sep scroll-window sep"
 DEF_CENTER="date"
-DEF_RIGHT="sep sys-switch sep xkeyboard sep pulseaudio mic sep battery sep powermenu"
+DEF_RIGHT="sep sys-switch sep xkeyboard sep pulseaudio mic sep battery sep wlan sep powermenu"
 
 NAME=$1
 

@@ -10,7 +10,20 @@ def read_file(path):
     except Exception:
         return ""
 
+STATE_FILE = "/tmp/battery_toggle_state"
+
+def toggle():
+    if not os.path.exists(STATE_FILE) or read_file(STATE_FILE) == "icon":
+        with open(STATE_FILE, 'w') as f: f.write("full")
+    else:
+        with open(STATE_FILE, 'w') as f: f.write("icon")
+
 def main():
+    # Handle toggle argument
+    if len(sys.argv) > 1 and sys.argv[1] == "--toggle":
+        toggle()
+        return
+
     base = "/sys/class/power_supply/BAT0/"
     if not os.path.exists(base):
         print("No Battery", flush=True)
@@ -100,8 +113,14 @@ def main():
         # Use a slightly larger font for charging icon (T4) vs discharging (T3)
         font_index = "T4" if status == "Charging" else "T3"
 
+        # Check toggle state
+        show_full = read_file(STATE_FILE) == "full"
+
         # Output formatted string for Polybar
-        print(f"%{{F{color}}}%{{{font_index}}}{icon}%{{T-}} {text}%{{F-}}", flush=True)
+        if show_full:
+            print(f"%{{F{color}}}%{{{font_index}}}{icon}%{{T-}} {text}%{{F-}}", flush=True)
+        else:
+            print(f"%{{F{color}}}%{{{font_index}}}{icon}%{{T-}}%{{F-}}", flush=True)
 
         # Determine blink speed
         sleep_time = 0.5
