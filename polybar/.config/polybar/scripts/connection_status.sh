@@ -14,7 +14,7 @@ COLOR_RESET="%{F-}"
 ICON_WIFI=""
 ICON_ETH="󰈀"
 ICON_BT=""
-ICON_HOTSPOT="󰖇"
+ICON_HOTSPOT="󱜠"
 
 while true; do
     # 1. WiFi Status
