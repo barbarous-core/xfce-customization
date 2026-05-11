@@ -1,70 +1,70 @@
-# Polybar Interaction & Shortcuts Guide
+# Polybar & System Shortcuts Guide
 
-This document lists all the interactive elements and mouse shortcuts built into the custom Polybar configuration.
-
-## 🖱️ Global Module Interactions
-All primary modules (System, Media, Connection, Battery) follow the **Exclusive Detail View** logic.
-
-| Action | Result |
-| :--- | :--- |
-| **Middle Click** | Expand the clicked module and collapse all other modules. |
-| **Middle Click (Again)** | Collapse the module back to icon-only mode. |
+This document is your reference for interacting with the Polybar UI and using system-wide keyboard hotkeys.
 
 ---
 
-## 📊 Module-Specific Shortcuts
+## 🖱️ Mouse Interactions (Polybar)
+These actions are performed directly on the Polybar modules.
 
-### 1. System Monitoring (CPU, Temp, RAM, Disk)
-| Action | Result |
-| :--- | :--- |
-| **Middle Click** | Toggle between icons and full dashboard (%, °C). |
+### 🌓 Dashboard Controls (Exclusive Toggle)
+All main modules (System, Media, Connection, Battery) support the **Exclusive Detail View**.
+*   **Middle Click:** Expand a module to see details (e.g., CPU %, SSID name, etc.) and collapse all others.
+*   **Middle Click (Again):** Collapse the module back to icons.
 
-### 2. Media & Audio
-| Action | Result |
-| :--- | :--- |
-| **Middle Click** | Toggle between icons and detailed info (Volume %, Mic Status). |
-| **Left Click (Vol Icon)** | Toggle Speaker Mute/Unmute. |
-| **Left Click (Mic Icon)** | Toggle Microphone Mute/Unmute. |
-| **Scroll Up/Down** | Increase/Decrease Volume (5% steps). |
-| **Right Click** | Open PulseAudio Volume Control (`pavucontrol`). |
+### 🔊 Audio & Media
+*   **Scroll Up/Down:** Increase/Decrease Volume (5% steps).
+*   **Left Click (Volume Icon):** Toggle Speaker Mute/Unmute.
+*   **Left Click (Mic Icon):** Toggle Microphone Mute/Unmute.
+*   **Right Click:** Open full Audio Mixer (`pavucontrol`).
 
-### 3. Connection & Network (WiFi, Eth, Hotspot, BT)
-| Action | Result |
-| :--- | :--- |
-| **Middle Click** | Toggle between icons and connection details (SSID, BT Device Name). |
+### 🌐 Connectivity
+*   **Middle Click:** Show WiFi SSID, Ethernet status, and Bluetooth device names.
 
-### 4. Battery
-| Action | Result |
-| :--- | :--- |
-| **Middle Click** | Toggle between icon and percentage/time remaining. |
-| **Left Click** | Open the Power Management/Log-out Dashboard. |
+### 🔋 Power & Battery
+*   **Left Click:** Open the logout/shutdown menu.
+*   **Middle Click:** Show battery percentage and time remaining.
 
----
-
-## 🚀 Navigation & Workspaces
-
-### Workspaces
-| Action | Result |
-| :--- | :--- |
-| **Left Click** | Switch to that workspace. |
-| **Middle Click** | Move the current window to that workspace. |
-
-### App Launcher & Windows
-| Action | Result |
-| :--- | :--- |
-| **Left Click (Menu Icon)** | Launch Jgmenu (Application Launcher). |
-| **Left Click (Window Title)** | Show full list of open windows. |
-| **Left Click (+ Icon)** | Create a new workspace. |
-
-### Power & Session
-| Action | Result |
-| :--- | :--- |
-| **Left Click (Power Icon)** | Open XFCE Session Logout menu. |
+### 🚀 Navigation
+*   **Left Click (Logo):** Open Application Menu (Jgmenu).
+*   **Left Click (Window Title):** Show list of all open windows.
+*   **Left Click (+ Icon):** Create a new workspace.
 
 ---
 
-## ⌨️ Keyboard Layout
-| Action | Result |
+## ⌨️ Keyboard Shortcuts (Hotkeys)
+These shortcuts use the **Super** (Windows) key for fast system navigation.
+
+### 🛠️ System Tools
+| Shortcut | Action |
 | :--- | :--- |
-| **Right Click** | Open Keyboard Settings. |
-| **Super + Space** | (System Shortcut) Toggle between Keyboard layouts. |
+| **Super + Return** | Open Terminal |
+| **Super + Shift + B** | Open Web Browser |
+| **Super + E** | Open File Manager (Thunar) |
+| **Super + Escape** | Open App Menu (Jgmenu) |
+| **Super + Tab** | Switch between open windows |
+| **Super + Space** | Toggle Keyboard Layout (US/Other) |
+
+### 🖥️ Workspace Management
+| Shortcut | Action |
+| :--- | :--- |
+| **Super + [1-0]** | Switch to Workspace 1 through 10 |
+| **Super + Left/Right** | Switch to Previous/Next workspace |
+| **Super + Equal (=)** | Create a new workspace |
+| **Super + Minus (-)** | Delete current workspace |
+
+### 🔧 Polybar Controls
+| Shortcut | Action |
+| :--- | :--- |
+| **Super + grave ( ` )** | **Reload Polybar** (Apply config changes) |
+| **Super + H** | Toggle Polybar visibility (Hide/Show) |
+| **Super + K** | Kill Polybar |
+| **Super + Shift + Q** | Force close Polybar |
+
+### 📊 Dashboard Hotkeys (Toggle Info)
+| Shortcut | Action |
+| :--- | :--- |
+| **Super + Ctrl + 1** | Toggle **System Monitoring** Details |
+| **Super + Ctrl + 2** | Toggle **Media** Details |
+| **Super + Ctrl + 3** | Toggle **Battery** Details |
+| **Super + Ctrl + 4** | Toggle **Connection** Details |
