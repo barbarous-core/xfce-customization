@@ -5,9 +5,12 @@ BAR_START=20
 WHISKER_WIDTH=70
 WS_WIDTH=32
 Y_OFFSET=36
+COLORS_FILE="/home/mohamed/Linux_Data/Git_Projects/xfce-customization/polybar/.config/polybar/colors.ini"
+
+# Get colors from colors.ini
+PRIMARY=$(grep "primary =" "$COLORS_FILE" | cut -d' ' -f3)
 
 # Get workspaces from xfconf (XFCE)
-# Get total workspace count
 WS_COUNT=$(xfconf-query -c xfwm4 -p /general/workspace_count)
 
 # Get current workspace index using xprop (0-based)
@@ -30,8 +33,8 @@ for i in $(seq 1 $WS_COUNT); do
     ACTION_END="%{A}%{A}"
     
     if [ "$INDEX" -eq "$CURRENT_WS" ]; then
-        # Active workspace styling: Blue foreground (no underline)
-        output+="${ACTION_START}%{F#61afef} $i %{F-}${ACTION_END}"
+        # Active workspace styling: Dynamic Primary color
+        output+="${ACTION_START}%{F$PRIMARY} $i %{F-}${ACTION_END}"
     else
         # Inactive workspace styling
         output+="${ACTION_START} $i ${ACTION_END}"

@@ -1,17 +1,18 @@
 #!/bin/bash
 
 # Configuration
-MAX_WORKSPACES=18
-PRIMARY_COLOR="#F0C674"
-DISABLED_COLOR="#707880"
+COLORS_FILE="/home/mohamed/Linux_Data/Git_Projects/xfce-customization/polybar/.config/polybar/colors.ini"
 
-# Get current count
-CURRENT_COUNT=$(xfconf-query -c xfwm4 -p /general/workspace_count)
+# Get colors from colors.ini
+PRIMARY_COLOR=$(grep "primary =" "$COLORS_FILE" | cut -d' ' -f3)
+DISABLED_COLOR=$(grep "disabled =" "$COLORS_FILE" | cut -d' ' -f3)
 
-if [ "$CURRENT_COUNT" -ge "$MAX_WORKSPACES" ]; then
-    # Show Lock icon in grey if full
-    echo "%{F$DISABLED_COLOR}  %{F-}"
+# Get current workspace count
+WS_COUNT=$(xfconf-query -c xfwm4 -p /general/workspace_count)
+
+# Only show "Add" if we have fewer than 10 workspaces
+if [ "$WS_COUNT" -lt 10 ]; then
+    echo "%{F$PRIMARY_COLOR}󱓇%{F-}"
 else
-    # Show Plus icon in primary color if there is space
-    echo "%{F$PRIMARY_COLOR}  %{F-}"
+    echo "%{F$DISABLED_COLOR}󱓇%{F-}"
 fi

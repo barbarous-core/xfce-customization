@@ -41,6 +41,20 @@ cp "$THEME_DIR/$NEW_THEME/colors.ini" "$POLYBAR_COLORS"
 # Sync colors to terminal and other apps using Pywal
 /home/mohamed/.local/bin/wal -n -q -f "$THEME_DIR/$NEW_THEME/colors.json"
 
+# Update Jgmenu colors
+BG=$(grep "background =" "$THEME_DIR/$NEW_THEME/colors.ini" | cut -d' ' -f3)
+FG=$(grep "foreground =" "$THEME_DIR/$NEW_THEME/colors.ini" | cut -d' ' -f3)
+PRI=$(grep "primary =" "$THEME_DIR/$NEW_THEME/colors.ini" | cut -d' ' -f3)
+ALT=$(grep "background-alt =" "$THEME_DIR/$NEW_THEME/colors.ini" | cut -d' ' -f3)
+
+sed -i "s/color_menu_bg = .*/color_menu_bg = $BG 100/" ~/.config/jgmenu/jgmenurc
+sed -i "s/color_menu_bg_to = .*/color_menu_bg_to = $BG 100/" ~/.config/jgmenu/jgmenurc
+sed -i "s/color_menu_border = .*/color_menu_border = $PRI 100/" ~/.config/jgmenu/jgmenurc
+sed -i "s/color_norm_fg = .*/color_norm_fg = $FG 100/" ~/.config/jgmenu/jgmenurc
+sed -i "s/color_sel_fg = .*/color_sel_fg = $PRI 100/" ~/.config/jgmenu/jgmenurc
+sed -i "s/color_sel_bg = .*/color_sel_bg = $ALT 100/" ~/.config/jgmenu/jgmenurc
+sed -i "s/color_sel_border = .*/color_sel_border = $ALT 100/" ~/.config/jgmenu/jgmenurc
+
 # 6. Restart Polybar
 polybar-msg cmd restart >/dev/null 2>&1
 

@@ -1,83 +1,46 @@
 #!/bin/bash
 
-INDEX=$1
+# Configuration
+WS_INDEX=$1
 X_POS=$2
 Y_OFFSET=$3
+COLORS_FILE="/home/mohamed/Linux_Data/Git_Projects/xfce-customization/polybar/.config/polybar/colors.ini"
 
-# Get the list of windows on this workspace
-WINDOWS=$(wmctrl -l | awk -v ws=$INDEX '$2 == ws {print $0}' | cut -d' ' -f5-)
+# Get colors from colors.ini
+BG=$(grep "background =" "$COLORS_FILE" | cut -d' ' -f3)
+FG=$(grep "foreground =" "$COLORS_FILE" | cut -d' ' -f3)
+PRIMARY=$(grep "primary =" "$COLORS_FILE" | cut -d' ' -f3)
+ALERT=$(grep "alert =" "$COLORS_FILE" | cut -d' ' -f3)
 
-# Define options with Pango markup
-DELETE_OPTION="<span color='#ff5555'><b>[DELETE THIS WORKSPACE]</b></span>"
+# Options
 RENAME_OPTION="<span color='#98c379'><b>[RENAME THIS WORKSPACE]</b></span>"
+DELETE_OPTION="<span color='$ALERT'><b>[DELETE THIS WORKSPACE]</b></span>"
 
-# Show Rofi menu
-CHOICE=$(echo -e "$RENAME_OPTION\n$DELETE_OPTION\n$WINDOWS" | rofi -dmenu -markup-rows -p "WS $((INDEX+1))" -location 1 -xoffset "$X_POS" -yoffset "$Y_OFFSET")
+# Rofi Theme (Dynamic)
+THEME="window { width: 33%; border: 2px; border-color: $PRIMARY; border-radius: 20px; background-color: $BG; } 
+       listview { lines: 10; }
+       element { padding: 15px; border-radius: 12px; }
+       element-text { font: \"JetBrainsMono Nerd Font 18\"; horizontal-align: 0.5; text-color: $FG; }
+       element selected { background-color: $PRIMARY; }
+       element-text selected { text-color: $BG; }"
 
-if [ "$CHOICE" = "$RENAME_OPTION" ]; then
-    # Ask for the new name
-    NEW_NAME=$(rofi -dmenu -p "New Name for WS $((INDEX+1)):" -location 1 -xoffset "$X_POS" -yoffset "$Y_OFFSET" -pid /tmp/rofi_rename.pid)
-    
-    if [ -n "$NEW_NAME" ]; then
-        # Get existing names and filter out technical jargon
-        mapfile -t NAMES < <(xfconf-query -c xfwm4 -p /general/workspace_names -v 2>/dev/null | grep -v "Value is an array" | sed 's/^[ \t]*//' | grep -v "^$")
-        
-        # Update the name at the specific index
-        NAMES[$INDEX]="$NEW_NAME"
-        
-        # Reset the property first to ensure a clean array
-        xfconf-query -c xfwm4 -p /general/workspace_names -r
-        
-        # Build the xfconf-query command to update the whole array
-        CMD="xfconf-query -c xfwm4 -p /general/workspace_names -n"
-        for name in "${NAMES[@]}"; do
-            CMD="$CMD -t string -s \"$name\""
-        done
-        eval "$CMD"
-    fi
+# Get open windows on this workspace
+WINDOWS=$(wmctrl -l | awk -v ws="$WS_INDEX" '$2 == ws { $1=$2=$3=""; print $0 }' | sed 's/^ *//')
 
-elif [ "$CHOICE" = "$DELETE_OPTION" ]; then
-    # Define Rofi Theme (Matches OSD notification size and position)
-    THEME="window { width: 33%; border: 0px; border-radius: 20px; background-color: #282a2e; } 
-           listview { lines: 2; }
-           element { padding: 20px; background-color: transparent; }
-           element-text { font: \"JetBrainsMono Nerd Font 18\"; horizontal-align: 0.5; text-color: #c5c8c6; }
-           element selected { background-color: #61afef; }
-           element-text selected { text-color: #282a2e; }
-           inputbar { enabled: false; }"
-    
-    # Get current names to find the name of the workspace at INDEX
-    mapfile -t NAMES < <(xfconf-query -c xfwm4 -p /general/workspace_names -v 2>/dev/null | grep -v "Value is an array" | sed 's/^[ \t]*//' | grep -v "^$")
-    CURRENT_NAME="${NAMES[$INDEX]}"
-    WS_NUM=$((INDEX + 1))
-    
-    YES_OPT="✅ Yes, Delete Workspace $WS_NUM ($CURRENT_NAME)"
-    NO_OPT="❌ No, Cancel"
-    OPTIONS="${YES_OPT}\n${NO_OPT}"
-    
-    # Launch Rofi Confirmation
-    CONFIRM=$(echo -e "$OPTIONS" | rofi -dmenu -p "Confirm Deletion" -theme-str "$THEME" -location 0 -monitor -1 -pid /tmp/rofi_delete.pid)
-    
-    if [ "$CONFIRM" == "$YES_OPT" ]; then
-        WS_COUNT=$(xfconf-query -c xfwm4 -p /general/workspace_count)
-        
-        # 1. Get existing names
-        mapfile -t NAMES < <(xfconf-query -c xfwm4 -p /general/workspace_names -v 2>/dev/null | grep -v "Value is an array" | sed 's/^[ \t]*//' | grep -v "^$")
-        
-        # 2. Reduce the count
-        NEW_COUNT=$((WS_COUNT - 1))
-        xfconf-query -c xfwm4 -p /general/workspace_count -s "$NEW_COUNT"
+# Build the list
+LIST="$RENAME_OPTION\n$DELETE_OPTION"
+if [ -n "$WINDOWS" ]; then
+    LIST="$LIST\n$WINDOWS"
+fi
 
-        # 3. Update the names array (truncate)
-        xfconf-query -c xfwm4 -p /general/workspace_names -r
-        CMD="xfconf-query -c xfwm4 -p /general/workspace_names -n"
-        for (( i=0; i<$NEW_COUNT; i++ )); do
-            CMD="$CMD -t string -s \"${NAMES[$i]}\""
-        done
-        eval "$CMD"
-    fi
+# Show Rofi
+SELECTED=$(echo -e "$LIST" | rofi -dmenu -p "Workspace $WS_INDEX" -theme-str "$THEME" -location 1 -xoffset "$X_POS" -yoffset "$Y_OFFSET")
 
-elif [ -n "$CHOICE" ]; then
-    # Switch to the selected window
-    wmctrl -a "$CHOICE"
+if [ "$SELECTED" == "$RENAME_OPTION" ]; then
+    bash /home/mohamed/Linux_Data/Git_Projects/xfce-customization/polybar/.config/polybar/scripts/rename_workspace.sh "$WS_INDEX"
+elif [ "$SELECTED" == "$DELETE_OPTION" ]; then
+    bash /home/mohamed/Linux_Data/Git_Projects/xfce-customization/polybar/.config/polybar/scripts/delete_workspace.sh "$WS_INDEX"
+elif [ -n "$SELECTED" ]; then
+    # Focus the selected window
+    wmctrl -a "$SELECTED"
 fi
