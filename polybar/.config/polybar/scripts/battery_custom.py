@@ -36,12 +36,51 @@ def main():
         cap_str = read_file(base + "capacity")
         capacity = int(cap_str) if cap_str else 0
 
-        # Choose vertical icons (reverting to your preferred style)
+        # Time Calculation
+        charge_now = 0.0
+        current_now = 0.0
+        charge_full = 0.0
+        
+        # Try charge variables (Ah)
+        cn = read_file(base + "charge_now")
+        curr = read_file(base + "current_now")
+        cf = read_file(base + "charge_full")
+        
+        if cn and curr and cf:
+            charge_now = float(cn)
+            current_now = float(curr)
+            charge_full = float(cf)
+        else:
+            # Try energy variables (Wh)
+            en = read_file(base + "energy_now")
+            pwr = read_file(base + "power_now")
+            ef = read_file(base + "energy_full")
+            if en and pwr and ef:
+                charge_now = float(en)
+                current_now = float(pwr)
+                charge_full = float(ef)
+
+        formatted_time = ""
+        if current_now > 0:
+            if status == "Discharging":
+                hours = charge_now / current_now
+            elif status == "Charging":
+                hours = (charge_full - charge_now) / current_now
+            else:
+                hours = 0
+                
+            if hours > 0:
+                h = int(hours)
+                m = int(round((hours - h) * 60))
+                if m == 60: h += 1; m = 0
+                formatted_time = f"({h:02d}:{m:02d})"
+
+        # Choose icons
         if status == "Charging":
             if capacity < 30: icon = "󱊤"
             elif capacity <= 70: icon = "󱊥"
             else: icon = "󱊦"
-        else: # Discharging or Full
+        else:
             if capacity < 30: icon = "󱊡"
             elif capacity <= 65: icon = "󱊢"
             else: icon = "󱊣"
@@ -65,16 +104,16 @@ def main():
         active_module = read_file(GLOBAL_STATE_FILE)
         show_full = active_module == "battery"
 
-        # Font index T3 (size 14) to keep vertical icons small
+        # Output
         font_index = "T3"
-
         if show_full:
-            print(f"%{{F{color}}}%{{{font_index}}}{icon}%{{T-}} {capacity}%%{{F-}}", flush=True)
+            text = f"{capacity}% {formatted_time}"
+            print(f"%{{F{color}}}%{{{font_index}}}{icon}%{{T-}} {text}%{{F-}}", flush=True)
         else:
             print(f"%{{F{color}}}%{{{font_index}}}{icon}%{{T-}}%{{F-}}", flush=True)
 
         blink_state = not blink_state
-        time.sleep(0.5 if status == "Charging" or capacity < 30 else 2.0)
+        time.sleep(1.0 if status == "Charging" or capacity < 30 else 2.0)
 
 if __name__ == "__main__":
     main()
