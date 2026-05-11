@@ -12,7 +12,7 @@ WS_COUNT=$(xfconf-query -c xfwm4 -p /general/workspace_count)
 
 # Only show "Add" if we have fewer than 10 workspaces
 if [ "$WS_COUNT" -lt 10 ]; then
-    echo "%{F$PRIMARY_COLOR}󱓇%{F-}"
+    echo "%{F$PRIMARY_COLOR}󰐕%{F-}"
 else
-    echo "%{F$DISABLED_COLOR}󱓇%{F-}"
+    echo "%{F$DISABLED_COLOR}󰐕%{F-}"
 fi
