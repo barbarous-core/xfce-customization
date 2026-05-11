@@ -25,6 +25,10 @@ All main modules (System, Media, Connection, Battery) support the **Exclusive De
 *   **Left Click:** Open the logout/shutdown menu.
 *   **Middle Click:** Show battery percentage and time remaining.
 
+### 🎨 Themes
+*   **Left Click:** Open the Theme Selector (Rofi menu).
+*   **Middle Click:** Show the name of the active theme.
+
 ### 🚀 Navigation
 *   **Left Click (Logo):** Open Application Menu (Jgmenu).
 *   **Left Click (Window Title):** Show list of all open windows.
@@ -68,3 +72,4 @@ These shortcuts use the **Super** (Windows) key for fast system navigation.
 | **Super + Ctrl + 2** | Toggle **Media** Details |
 | **Super + Ctrl + 3** | Toggle **Battery** Details |
 | **Super + Ctrl + 4** | Toggle **Connection** Details |
+| **Super + Ctrl + 5** | Toggle **Themes** Details |
