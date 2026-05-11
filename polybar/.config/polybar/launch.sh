@@ -18,9 +18,9 @@ update_shortcuts() {
     # Update XML (Source)
     local XML_FILE="/home/mohamed/Linux_Data/Git_Projects/xfce-customization/xfce4/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml"
     if [ -f "$XML_FILE" ]; then
-        sed -i "s|<property name=\"&lt;Super&gt;Return\" type=\"string\" value=\".*\"/>|<property name=\"&lt;Super&gt;Return\" type=\"string\" value=\"$term\"/>|" "$XML_FILE"
-        sed -i "s|<property name=\"&lt;Super&gt;&lt;Shift&gt;b\" type=\"string\" value=\".*\"/>|<property name=\"&lt;Super&gt;&lt;Shift&gt;b\" type=\"string\" value=\"$browser\"/>|" "$XML_FILE"
-        sed -i "s|<property name=\"&lt;Super&gt;e\" type=\"string\" value=\".*\"/>|<property name=\"&lt;Super&gt;e\" type=\"string\" value=\"$file\"/>|" "$XML_FILE"
+        sed -i "s|<property name=\"&lt;Super&gt;Return\" type=\"string\" value=\"[^\"]*\"/>|<property name=\"&lt;Super&gt;Return\" type=\"string\" value=\"$term\"/>|" "$XML_FILE"
+        sed -i "s|<property name=\"&lt;Super&gt;&lt;Shift&gt;b\" type=\"string\" value=\"[^\"]*\"/>|<property name=\"&lt;Super&gt;&lt;Shift&gt;b\" type=\"string\" value=\"$browser\"/>|" "$XML_FILE"
+        sed -i "s|<property name=\"&lt;Super&gt;e\" type=\"string\" value=\"[^\"]*\"/>|<property name=\"&lt;Super&gt;e\" type=\"string\" value=\"$file\"/>|" "$XML_FILE"
     fi
     
     # Update Live Session
