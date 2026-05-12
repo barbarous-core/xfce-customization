@@ -55,6 +55,10 @@ sudo dnf install yad
 
 ## install image editor 
 sudo dnf install kolourpaint mtpaint pinta
+
+## install mouse detector
+sudo dnf install xdotool
+
 ---
 ## Setting initial stow
 

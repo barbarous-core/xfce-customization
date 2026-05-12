@@ -4,7 +4,7 @@
 # hide_on_startup = 0
 # csv_cmd = apps
 # tint2_look = 0
-# position_mode = fixed
+position_mode = pointer
 # edge_snap_x = 30
 # terminal_exec = x-terminal-emulator
 # terminal_args = -e
