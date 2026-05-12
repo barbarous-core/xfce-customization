@@ -1,70 +1,71 @@
 #!/bin/bash
 
-# 1. Detect mouse location and the window under the cursor
+# jgmenu_anchored.sh — instant jgmenu positioning.
+# All heavy lifting (xrandr, geometry) is done ONCE by launch.sh and cached
+# in .last_launch. This script only calls xdotool getmouselocation (~5ms).
+
+SCRIPT_DIR="$(dirname "$(realpath "$0")")"
+LAST_LAUNCH="$SCRIPT_DIR/../.last_launch"
+CONFIG="$HOME/.config/jgmenu/jgmenurc"
+
+# ── 1. Load cached config ────────────────────────────────────────────────────
+if [[ ! -f "$LAST_LAUNCH" ]]; then
+    notify-send "jgmenu" "No .last_launch found — run launch.sh first."
+    pkill -x jgmenu; jgmenu; exit 0
+fi
+source "$LAST_LAUNCH"
+# Available after source:
+#   JG_H_MON  JG_H_OX  JG_H_OY  JG_H_W  JG_H_H  JG_H_VALIGN  JG_H_MARGIN_Y  JG_H_MARGIN_X
+#   JG_E_MON  JG_E_OX  JG_E_OY  JG_E_W  JG_E_H  JG_E_VALIGN  JG_E_MARGIN_Y  JG_E_MARGIN_X
+
+# ── 2. Get mouse position (only external call needed) ────────────────────────
 eval "$(xdotool getmouselocation --shell)"
 M_X=$X
 M_Y=$Y
 
-# 2. Get the monitor name and its local coordinates
-# We need to know where the monitor starts so we can calculate relative positions
-MONITOR_INFO=$(xrandr --query | grep " connected" | while read -r line; do
-    NAME=$(echo "$line" | cut -d' ' -f1)
-    GEOM=$(echo "$line" | grep -oE '[0-9]+x[0-9]+\+[0-9]+\+[0-9]+')
-    W=$(echo "$GEOM" | cut -d'x' -f1)
-    H=$(echo "$GEOM" | cut -d'x' -f2 | cut -d'+' -f1)
-    OFF_X=$(echo "$GEOM" | cut -d'+' -f2)
-    OFF_Y=$(echo "$GEOM" | cut -d'+' -f3)
-    
-    if [ "$M_X" -ge "$OFF_X" ] && [ "$M_X" -le "$((OFF_X + W))" ] && \
-       [ "$M_Y" -ge "$OFF_Y" ] && [ "$M_Y" -le "$((OFF_Y + H))" ]; then
-        echo "$NAME|$OFF_X|$OFF_Y|$H"
-        break
-    fi
-done)
+# ── 3. Determine active monitor using cached bounds (pure bash arithmetic) ───
+MON_NAME=""
+VALIGN=""
+MARGIN_Y=40
+MARGIN_X=5
 
-IFS='|' read -r MON_NAME MON_OFF_X MON_OFF_Y MON_HEIGHT <<< "$MONITOR_INFO"
+# Check HDMI-1
+if [[ -n "$JG_H_MON" ]] && \
+   (( M_X >= JG_H_OX && M_X <= JG_H_OX + JG_H_W &&
+      M_Y >= JG_H_OY && M_Y <= JG_H_OY + JG_H_H )); then
+    MON_NAME="$JG_H_MON"
+    VALIGN="$JG_H_VALIGN"
+    MARGIN_Y="$JG_H_MARGIN_Y"
+    MARGIN_X="$JG_H_MARGIN_X"
 
-# 3. Find Polybar geometry
-if ! xwininfo -id "$WINDOW" 2>/dev/null | grep -q -i "polybar"; then
-    BAR_WIN=$(xdotool search --class "polybar")
-    for WIN in $BAR_WIN; do
-        eval "$(xdotool getwindowgeometry --shell "$WIN")"
-        if [ "$M_X" -ge "$X" ] && [ "$M_X" -le "$((X + WIDTH))" ] && \
-           [ "$M_Y" -ge "$Y" ] && [ "$M_Y" -le "$((Y + HEIGHT))" ]; then
-            WINDOW=$WIN
-            break
-        fi
-    done
-fi
+# Check eDP-1
+elif [[ -n "$JG_E_MON" ]] && \
+     (( M_X >= JG_E_OX && M_X <= JG_E_OX + JG_E_W &&
+        M_Y >= JG_E_OY && M_Y <= JG_E_OY + JG_E_H )); then
+    MON_NAME="$JG_E_MON"
+    VALIGN="$JG_E_VALIGN"
+    MARGIN_Y="$JG_E_MARGIN_Y"
+    MARGIN_X="$JG_E_MARGIN_X"
 
-eval "$(xdotool getwindowgeometry --shell "$WINDOW")"
-BAR_Y=$Y
-BAR_HEIGHT=$HEIGHT
-
-if [ -z "$BAR_HEIGHT" ]; then BAR_HEIGHT=32; BAR_Y=$MON_OFF_Y; fi
-
-# 4. Calculate relative coordinates
-# Since we are setting 'monitor' in jgmenu, X and Y must be RELATIVE to that monitor.
-GAP=8
-NEW_X=5 # 5px from the left edge of the active monitor
-NEW_Y=$((BAR_HEIGHT + GAP))
-
-# Determine if top or bottom relative to monitor
-MON_LOCAL_Y=$((BAR_Y - MON_OFF_Y))
-
-if [ "$MON_LOCAL_Y" -lt 100 ]; then
-    ALIGN_V="top"
+# Fallback: whichever monitor is defined
 else
-    ALIGN_V="bottom"
+    if [[ -n "$JG_H_MON" ]]; then
+        MON_NAME="$JG_H_MON"; VALIGN="$JG_H_VALIGN"
+        MARGIN_Y="$JG_H_MARGIN_Y"; MARGIN_X="$JG_H_MARGIN_X"
+    elif [[ -n "$JG_E_MON" ]]; then
+        MON_NAME="$JG_E_MON"; VALIGN="$JG_E_VALIGN"
+        MARGIN_Y="$JG_E_MARGIN_Y"; MARGIN_X="$JG_E_MARGIN_X"
+    fi
 fi
 
-# 5. Update jgmenurc
-CONFIG="$HOME/.config/jgmenu/jgmenurc"
-sed -i --follow-symlinks "s/^menu_margin_x = .*/menu_margin_x = $NEW_X/" "$CONFIG"
-sed -i --follow-symlinks "s/^menu_margin_y = .*/menu_margin_y = $NEW_Y/" "$CONFIG"
-sed -i --follow-symlinks "s/^menu_valign = .*/menu_valign = $ALIGN_V/" "$CONFIG"
-sed -i --follow-symlinks "s/^#\?\s\?monitor = .*/monitor = $MON_NAME/" "$CONFIG"
+# ── 4. Patch jgmenurc (single sed call) ─────────────────────────────────────
+sed -i --follow-symlinks \
+    -e "s/^menu_margin_x = .*/menu_margin_x = $MARGIN_X/" \
+    -e "s/^menu_margin_y = .*/menu_margin_y = $MARGIN_Y/" \
+    -e "s/^menu_valign = .*/menu_valign = $VALIGN/" \
+    -e "s/^#\?\s\?monitor = .*/monitor = $MON_NAME/" \
+    "$CONFIG"
 
-# 6. Show the menu
+# ── 5. Launch jgmenu ─────────────────────────────────────────────────────────
 pkill -x jgmenu
 jgmenu
