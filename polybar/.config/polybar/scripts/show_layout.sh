@@ -51,27 +51,46 @@ H_SY=$(echo "($H_Y - $MIN_Y) * $SCALE + 120" | bc)
 H_SW=$(echo "$H_W * $SCALE" | bc)
 H_SH=$(echo "$H_H * $SCALE" | bc)
 
-# Create the SVG using the same font as Polybar (JetBrainsMono Nerd Font)
+# CONFIG DIR
+CONFIG_DIR="/home/mohamed/Linux_Data/Git_Projects/xfce-customization/polybar/.config/polybar"
+COLORS_CONF="$CONFIG_DIR/colors.ini"
+
+# Extract colors from colors.ini
+BG=$(grep "^background =" "$COLORS_CONF" | cut -d' ' -f3)
+FG=$(grep "^foreground =" "$COLORS_CONF" | cut -d' ' -f3)
+ACCENT=$(grep "^primary =" "$COLORS_CONF" | cut -d' ' -f3)
+
+[ -z "$BG" ] && BG="#1c1c1c"
+[ -z "$FG" ] && FG="#ecf0f1"
+[ -z "$ACCENT" ] && ACCENT="#3498db"
+
+# Extract radius from config.ini
+RADIUS=$(grep "^radius =" "$CONFIG_DIR/config.ini" | cut -d' ' -f3)
+[ -z "$RADIUS" ] && RADIUS="12"
+
+# Create the SVG using dynamic colors
 cat <<EOF > "$SVG_FILE"
 <svg width="500" height="450" viewBox="0 0 500 450" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#3498db;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#2980b9;stop-opacity:1" />
+      <stop offset="0%" style="stop-color:$ACCENT;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:$(echo $ACCENT | sed 's/#/#aa/');stop-opacity:1" />
     </linearGradient>
   </defs>
   
+  <rect width="100%" height="100%" fill="$BG" rx="0" />
+  
   <!-- Title Text at the top using Polybar Font style -->
-  <text x="250" y="45" font-family="JetBrainsMono Nerd Font" font-weight="bold" font-size="18" fill="#3498db" text-anchor="middle">Monitor Arrangement Detected</text>
-  <text x="250" y="75" font-family="JetBrainsMono Nerd Font" font-size="12" fill="#ecf0f1" text-anchor="middle">Adjust your display settings or proceed with the current layout.</text>
+  <text x="250" y="45" font-family="JetBrainsMono Nerd Font" font-weight="bold" font-size="18" fill="$ACCENT" text-anchor="middle">Monitor Arrangement Detected</text>
+  <text x="250" y="75" font-family="JetBrainsMono Nerd Font" font-size="12" fill="$FG" text-anchor="middle">Adjust your display settings or proceed with the current layout.</text>
 
   <!-- Monitor HDMI-1 -->
-  <rect x="$H_SX" y="$H_SY" width="$H_SW" height="$H_SH" rx="12" fill="#1c1c1c" stroke="url(#grad1)" stroke-width="4"/>
-  <text x="$(echo "$H_SX + $H_SW/2" | bc)" y="$(echo "$H_SY + $H_SH/2" | bc)" font-family="JetBrainsMono Nerd Font" font-weight="bold" font-size="11" fill="#ecf0f1" text-anchor="middle">HP Inc. 23"</text>
+  <rect x="$H_SX" y="$H_SY" width="$H_SW" height="$H_SH" rx="12" fill="$BG" stroke="url(#grad1)" stroke-width="4"/>
+  <text x="$(echo "$H_SX + $H_SW/2" | bc)" y="$(echo "$H_SY + $H_SH/2" | bc)" font-family="JetBrainsMono Nerd Font" font-weight="bold" font-size="11" fill="$FG" text-anchor="middle">HP Inc. 23"</text>
 
   <!-- Monitor eDP-1 -->
-  <rect x="$L_SX" y="$L_SY" width="$L_SW" height="$L_SH" rx="12" fill="#1c1c1c" stroke="url(#grad1)" stroke-width="4"/>
-  <text x="$(echo "$L_SX + $L_SW/2" | bc)" y="$(echo "$L_SY + $L_SH/2" | bc)" font-family="JetBrainsMono Nerd Font" font-weight="bold" font-size="11" fill="#ecf0f1" text-anchor="middle">Laptop</text>
+  <rect x="$L_SX" y="$L_SY" width="$L_SW" height="$L_SH" rx="12" fill="$BG" stroke="url(#grad1)" stroke-width="4"/>
+  <text x="$(echo "$L_SX + $L_SW/2" | bc)" y="$(echo "$L_SY + $L_SH/2" | bc)" font-family="JetBrainsMono Nerd Font" font-weight="bold" font-size="11" fill="$FG" text-anchor="middle">Laptop</text>
 </svg>
 EOF
 
@@ -81,8 +100,37 @@ SCREEN_WIDTH=$(xwininfo -root | grep "Width:" | awk '{print $2}')
 X_POS=$(( (SCREEN_WIDTH / 2) - 250 ))
 Y_POS=50
 
+CSS="
+window, #yad-dialog-window {
+    background-color: $BG;
+    color: $FG;
+    font-family: 'JetBrainsMono Nerd Font';
+    border: none;
+    border-radius: 0px;
+}
+button {
+    background: transparent;
+    color: $ACCENT;
+    border: none;
+    box-shadow: none;
+    text-shadow: none;
+    font-size: 11pt;
+    padding: 10px;
+    margin: 5px;
+    outline: none;
+}
+button:hover {
+    background: transparent;
+    color: $FG;
+}
+"
+
+
+
+
 # Show YAD dialog with Polybar's font (JetBrainsMono Nerd Font)
 yad --picture --filename="$SVG_FILE" --size=orig \
+    --class="PolybarDialog" \
     --title="Display Layout" --posx=$X_POS --posy=$Y_POS \
     --button="Load Last Config:3" \
     --button="Create New Configuration:0" \
@@ -90,7 +138,10 @@ yad --picture --filename="$SVG_FILE" --size=orig \
     --width=500 --height=520 \
     --window-icon="video-display" \
     --skip-taskbar \
+    --undecorated \
+    --css=<(echo "$CSS") \
     --fontname="JetBrainsMono Nerd Font 10"
+
 
 EXIT_CODE=$?
 
@@ -103,3 +154,4 @@ elif [ "$EXIT_CODE" -eq 3 ]; then
 fi
 
 exit 0
+

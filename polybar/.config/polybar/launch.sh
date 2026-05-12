@@ -33,24 +33,45 @@ update_shortcuts() {
 LAST_CONF="$CONFIG_DIR/.last_launch"
 LOAD_LAST=false
 
-chmod +x "$CONFIG_DIR/scripts/show_layout.sh"
-while true; do
-    "$CONFIG_DIR/scripts/show_layout.sh"
-    RES=$?
-    if [ $RES -eq 2 ]; then
-        continue
-    elif [ $RES -eq 3 ]; then
-        if [ -f "$LAST_CONF" ]; then
-            source "$LAST_CONF"
-            LOAD_LAST=true
-        else
-            notify-send "Polybar" "No previous configuration found."
-        fi
-        break
-    else
-        break
-    fi
+# Parse arguments
+for arg in "$@"; do
+    case $arg in
+        --last)
+            if [ -f "$LAST_CONF" ]; then
+                source "$LAST_CONF"
+                LOAD_LAST=true
+            else
+                notify-send "Polybar" "No previous configuration found."
+            fi
+            SKIP_PROMPT=true
+            ;;
+        --new)
+            LOAD_LAST=false
+            SKIP_PROMPT=true
+            ;;
+    esac
 done
+
+if [ "$SKIP_PROMPT" != "true" ]; then
+    chmod +x "$CONFIG_DIR/scripts/show_layout.sh"
+    while true; do
+        "$CONFIG_DIR/scripts/show_layout.sh"
+        RES=$?
+        if [ $RES -eq 2 ]; then
+            continue
+        elif [ $RES -eq 3 ]; then
+            if [ -f "$LAST_CONF" ]; then
+                source "$LAST_CONF"
+                LOAD_LAST=true
+            else
+                notify-send "Polybar" "No previous configuration found."
+            fi
+            break
+        else
+            break
+        fi
+    done
+fi
 
 # 2. Detect monitors and ask for bar positions & modules
 chmod +x "$CONFIG_DIR/scripts/bar_config.sh"

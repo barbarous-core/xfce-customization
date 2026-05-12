@@ -41,8 +41,58 @@ pos_y=40
 # ...
 START_VAL=100
 
+# CONFIG DIR
+CONFIG_DIR="/home/mohamed/Linux_Data/Git_Projects/xfce-customization/polybar/.config/polybar"
+COLORS_CONF="$CONFIG_DIR/colors.ini"
+
+# Extract colors from colors.ini
+BG=$(grep "^background =" "$COLORS_CONF" | cut -d' ' -f3)
+FG=$(grep "^foreground =" "$COLORS_CONF" | cut -d' ' -f3)
+ACCENT=$(grep "^primary =" "$COLORS_CONF" | cut -d' ' -f3)
+
+[ -z "$BG" ] && BG="#1c1c1c"
+[ -z "$FG" ] && FG="#ecf0f1"
+[ -z "$ACCENT" ] && ACCENT="#3498db"
+
+# Extract radius from config.ini
+RADIUS=$(grep "^radius =" "$CONFIG_DIR/config.ini" | cut -d' ' -f3)
+[ -z "$RADIUS" ] && RADIUS="12"
+
+CSS="
+window, #yad-dialog-window {
+    background-color: $BG;
+    color: $FG;
+    font-family: 'JetBrainsMono Nerd Font';
+    border: none;
+    border-radius: 0px;
+}
+button {
+    background: transparent;
+    color: $ACCENT;
+    border: none;
+    box-shadow: none;
+    text-shadow: none;
+    font-size: 11pt;
+    padding: 10px;
+    margin: 5px;
+    outline: none;
+}
+button:hover {
+    background: transparent;
+    color: $FG;
+}
+"
+
+
+
+
+
+
+
+
 # 4. Launch yad and use process substitution to handle slider events in real-time
 yad --scale \
+    --class="PolybarDialog" \
     --posx=$pos_x --posy=$pos_y \
     --title="Power Menu" \
     --text="<span font='JetBrainsMono Nerd Font Mono 14'><b>Battery:</b> $BAT_INFO\n<b>Brightness:</b></span>" \
@@ -52,20 +102,22 @@ yad --scale \
     --undecorated \
     --on-top \
     --close-on-unfocus \
+    --css=<(echo "$CSS") \
     --button="Settings!preferences-system":2 > >(while read val; do
+
     if [ -n "$val" ] && [[ "$val" =~ ^[0-9]+$ ]]; then
         # Prevent completely black screen by setting a minimum of 0.1
         if [ "$val" -lt 10 ]; then
             val=10
         fi
         
-        # Use brightnessctl to set hardware brightness since xrandr is not installed
-        # The slider is 10-100, so we just set brightnessctl to <val>%
+        # Use brightnessctl to set hardware brightness
         brightnessctl set ${val}%
     fi
 done)
 
 EXIT_CODE=$?
+
 
 # 4. If Settings button was clicked (exit code 2), open xfce4-power-manager-settings
 if [ $EXIT_CODE -eq 2 ]; then

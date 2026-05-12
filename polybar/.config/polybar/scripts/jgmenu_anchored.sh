@@ -59,11 +59,28 @@ else
 fi
 
 # ── 4. Patch jgmenurc (single sed call) ─────────────────────────────────────
+COLORS_CONF="$SCRIPT_DIR/../colors.ini"
+BG=$(grep "^background =" "$COLORS_CONF" | cut -d' ' -f3)
+FG=$(grep "^foreground =" "$COLORS_CONF" | cut -d' ' -f3)
+ACCENT=$(grep "^primary =" "$COLORS_CONF" | cut -d' ' -f3)
+
+[ -z "$BG" ] && BG="#1c1c1c"
+[ -z "$FG" ] && FG="#ecf0f1"
+[ -z "$ACCENT" ] && ACCENT="#3498db"
+
 sed -i --follow-symlinks \
     -e "s/^menu_margin_x = .*/menu_margin_x = $MARGIN_X/" \
     -e "s/^menu_margin_y = .*/menu_margin_y = $MARGIN_Y/" \
     -e "s/^menu_valign = .*/menu_valign = $VALIGN/" \
     -e "s/^#\?\s\?monitor = .*/monitor = $MON_NAME/" \
+    -e "s/^color_menu_bg = .*/color_menu_bg = $BG 100/" \
+    -e "s/^color_menu_bg_to = .*/color_menu_bg_to = $BG 100/" \
+    -e "s/^color_menu_border = .*/color_menu_border = $ACCENT 100/" \
+    -e "s/^color_norm_fg = .*/color_norm_fg = $FG 100/" \
+    -e "s/^color_sel_bg = .*/color_sel_bg = $ACCENT 100/" \
+    -e "s/^color_sel_fg = .*/color_sel_fg = $BG 100/" \
+    -e "s/^color_sel_border = .*/color_sel_border = $ACCENT 100/" \
+    -e "s/^color_sep_fg = .*/color_sep_fg = $ACCENT 50/" \
     "$CONFIG"
 
 # ── 5. Launch jgmenu ─────────────────────────────────────────────────────────
