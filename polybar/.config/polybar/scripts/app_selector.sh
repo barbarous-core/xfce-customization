@@ -18,7 +18,7 @@ filter_apps() {
 }
 
 # CONFIG DIR
-CONFIG_DIR="/home/mohamed/Linux_Data/Git_Projects/xfce-customization/polybar/.config/polybar"
+CONFIG_DIR="$HOME/.config/polybar"
 COLORS_CONF="$CONFIG_DIR/colors.ini"
 
 # Extract colors from colors.ini
@@ -34,63 +34,33 @@ ACCENT=$(grep "^primary =" "$COLORS_CONF" | cut -d' ' -f3)
 RADIUS=$(grep "^radius =" "$CONFIG_DIR/config.ini" | cut -d' ' -f3)
 [ -z "$RADIUS" ] && RADIUS="12"
 
-CSS="
-window, #yad-dialog-window {
-    background-color: $BG;
-    color: $FG;
-    font-family: 'JetBrainsMono Nerd Font';
-    border: none;
-    border-radius: 0px;
-}
-label {
-    font-size: 11pt;
-    margin: 10px;
-    text-shadow: none;
-}
-button {
-    background: transparent;
-    color: $ACCENT;
-    border: none;
-    box-shadow: none;
-    text-shadow: none;
-    font-size: 11pt;
-    padding: 10px;
-    margin: 5px;
-    outline: none;
-}
-button:hover {
-    background: transparent;
-    color: $FG;
-}
-"
-
-
-
-
-
-
-
+# Path to centralized YAD CSS
+YAD_STYLE="$HOME/.config/yad/style.css"
 
 
 TERM_LIST=$(filter_apps "${TERMS[@]}")
 BROWSER_LIST=$(filter_apps "${BROWSERS[@]}")
 FILE_LIST=$(filter_apps "${FILES[@]}")
 
-# Show YAD form
-RESULT=$(yad --form --title="Default Applications" --width=450 --center \
+# Show YAD form with dropdowns
+CHOICE=$(yad --form \
     --class="PolybarDialog" \
-    --text="Select your preferred <span foreground='$ACCENT' weight='bold'>Default Applications</span>" \
-    --field="  Terminal:CB" "$TERM_LIST" \
-    --field="  Browser:CB" "$BROWSER_LIST" \
-    --field="  File Manager:CB" "$FILE_LIST" \
-    --button="OK:0" --button="Cancel:1" \
-    --window-icon="preferences-desktop-default-applications" \
-    --undecorated --skip-taskbar \
-    --css=<(echo "$CSS") \
-    --fontname="JetBrainsMono Nerd Font 10")
+    --title="App Preference" \
+    --text="Select preferred applications" \
+    --field="Terminal:CB" "$TERM_LIST" \
+    --field="Browser:CB" "$BROWSER_LIST" \
+    --field="File Manager:CB" "$FILE_LIST" \
+    --button="Save:0" \
+    --center \
+    --fixed \
+    --undecorated \
+    --skip-taskbar \
+    --css="$YAD_STYLE" \
+    --fontname="JetBrainsMono Nerd Font 11")
 
 # Exit if cancelled
 [ $? -ne 0 ] && exit 1
 
-# Output result (format: term|browser|file|)
-echo "$RESULT"
+# Output result
+echo "$CHOICE"
+

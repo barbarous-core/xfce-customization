@@ -85,7 +85,7 @@ conky.config = {
     -- conky_draw_right() is called after each conky.text render pass.
     -- -------------------------------------------------------------------------
 
-    lua_load              = '/home/mohamed/.conky/MonoPlayer/lua/panel_right.lua',
+    lua_load              = '~/.conky/MonoPlayer/lua/panel_right.lua',
     lua_draw_hook_post    = 'draw_right',
 
     -- -------------------------------------------------------------------------

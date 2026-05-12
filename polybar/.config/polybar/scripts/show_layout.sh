@@ -52,7 +52,7 @@ H_SW=$(echo "$H_W * $SCALE" | bc)
 H_SH=$(echo "$H_H * $SCALE" | bc)
 
 # CONFIG DIR
-CONFIG_DIR="/home/mohamed/Linux_Data/Git_Projects/xfce-customization/polybar/.config/polybar"
+CONFIG_DIR="$HOME/.config/polybar"
 COLORS_CONF="$CONFIG_DIR/colors.ini"
 
 # Extract colors from colors.ini
@@ -100,30 +100,9 @@ SCREEN_WIDTH=$(xwininfo -root | grep "Width:" | awk '{print $2}')
 X_POS=$(( (SCREEN_WIDTH / 2) - 250 ))
 Y_POS=50
 
-CSS="
-window, #yad-dialog-window {
-    background-color: $BG;
-    color: $FG;
-    font-family: 'JetBrainsMono Nerd Font';
-    border: none;
-    border-radius: 0px;
-}
-button {
-    background: transparent;
-    color: $ACCENT;
-    border: none;
-    box-shadow: none;
-    text-shadow: none;
-    font-size: 11pt;
-    padding: 10px;
-    margin: 5px;
-    outline: none;
-}
-button:hover {
-    background: transparent;
-    color: $FG;
-}
-"
+# Path to centralized YAD CSS
+YAD_STYLE="$HOME/.config/yad/style.css"
+
 
 
 
@@ -139,7 +118,7 @@ yad --picture --filename="$SVG_FILE" --size=orig \
     --window-icon="video-display" \
     --skip-taskbar \
     --undecorated \
-    --css=<(echo "$CSS") \
+    --css="$YAD_STYLE" \
     --fontname="JetBrainsMono Nerd Font 10"
 
 
@@ -154,4 +133,5 @@ elif [ "$EXIT_CODE" -eq 3 ]; then
 fi
 
 exit 0
+
 

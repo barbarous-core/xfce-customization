@@ -1,8 +1,8 @@
 [PARAMETERS]
 Timezone=Africa/Casablanca
 Archive limit=0
-Archive file=/home/mohamed/.local/share/orage/orage_archive.ics
-Orage file=/home/mohamed/.local/share/orage/orage.ics
+Archive file=~/.local/share/orage/orage_archive.ics
+Orage file=~/.local/share/orage/orage.ics
 Sound application=play
 Main window X=640
 Main window Y=36

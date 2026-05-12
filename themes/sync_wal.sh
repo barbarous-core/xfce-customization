@@ -1,6 +1,6 @@
 #!/bin/bash
 
-THEME_DIR="/home/mohamed/Linux_Data/Git_Projects/xfce-customization/themes"
+THEME_DIR="$HOME/Linux_Data/Git_Projects/xfce-customization/themes"
 
 for theme_folder in "$THEME_DIR"/*/; do
     [ ! -f "${theme_folder}colors.ini" ] && continue

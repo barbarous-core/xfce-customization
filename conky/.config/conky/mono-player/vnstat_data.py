@@ -11,7 +11,7 @@ import os
 import subprocess
 import sys
 
-CACHE_DIR = os.getenv("XDG_CACHE_HOME", os.path.expanduser("~/.cache"))
+CACHE_DIR = os.getenv("XDG_CACHE_HOME", os.path.expanduser("$HOME/.cache"))
 SCROLL_FILE = os.path.join(CACHE_DIR, "monoplayer-vnstat-scroll.idx")
 WINDOW = 10   # hours to show at once
 

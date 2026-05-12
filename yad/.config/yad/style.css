@@ -1,0 +1,35 @@
+/* YAD Minimalist Style Template */
+/* Colors are dynamically injected by scripts using the variables below */
+
+:root {
+    --bg-color: #211c1c;     /* @bg_color@ */
+    --fg-color: #fff5f5;     /* @fg_color@ */
+    --accent-color: #e67e80; /* @accent_color@ */
+}
+
+window, #yad-dialog-window {
+    background-color: var(--bg-color);
+    color: var(--fg-color);
+    font-family: 'JetBrainsMono Nerd Font';
+    border: none;
+    border-radius: 0px;
+}
+
+label {
+    font-size: 11pt;
+    margin: 20px;
+    text-shadow: none;
+    color: var(--fg-color);
+}
+
+button {
+    background: transparent;
+    color: var(--fg-color);
+    border: none;
+    box-shadow: none;
+    text-shadow: none;
+    font-size: 11pt;
+    padding: 10px;
+    margin: 5px;
+    outline: none;
+}

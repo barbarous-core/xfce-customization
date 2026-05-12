@@ -1,13 +1,30 @@
 #!/bin/bash
 
+# CONFIG DIR
+CONFIG_DIR="$HOME/.config/polybar"
+COLORS_CONF="$CONFIG_DIR/colors.ini"
+
+# Extract colors from colors.ini
+BG=$(grep "^background =" "$COLORS_CONF" | cut -d' ' -f3)
+FG=$(grep "^foreground =" "$COLORS_CONF" | cut -d' ' -f3)
+ACCENT=$(grep "^primary =" "$COLORS_CONF" | cut -d' ' -f3)
+
+[z "$BG" ] && BG="#1c1c1c"
+[z "$FG" ] && FG="#ecf0f1"
+[z "$ACCENT" ] && ACCENT="#3498db"
+
 # Define Rofi Theme for Startup
-THEME="window { width: 33%; border: 0px; border-radius: 20px; background-color: #282a2e; } 
-       listview { lines: 2; }
-       element { padding: 15px; background-color: transparent; }
-       element-text { font: \"JetBrainsMono Nerd Font 18\"; horizontal-align: 0.5; text-color: #c5c8c6; }
-       element selected { background-color: #61afef; }
-       element-text selected { text-color: #282a2e; }
+THEME="window { width: 33%; border: 0px; border-radius: 0px; background-color: $BG; } 
+       listview { lines: 2; scrollbar: false; }
+       element { padding: 10px; background-color: transparent; }
+       element-text { font: \"JetBrainsMono Nerd Font 11\"; horizontal-align: 0.5; text-color: $FG; }
+       element selected { background-color: transparent; }
+       element-text selected { text-color: $ACCENT; }
        inputbar { enabled: false; }"
+
+
+
+
 
 # Options
 YES_OPT="🚀 Load Productivity WS presets"

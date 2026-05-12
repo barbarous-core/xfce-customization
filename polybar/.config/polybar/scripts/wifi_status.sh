@@ -7,7 +7,7 @@ ICON="%{F#F0C674}%{T4}%{T-}%{F-}"
 
 # Toggle logic (now handled by toggle_module.sh, but keeping for compatibility)
 if [ "$1" == "--toggle" ]; then
-    /home/mohamed/Linux_Data/Git_Projects/xfce-customization/polybar/.config/polybar/scripts/toggle_module.sh wifi
+    ~/Linux_Data/Git_Projects/xfce-customization/polybar/.config/polybar/scripts/toggle_module.sh wifi
     exit 0
 fi
 

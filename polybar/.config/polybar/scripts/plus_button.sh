@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Configuration
-COLORS_FILE="/home/mohamed/Linux_Data/Git_Projects/xfce-customization/polybar/.config/polybar/colors.ini"
+COLORS_FILE="$HOME/.config/polybar/colors.ini"
 
 # Get colors from colors.ini
 PRIMARY_COLOR=$(grep "primary =" "$COLORS_FILE" | cut -d' ' -f3)

@@ -1,9 +1,10 @@
 #!/bin/bash
 
 # Configuration
-THEME_DIR="/home/mohamed/Linux_Data/Git_Projects/xfce-customization/themes"
+THEME_DIR="$HOME/Linux_Data/Git_Projects/xfce-customization/themes"
 THEME_STATE_FILE="/tmp/polybar_active_theme"
-POLYBAR_COLORS="/home/mohamed/Linux_Data/Git_Projects/xfce-customization/polybar/.config/polybar/colors.ini"
+POLYBAR_COLORS="$HOME/.config/polybar/colors.ini"
+YAD_SYNC_SCRIPT="$HOME/.config/polybar/scripts/sync_yad_theme.sh"
 
 # 1. Get current theme
 [ ! -f "$THEME_STATE_FILE" ] && echo "Premium_Gold" > "$THEME_STATE_FILE"
@@ -38,8 +39,12 @@ NEW_THEME=${THEMES[$NEW_INDEX]}
 echo "$NEW_THEME" > "$THEME_STATE_FILE"
 cp "$THEME_DIR/$NEW_THEME/colors.ini" "$POLYBAR_COLORS"
 
+# Sync YAD theme
+bash "$YAD_SYNC_SCRIPT"
+
 # Sync colors to terminal and other apps using Pywal
-/home/mohamed/.local/bin/wal -n -q -f "$THEME_DIR/$NEW_THEME/colors.json"
+~/.local/bin/wal -n -q -f "$THEME_DIR/$NEW_THEME/colors.json"
+
 
 # Update Jgmenu colors
 BG=$(grep "^background =" "$THEME_DIR/$NEW_THEME/colors.ini" | cut -d' ' -f3)

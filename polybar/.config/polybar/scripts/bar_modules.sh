@@ -6,7 +6,7 @@ DEF_CENTER="date"
 DEF_RIGHT="sep sys-switch sep xkeyboard sep media sep battery sep connection sep themes sep powermenu"
 
 # CONFIG DIR
-CONFIG_DIR="/home/mohamed/Linux_Data/Git_Projects/xfce-customization/polybar/.config/polybar"
+CONFIG_DIR="$HOME/.config/polybar"
 COLORS_CONF="$CONFIG_DIR/colors.ini"
 
 # Extract colors from colors.ini
@@ -22,39 +22,8 @@ ACCENT=$(grep "^primary =" "$COLORS_CONF" | cut -d' ' -f3)
 RADIUS=$(grep "^radius =" "$CONFIG_DIR/config.ini" | cut -d' ' -f3)
 [ -z "$RADIUS" ] && RADIUS="12"
 
-CSS="
-window, #yad-dialog-window {
-    background-color: $BG;
-    color: $FG;
-    font-family: 'JetBrainsMono Nerd Font';
-    border: none;
-    border-radius: 0px;
-}
-label {
-    font-size: 11pt;
-    margin: 10px;
-    text-shadow: none;
-}
-button {
-    background: transparent;
-    color: $ACCENT;
-    border: none;
-    box-shadow: none;
-    text-shadow: none;
-    font-size: 11pt;
-    padding: 10px;
-    margin: 5px;
-    outline: none;
-}
-button:hover {
-    background: transparent;
-    color: $FG;
-}
-"
-
-
-
-
+# Path to centralized YAD CSS
+YAD_STYLE="$HOME/.config/yad/style.css"
 
 
 
@@ -63,26 +32,32 @@ button:hover {
 NAME=$1
 
 # Show YAD form with checkboxes
-# 1: Left, 2: Center, 3: Right, 4: Disable
-RESULT=$(yad --form --title="Modules for $NAME" --center \
+CHOICE=$(yad --form \
     --class="PolybarDialog" \
-    --text="Select sections to show on <span foreground='$ACCENT' weight='bold'>$NAME</span>" \
-    --field="  Show Left Section (Menu & Workspaces):CHK" TRUE \
-    --field="  Show Center Section (Clock & Date):CHK" TRUE \
-    --field="  Show Right Section (System Indicators):CHK" TRUE \
-    --button="OK:0" --width=450 --height=260 \
-    --window-icon="preferences-desktop-display" \
-    --undecorated --skip-taskbar \
-    --css=<(echo "$CSS") \
-    --fontname="JetBrainsMono Nerd Font 10")
+    --title="Module Config" \
+    --text="Select segments to show in $NAME" \
+    --field="Left Segments:CHK" "$L_CHK" \
+    --field="Center Segments:CHK" "$C_CHK" \
+    --field="Right Segments:CHK" "$R_CHK" \
+    --button="Cancel:1" \
+    --button="Save:0" \
+    --center \
+    --fixed \
+    --undecorated \
+    --skip-taskbar \
+    --css="$YAD_STYLE" \
+    --fontname="JetBrainsMono Nerd Font 11")
+
+
+
 
 # Exit if cancelled
 [ $? -ne 0 ] && exit 1
 
 # Parse result
-SHOW_LEFT=$(echo $RESULT | cut -d'|' -f1)
-SHOW_CENTER=$(echo $RESULT | cut -d'|' -f2)
-SHOW_RIGHT=$(echo $RESULT | cut -d'|' -f3)
+SHOW_LEFT=$(echo "$CHOICE" | cut -d'|' -f1)
+SHOW_CENTER=$(echo "$CHOICE" | cut -d'|' -f2)
+SHOW_RIGHT=$(echo "$CHOICE" | cut -d'|' -f3)
 
 # Build strings
 OUT_LEFT=" "

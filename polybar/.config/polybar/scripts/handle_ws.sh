@@ -4,7 +4,7 @@
 WS_INDEX=$1
 X_POS=$2
 Y_OFFSET=$3
-COLORS_FILE="/home/mohamed/Linux_Data/Git_Projects/xfce-customization/polybar/.config/polybar/colors.ini"
+COLORS_FILE="$HOME/.config/polybar/colors.ini"
 
 # Get colors from colors.ini
 BG=$(grep "background =" "$COLORS_FILE" | cut -d' ' -f3)
@@ -37,9 +37,9 @@ fi
 SELECTED=$(echo -e "$LIST" | rofi -dmenu -p "Workspace $WS_INDEX" -theme-str "$THEME" -location 1 -xoffset "$X_POS" -yoffset "$Y_OFFSET")
 
 if [ "$SELECTED" == "$RENAME_OPTION" ]; then
-    bash /home/mohamed/Linux_Data/Git_Projects/xfce-customization/polybar/.config/polybar/scripts/rename_workspace.sh "$WS_INDEX"
+    bash ~/Linux_Data/Git_Projects/xfce-customization/polybar/.config/polybar/scripts/rename_workspace.sh "$WS_INDEX"
 elif [ "$SELECTED" == "$DELETE_OPTION" ]; then
-    bash /home/mohamed/Linux_Data/Git_Projects/xfce-customization/polybar/.config/polybar/scripts/delete_workspace.sh "$WS_INDEX"
+    bash ~/Linux_Data/Git_Projects/xfce-customization/polybar/.config/polybar/scripts/delete_workspace.sh "$WS_INDEX"
 elif [ -n "$SELECTED" ]; then
     # Focus the selected window
     wmctrl -a "$SELECTED"

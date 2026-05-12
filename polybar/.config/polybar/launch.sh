@@ -6,8 +6,20 @@ killall -q polybar
 # Wait until the processes have been shut down
 while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
 
+notify-send "Polybar" "Launch script started..."
+
 # CONFIG DIR
 CONFIG_DIR="$(dirname "$(realpath "$0")")"
+
+
+# REPO ROOT
+REPO_ROOT="$(realpath "$CONFIG_DIR/../../../")"
+
+# Sync YAD theme with Polybar colors
+echo "[$(date)] Triggering YAD sync from launch.sh" >> /tmp/yad_sync.log
+chmod +x "$HOME/.config/polybar/scripts/sync_yad_theme.sh"
+"$HOME/.config/polybar/scripts/sync_yad_theme.sh"
+
 
 # Function to update shortcuts
 update_shortcuts() {
@@ -16,7 +28,7 @@ update_shortcuts() {
     local file=$3
     
     # Update XML (Source)
-    local XML_FILE="/home/mohamed/Linux_Data/Git_Projects/xfce-customization/xfce4/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml"
+    local XML_FILE="$HOME/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml"
     if [ -f "$XML_FILE" ]; then
         sed -i "s|<property name=\"&lt;Super&gt;Return\" type=\"string\" value=\"[^\"]*\"/>|<property name=\"&lt;Super&gt;Return\" type=\"string\" value=\"$term\"/>|" "$XML_FILE"
         sed -i "s|<property name=\"&lt;Super&gt;&lt;Shift&gt;b\" type=\"string\" value=\"[^\"]*\"/>|<property name=\"&lt;Super&gt;&lt;Shift&gt;b\" type=\"string\" value=\"$browser\"/>|" "$XML_FILE"
@@ -30,7 +42,7 @@ update_shortcuts() {
 }
 
 # 1. Show display layout visualization first (Wait for user OK)
-LAST_CONF="$CONFIG_DIR/.last_launch"
+LAST_CONF="$HOME/.config/polybar/.last_launch"
 LOAD_LAST=false
 
 # Parse arguments
@@ -53,9 +65,10 @@ for arg in "$@"; do
 done
 
 if [ "$SKIP_PROMPT" != "true" ]; then
-    chmod +x "$CONFIG_DIR/scripts/show_layout.sh"
+    chmod +x "$HOME/.config/polybar/scripts/show_layout.sh"
     while true; do
-        "$CONFIG_DIR/scripts/show_layout.sh"
+        "$HOME/.config/polybar/scripts/show_layout.sh"
+
         RES=$?
         if [ $RES -eq 2 ]; then
             continue
@@ -74,8 +87,8 @@ if [ "$SKIP_PROMPT" != "true" ]; then
 fi
 
 # 2. Detect monitors and ask for bar positions & modules
-chmod +x "$CONFIG_DIR/scripts/bar_config.sh"
-chmod +x "$CONFIG_DIR/scripts/bar_modules.sh"
+chmod +x "$HOME/.config/polybar/scripts/bar_config.sh"
+chmod +x "$HOME/.config/polybar/scripts/bar_modules.sh"
 
 # Get Monitor Status
 HDMI_ACTIVE=$(xfconf-query -c displays -p "/Default/HDMI-1/Active" 2>/dev/null)
@@ -85,10 +98,10 @@ if [ "$LOAD_LAST" != "true" ]; then
     # --- HDMI-1 (Principal) ---
     if [ "$HDMI_ACTIVE" == "true" ]; then
         # Ask Position
-        POS_H=$(bash "$CONFIG_DIR/scripts/bar_config.sh" "HDMI-1" "External HP 23\"")
+        POS_H=$(bash "$HOME/.config/polybar/scripts/bar_config.sh" "HDMI-1" "External HP 23\"")
         # Ask Modules if not disabled
         if [ "$POS_H" != "none" ]; then
-            MODS_H=$(bash "$CONFIG_DIR/scripts/bar_modules.sh" "External HP 23\"")
+            MODS_H=$(bash "$HOME/.config/polybar/scripts/bar_modules.sh" "External HP 23\"")
         else
             MODS_H="DISABLED"
         fi
@@ -97,10 +110,10 @@ if [ "$LOAD_LAST" != "true" ]; then
     # --- eDP-1 (Laptop) ---
     if [ "$EDP_ACTIVE" == "true" ]; then
         # Ask Position
-        POS_E=$(bash "$CONFIG_DIR/scripts/bar_config.sh" "eDP-1" "Laptop Screen")
+        POS_E=$(bash "$HOME/.config/polybar/scripts/bar_config.sh" "eDP-1" "Laptop Screen")
         # Ask Modules if not disabled
         if [ "$POS_E" != "none" ]; then
-            MODS_E=$(bash "$CONFIG_DIR/scripts/bar_modules.sh" "Laptop Screen")
+            MODS_E=$(bash "$HOME/.config/polybar/scripts/bar_modules.sh" "Laptop Screen")
         else
             MODS_E="DISABLED"
         fi
@@ -120,8 +133,8 @@ fi
 
 # 3. Application Selection
 if [ "$LOAD_LAST" != "true" ]; then
-    chmod +x "$CONFIG_DIR/scripts/app_selector.sh"
-    APPS=$(bash "$CONFIG_DIR/scripts/app_selector.sh")
+    chmod +x "$HOME/.config/polybar/scripts/app_selector.sh"
+    APPS=$(bash "$HOME/.config/polybar/scripts/app_selector.sh")
     if [ $? -eq 0 ]; then
         SEL_TERM=$(echo "$APPS" | cut -d'|' -f1)
         SEL_BROWSER=$(echo "$APPS" | cut -d'|' -f2)
@@ -135,9 +148,10 @@ fi
 
 # 4. Ask for workspace presets
 if [ "$LOAD_LAST" != "true" ]; then
-    chmod +x "$CONFIG_DIR/scripts/ws_presets.sh"
-    "$CONFIG_DIR/scripts/ws_presets.sh"
+    chmod +x "$HOME/.config/polybar/scripts/ws_presets.sh"
+    "$HOME/.config/polybar/scripts/ws_presets.sh"
 fi
+
 
 # 4. Final Launch
 # Launch HDMI-1
@@ -148,7 +162,7 @@ if [ "$HDMI_ACTIVE" == "true" ] && [ "$MODS_H" != "DISABLED" ]; then
     
     MONITOR=HDMI-1 POLYBAR_BOTTOM=$POS_H \
     POLYBAR_LEFT="$LEFT" POLYBAR_CENTER="$CENTER" POLYBAR_RIGHT="$RIGHT" \
-    polybar -c "$CONFIG_DIR/config.ini" main &
+    polybar -c "$HOME/.config/polybar/config.ini" main &
 fi
 
 # Launch eDP-1
@@ -159,17 +173,18 @@ if [ "$EDP_ACTIVE" == "true" ] && [ "$MODS_E" != "DISABLED" ]; then
     
     MONITOR=eDP-1 POLYBAR_BOTTOM=$POS_E \
     POLYBAR_LEFT="$LEFT" POLYBAR_CENTER="$CENTER" POLYBAR_RIGHT="$RIGHT" \
-    polybar -c "$CONFIG_DIR/config.ini" main &
+    polybar -c "$HOME/.config/polybar/config.ini" main &
 fi
 
 # Launch workspace notifier
 pkill -f ws_notifier.sh
-"$CONFIG_DIR/scripts/ws_notifier.sh" &
+"$HOME/.config/polybar/scripts/ws_notifier.sh" &
 
 # Launch battery monitor
 pkill -f battery_monitor.sh
-chmod +x "$CONFIG_DIR/scripts/battery_monitor.sh"
-"$CONFIG_DIR/scripts/battery_monitor.sh" &
+chmod +x "$HOME/.config/polybar/scripts/battery_monitor.sh"
+"$HOME/.config/polybar/scripts/battery_monitor.sh" &
+
 
 # 5. Pre-compute and cache jgmenu positioning into .last_launch
 # Runs xrandr ONCE here so jgmenu_anchored.sh never has to call it.

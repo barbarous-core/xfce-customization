@@ -5,7 +5,7 @@ BAR_START=20
 WHISKER_WIDTH=70
 WS_WIDTH=32
 Y_OFFSET=36
-COLORS_FILE="/home/mohamed/Linux_Data/Git_Projects/xfce-customization/polybar/.config/polybar/colors.ini"
+COLORS_FILE="$HOME/.config/polybar/colors.ini"
 
 # Get colors from colors.ini
 PRIMARY=$(grep "primary =" "$COLORS_FILE" | cut -d' ' -f3)
@@ -28,7 +28,7 @@ for i in $(seq 1 $WS_COUNT); do
     X_POS=$((BAR_START + WHISKER_WIDTH + (INDEX * WS_WIDTH)))
     
     # Action tags: Left click to switch, Middle click for the new handle_ws script
-    HANDLE_SCRIPT="/home/mohamed/Linux_Data/Git_Projects/xfce-customization/polybar/.config/polybar/scripts/handle_ws.sh"
+    HANDLE_SCRIPT="$HOME/.config/polybar/scripts/handle_ws.sh"
     ACTION_START="%{A1:wmctrl -s $INDEX:}%{A3:$HANDLE_SCRIPT $INDEX $X_POS $Y_OFFSET:}"
     ACTION_END="%{A}%{A}"
     
