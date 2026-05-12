@@ -21,6 +21,9 @@ COLOR_RESET="%{F-}"
 # State Tracking
 PREV_NET_STATE="none"
 
+# Signal Handling for immediate refresh
+trap "echo 'Refreshing...'" USR1
+
 while true; do
     # 1. WiFi Status (Check all wifi devices)
     WIFI_INFO=$(nmcli -t -f active,ssid,device dev wifi | grep '^yes' | head -n 1)
@@ -116,12 +119,17 @@ while true; do
         # Expanded View
         OUTPUT=""
         [ $HAS_WIFI -eq 1 ] && OUTPUT="${W_ICON} ${WIFI_SSID}"
+        
         [ $HAS_ETH -eq 1 ] && [ -n "$OUTPUT" ] && OUTPUT="${OUTPUT}  "
         [ $HAS_ETH -eq 1 ] && OUTPUT="${OUTPUT}${E_ICON} Wired"
+        
         [ $HAS_HOTSPOT -eq 1 ] && [ -n "$OUTPUT" ] && OUTPUT="${OUTPUT}  "
         [ $HAS_HOTSPOT -eq 1 ] && OUTPUT="${OUTPUT}${H_ICON} Hotspot"
-        [ "$BT_POWERED" -gt 0 ] && [ -n "$OUTPUT" ] && OUTPUT="${OUTPUT}  "
-        [ "$BT_POWERED" -gt 0 ] && OUTPUT="${OUTPUT}${B_ICON} ${BT_INFO}"
+        
+        # Always show Bluetooth in expanded view so it can be toggled back on
+        [ -n "$OUTPUT" ] && OUTPUT="${OUTPUT}  "
+        OUTPUT="${OUTPUT}${B_ICON} ${BT_INFO}"
+        
         [ -z "$OUTPUT" ] && OUTPUT="${ICON_STATUS} ${TEXT_STATUS}"
         echo "$OUTPUT"
     else
