@@ -9,7 +9,9 @@ THEME_STATE_FILE="/tmp/polybar_active_theme"
 
 # Icons
 ICON_THEME="󰏘"
-COLOR_THEME="%{F#F0C674}"
+# Fetch primary color from polybar colors.ini
+PRIMARY_COLOR=$(grep "^primary =" "$HOME/.config/polybar/colors.ini" | cut -d' ' -f3 || echo "#F0C674")
+COLOR_THEME="%{F$PRIMARY_COLOR}"
 COLOR_RESET="%{F-}"
 
 while true; do

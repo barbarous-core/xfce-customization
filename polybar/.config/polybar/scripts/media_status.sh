@@ -10,6 +10,13 @@ ICON_VOL_MUTED=$(printf '\U000f075f')
 ICON_MIC_ON=$(printf '\uf130')
 ICON_MIC_OFF=$(printf '\uf131')
 
+# Fetch theme colors
+PRIMARY_COLOR=$(grep "^primary =" "$HOME/.config/polybar/colors.ini" | cut -d' ' -f3 || echo "#F0C674")
+ALERT_COLOR=$(grep "^alert =" "$HOME/.config/polybar/colors.ini" | cut -d' ' -f3 || echo "#A54242")
+COLOR_PRIMARY="%{F$PRIMARY_COLOR}"
+COLOR_ALERT="%{F$ALERT_COLOR}"
+COLOR_RESET="%{F-}"
+
 while true; do
     # 1. Get Volume Info
     VOL_RAW=$(pactl get-sink-volume @DEFAULT_SINK@ 2>/dev/null)
@@ -20,13 +27,13 @@ while true; do
     [ -z "$VOL_MUTED" ] && VOL_MUTED="no"
 
     if [ "$VOL_MUTED" == "yes" ]; then
-        VOL_ICON="%{F#A54242}%{T4}${ICON_VOL_MUTED}%{T-}%{F-}"
+        VOL_ICON="${COLOR_ALERT}%{T4}${ICON_VOL_MUTED}%{T-}${COLOR_RESET}"
         VOL_TEXT="Muted"
     else
         if [ "$VOL_INFO" -le 50 ]; then
-            VOL_ICON="%{F#F0C674}%{T4}${ICON_VOL_LOW}%{T-}%{F-}"
+            VOL_ICON="${COLOR_PRIMARY}%{T4}${ICON_VOL_LOW}%{T-}${COLOR_RESET}"
         else
-            VOL_ICON="%{F#F0C674}%{T4}${ICON_VOL_HIGH}%{T-}%{F-}"
+            VOL_ICON="${COLOR_PRIMARY}%{T4}${ICON_VOL_HIGH}%{T-}${COLOR_RESET}"
         fi
         VOL_TEXT="${VOL_INFO}%"
     fi
@@ -39,10 +46,10 @@ while true; do
     [ -z "$MIC_MUTED" ] && MIC_MUTED="no"
 
     if [ "$MIC_MUTED" == "yes" ]; then
-        MIC_ICON="%{F#A54242}%{T4}${ICON_MIC_OFF}%{T-}%{F-}"
+        MIC_ICON="${COLOR_ALERT}%{T4}${ICON_MIC_OFF}%{T-}${COLOR_RESET}"
         MIC_TEXT="Muted"
     else
-        MIC_ICON="%{F#F0C674}%{T4}${ICON_MIC_ON}%{T-}%{F-}"
+        MIC_ICON="${COLOR_PRIMARY}%{T4}${ICON_MIC_ON}%{T-}${COLOR_RESET}"
         MIC_TEXT="Active"
     fi
 

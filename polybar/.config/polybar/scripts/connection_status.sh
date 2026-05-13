@@ -13,7 +13,9 @@ ICON_AIRPLANE="󰀝"
 ICON_OFFLINE="󰖪"
 
 # Colors
-COLOR_ACTIVE="%{F#F0C674}"
+# Fetch primary color from polybar colors.ini
+PRIMARY_COLOR=$(grep "^primary =" "$HOME/.config/polybar/colors.ini" | cut -d' ' -f3 || echo "#F0C674")
+COLOR_ACTIVE="%{F$PRIMARY_COLOR}"
 COLOR_BT_ACTIVE="%{F#61afef}"
 COLOR_DIM="%{F#707880}"
 COLOR_OFFLINE="%{F#A54242}"
