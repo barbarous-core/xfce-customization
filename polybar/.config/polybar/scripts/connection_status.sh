@@ -9,6 +9,7 @@ ICON_WIFI=""
 ICON_ETH="󰈀"
 ICON_BT=""
 ICON_HOTSPOT="󱜠"
+ICON_AIRPLANE="󰀝"
 ICON_OFFLINE="󰖪"
 
 # Colors
@@ -99,12 +100,25 @@ while true; do
         BT_INFO="Off"
     fi
 
+    # 5b. Airplane Mode Status
+    WIFI_ENABLED=$(nmcli radio wifi)
+    if [ "$WIFI_ENABLED" == "disabled" ]; then
+        CLR_AIRPLANE="$COLOR_ACTIVE"
+        AIRPLANE_INFO="On"
+        IS_AIRPLANE=1
+    else
+        CLR_AIRPLANE="$COLOR_DIM"
+        AIRPLANE_INFO="Off"
+        IS_AIRPLANE=0
+    fi
+
     # 6. Build Output
     ACTIVE_MODULE=$(cat "$GLOBAL_STATE_FILE" 2>/dev/null || echo "none")
 
     W_ICON="%{T4}${CLR_WIFI}${ICON_WIFI}${COLOR_RESET}%{T-}"
     E_ICON="%{T4}${CLR_ETH}${ICON_ETH}${COLOR_RESET}%{T-}"
     H_ICON="%{A1:nmcli device disconnect wlp0s20f3:}%{A3:~/Linux_Data/Git_Projects/xfce-customization/polybar/.config/polybar/scripts/hotspot_manager.sh:}%{T4}${CLR_HOTSPOT}${ICON_HOTSPOT}${COLOR_RESET}%{T-}%{A}%{A}"
+    A_ICON="%{A1:~/Linux_Data/Git_Projects/xfce-customization/polybar/.config/polybar/scripts/toggle_airplane.sh:}%{T4}${CLR_AIRPLANE}${ICON_AIRPLANE}${COLOR_RESET}%{T-}%{A}"
     B_ICON="%{A1:~/Linux_Data/Git_Projects/xfce-customization/polybar/.config/polybar/scripts/toggle_bluetooth.sh:}%{T3}${CLR_BT}${ICON_BT}${COLOR_RESET}%{T-}%{A}"
 
     if [ "$CURR_NET_STATE" == "offline" ]; then
@@ -126,15 +140,18 @@ while true; do
         [ $HAS_HOTSPOT -eq 1 ] && [ -n "$OUTPUT" ] && OUTPUT="${OUTPUT}  "
         [ $HAS_HOTSPOT -eq 1 ] && OUTPUT="${OUTPUT}${H_ICON} Hotspot"
         
-        # Always show Bluetooth in expanded view so it can be toggled back on
+        # Always show Bluetooth and Airplane in expanded view
         [ -n "$OUTPUT" ] && OUTPUT="${OUTPUT}  "
         OUTPUT="${OUTPUT}${B_ICON} ${BT_INFO}"
+
+        [ -n "$OUTPUT" ] && OUTPUT="${OUTPUT}  "
+        OUTPUT="${OUTPUT}${A_ICON} Airplane ${AIRPLANE_INFO}"
         
         [ -z "$OUTPUT" ] && OUTPUT="${ICON_STATUS} ${TEXT_STATUS}"
         echo "$OUTPUT"
     else
         # Collapsed View
-        echo "${W_ICON} ${E_ICON} ${H_ICON} ${B_ICON}"
+        echo "${W_ICON} ${E_ICON} ${H_ICON} ${B_ICON} ${A_ICON}"
     fi
 
     sleep 2
