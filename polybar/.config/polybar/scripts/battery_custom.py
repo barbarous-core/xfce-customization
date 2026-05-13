@@ -18,6 +18,28 @@ def toggle():
     else:
         with open(STATE_FILE, 'w') as f: f.write("icon")
 
+def get_theme_colors():
+    colors_conf = os.path.expanduser("~/.config/polybar/colors.ini")
+    theme_colors = {
+        "success": "#00FF00", 
+        "warning": "#FFA500", 
+        "alert": "#FF0000",
+        "disabled": "#555555"
+    }
+    if os.path.exists(colors_conf):
+        try:
+            with open(colors_conf, 'r') as f:
+                for line in f:
+                    if '=' in line:
+                        k, v = line.split('=')
+                        k = k.strip()
+                        v = v.strip()
+                        if k in theme_colors:
+                            theme_colors[k] = v
+        except Exception:
+            pass
+    return theme_colors
+
 def main():
     # Handle toggle argument
     if len(sys.argv) > 1 and sys.argv[1] == "--toggle":
@@ -35,6 +57,8 @@ def main():
         status = read_file(base + "status")
         cap_str = read_file(base + "capacity")
         capacity = int(cap_str) if cap_str else 0
+        
+        theme_colors = get_theme_colors()
 
         # Time Calculation
         charge_now = 0.0
@@ -87,17 +111,21 @@ def main():
 
         # Define colors
         color = "#C5C8C6"
+        disabled_color = theme_colors.get("disabled", "#555555")
+
         if status == "Charging":
-            color = "#00FFFF" if blink_state else "#555555"
+            # Alter between electric blue and theme disabled color
+            color = "#00FFFF" if blink_state else disabled_color
         elif status == "Full" or capacity >= 98:
-            color = "#00FF00"
+            color = theme_colors["success"]
         else:
             if capacity < 30: 
-                color = "#FF0000" if blink_state else "#555555"
+                # Alert color with blink for low battery
+                color = theme_colors["alert"] if blink_state else disabled_color
             elif capacity < 65: 
-                color = "#FFA500"
+                color = theme_colors["warning"]
             else:
-                color = "#00FF00"
+                color = theme_colors["success"]
 
         # Check global state
         GLOBAL_STATE_FILE = "/tmp/polybar_active_module"
@@ -105,11 +133,11 @@ def main():
         show_full = active_module == "battery"
 
         # Output
-        # Use smaller font for charging icon because it's naturally bigger
         if status == "Charging":
             font_index = "T6"
         else:
             font_index = "T3"
+            
         if show_full:
             text = f"{capacity}% {formatted_time}"
             print(f"%{{F{color}}}%{{{font_index}}}{icon}%{{T-}} {text}%{{F-}}", flush=True)

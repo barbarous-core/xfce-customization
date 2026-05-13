@@ -3,10 +3,14 @@
 # Configuration
 GLOBAL_STATE_FILE="/tmp/polybar_active_module"
 
-# Theme Colors
-COLOR_SAFE="%{F#70af1e}"    # Green
-COLOR_WARN="%{F#f0c674}"    # Orange/Yellow
-COLOR_DANGER="%{F#A54242}"  # Red
+# Fetch theme colors from polybar colors.ini
+SUCCESS_COLOR=$(grep "^success =" "$HOME/.config/polybar/colors.ini" | cut -d' ' -f3 || echo "#70af1e")
+WARNING_COLOR=$(grep "^warning =" "$HOME/.config/polybar/colors.ini" | cut -d' ' -f3 || echo "#f0c674")
+ALERT_COLOR=$(grep "^alert =" "$HOME/.config/polybar/colors.ini" | cut -d' ' -f3 || echo "#A54242")
+
+COLOR_SAFE="%{F$SUCCESS_COLOR}"
+COLOR_WARN="%{F$WARNING_COLOR}"
+COLOR_DANGER="%{F$ALERT_COLOR}"
 COLOR_RESET="%{F-}"
 
 # Icons
