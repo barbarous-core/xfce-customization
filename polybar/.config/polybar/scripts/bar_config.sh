@@ -15,12 +15,13 @@ ACCENT=$(grep "^primary =" "$COLORS_CONF" | cut -d' ' -f3)
 
 # Define Rofi Theme (Dynamic)
 THEME="window { width: 35%; border: 0px; border-radius: 0px; background-color: $BG; } 
+       mainbox { border: 0px; }
        listview { lines: 3; border: 0px; scrollbar: false; }
        element { padding: 10px; background-color: transparent; }
        element-text { font: \"JetBrainsMono Nerd Font 11\"; horizontal-align: 0; text-color: $FG; }
        element selected { background-color: transparent; }
        element-text selected { text-color: $ACCENT; }
-       inputbar { enabled: true; padding: 10px; background-color: $BG; }
+       inputbar { enabled: true; padding: 10px; background-color: $BG; border: 0px; }
        prompt { text-color: $FG; font: \"JetBrainsMono Nerd Font 11\"; }
        entry { enabled: false; }"
 

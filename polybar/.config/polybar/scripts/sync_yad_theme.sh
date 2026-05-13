@@ -61,7 +61,8 @@ button {
     outline: none;
 }
 
-button:hover {
+button:hover,
+button:hover label {
     background: $BG_ALT;
     background-color: $BG_ALT;
     color: $PRIMARY;
