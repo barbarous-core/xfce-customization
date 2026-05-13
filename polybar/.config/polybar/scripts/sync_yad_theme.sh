@@ -72,8 +72,6 @@ scrollbar, scrollbar button, scrollbar slider {
     opacity: 0;
     min-width: 0;
     min-height: 0;
-    width: 0;
-    height: 0;
 }
 
 scrolledwindow {
