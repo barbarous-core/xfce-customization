@@ -42,81 +42,73 @@
       <property name="&lt;Alt&gt;&lt;Super&gt;s" type="empty"/>
     </property>
     <property name="custom" type="empty">
-      <!-- System Tools -->
-      <property name="&lt;Super&gt;Return" type="string" value="exo-open --launch TerminalEmulator"/>
-      <property name="&lt;Super&gt;&lt;Shift&gt;b" type="string" value="exo-open --launch WebBrowser"/>
-      <property name="&lt;Super&gt;e" type="string" value="thunar"/>
-      <property name="&lt;Super&gt;Escape" type="string" value="bash /home/mohamed/.config/polybar/scripts/jgmenu_anchored.sh"/>
-      <property name="&lt;Super&gt;space" type="string" value="bash /home/mohamed/.config/polybar/scripts/toggle_layout.sh"/>
-      
-      <!-- Polybar Controls -->
-      <property name="&lt;Super&gt;&lt;Primary&gt;space" type="string" value="bash /home/mohamed/.config/polybar/scripts/theme_selector.sh"/>
-      <property name="&lt;Super&gt;&lt;Primary&gt;Left" type="string" value="bash /home/mohamed/.config/polybar/scripts/theme_cycle.sh --prev"/>
-      <property name="&lt;Super&gt;&lt;Primary&gt;Right" type="string" value="bash /home/mohamed/.config/polybar/scripts/theme_cycle.sh --next"/>
-      <property name="&lt;Super&gt;grave" type="string" value="bash /home/mohamed/.config/polybar/scripts/reload_polybar.sh"/>
-      <property name="&lt;Super&gt;quoteleft" type="string" value="bash /home/mohamed/.config/polybar/scripts/reload_polybar.sh"/>
-      <property name="&lt;Super&gt;asciitilde" type="string" value="bash /home/mohamed/.config/polybar/scripts/reload_polybar.sh"/>
-      <property name="&lt;Super&gt;h" type="string" value="polybar-msg cmd toggle"/>
-      <property name="&lt;Super&gt;k" type="string" value="pkill polybar"/>
-      <property name="&lt;Super&gt;&lt;Shift&gt;q" type="string" value="killall -9 polybar"/>
-      
-      <!-- Dashboard Hotkeys -->
-      <property name="&lt;Super&gt;&lt;Primary&gt;1" type="string" value="bash /home/mohamed/.config/polybar/scripts/toggle_module.sh system"/>
-      <property name="&lt;Super&gt;&lt;Primary&gt;2" type="string" value="bash /home/mohamed/.config/polybar/scripts/toggle_module.sh media"/>
-      <property name="&lt;Super&gt;&lt;Primary&gt;3" type="string" value="bash /home/mohamed/.config/polybar/scripts/toggle_module.sh battery"/>
-      <property name="&lt;Super&gt;&lt;Primary&gt;4" type="string" value="bash /home/mohamed/.config/polybar/scripts/toggle_module.sh connection"/>
-      <property name="&lt;Super&gt;&lt;Primary&gt;5" type="string" value="bash /home/mohamed/.config/polybar/scripts/toggle_module.sh themes"/>
-
-      <!-- Existing / Default Overrides -->
-      <property name="&lt;Alt&gt;F2" type="string" value="xfce4-appfinder --collapsed"/>
-      <property name="&lt;Alt&gt;F3" type="string" value="xfce4-appfinder"/>
-      <property name="&lt;Primary&gt;&lt;Alt&gt;Delete" type="string" value="xfce4-session-logout"/>
-      <property name="&lt;Primary&gt;&lt;Alt&gt;Escape" type="string" value="xkill"/>
-      <property name="&lt;Primary&gt;&lt;Alt&gt;l" type="string" value="xflock4"/>
-      <property name="&lt;Primary&gt;&lt;Alt&gt;t" type="string" value="exo-open --launch TerminalEmulator"/>
-      <property name="Print" type="string" value="xfce4-screenshooter"/>
-      <property name="&lt;Alt&gt;Print" type="string" value="xfce4-screenshooter -w"/>
-      <property name="&lt;Shift&gt;Print" type="string" value="xfce4-screenshooter -r"/>
-      <property name="override" type="bool" value="true"/>
+      <property name="<property name="<property name="&lt;Super&gt;Return" type="string" value="xfce4-terminal"/>lt;Super<property name="&lt;Super&gt;Return" type="string" value="xfce4-terminal"/>gt;Return" type="string" value="xfce4-terminal"/>lt;Super<property name="&lt;Super&gt;Return" type="string" value="xfce4-terminal"/>gt;Return" type="string" value="xfce4-terminal"/>
+      <property name="<property name="<property name="&lt;Super&gt;&lt;Shift&gt;b" type="string" value="firefox"/>lt;Super<property name="&lt;Super&gt;&lt;Shift&gt;b" type="string" value="firefox"/>gt;<property name="&lt;Super&gt;&lt;Shift&gt;b" type="string" value="firefox"/>lt;Shift<property name="&lt;Super&gt;&lt;Shift&gt;b" type="string" value="firefox"/>gt;b" type="string" value="firefox"/>lt;Super<property name="&lt;Super&gt;&lt;Shift&gt;b" type="string" value="firefox"/>gt;<property name="&lt;Super&gt;&lt;Shift&gt;b" type="string" value="firefox"/>lt;Shift<property name="&lt;Super&gt;&lt;Shift&gt;b" type="string" value="firefox"/>gt;b" type="string" value="firefox"/>
+      <property name="<property name="<property name="&lt;Super&gt;e" type="string" value="thunar"/>lt;Super<property name="&lt;Super&gt;e" type="string" value="thunar"/>gt;e" type="string" value="thunar"/>lt;Super<property name="&lt;Super&gt;e" type="string" value="thunar"/>gt;e" type="string" value="thunar"/>
     </property>
   </property>
   <property name="xfwm4" type="empty">
     <property name="default" type="empty">
+      <property name="&lt;Alt&gt;Insert" type="empty"/>
+      <property name="Escape" type="empty"/>
+      <property name="Left" type="empty"/>
+      <property name="Right" type="empty"/>
+      <property name="Up" type="empty"/>
+      <property name="Down" type="empty"/>
+      <property name="&lt;Alt&gt;Tab" type="empty"/>
+      <property name="&lt;Alt&gt;&lt;Shift&gt;Tab" type="empty"/>
+      <property name="&lt;Alt&gt;Delete" type="empty"/>
+      <property name="&lt;Primary&gt;&lt;Alt&gt;Down" type="empty"/>
+      <property name="&lt;Primary&gt;&lt;Alt&gt;Left" type="empty"/>
+      <property name="&lt;Shift&gt;&lt;Alt&gt;Page_Down" type="empty"/>
+      <property name="&lt;Alt&gt;F4" type="empty"/>
+      <property name="&lt;Alt&gt;F6" type="empty"/>
+      <property name="&lt;Alt&gt;F7" type="empty"/>
+      <property name="&lt;Alt&gt;F8" type="empty"/>
+      <property name="&lt;Alt&gt;F9" type="empty"/>
+      <property name="&lt;Alt&gt;F10" type="empty"/>
+      <property name="&lt;Alt&gt;F11" type="empty"/>
+      <property name="&lt;Alt&gt;F12" type="empty"/>
+      <property name="&lt;Primary&gt;&lt;Shift&gt;&lt;Alt&gt;Left" type="empty"/>
+      <property name="&lt;Primary&gt;&lt;Alt&gt;End" type="empty"/>
+      <property name="&lt;Primary&gt;&lt;Alt&gt;Home" type="empty"/>
+      <property name="&lt;Primary&gt;&lt;Shift&gt;&lt;Alt&gt;Right" type="empty"/>
+      <property name="&lt;Primary&gt;&lt;Shift&gt;&lt;Alt&gt;Up" type="empty"/>
+      <property name="&lt;Primary&gt;&lt;Alt&gt;KP_1" type="empty"/>
+      <property name="&lt;Primary&gt;&lt;Alt&gt;KP_2" type="empty"/>
+      <property name="&lt;Primary&gt;&lt;Alt&gt;KP_3" type="empty"/>
+      <property name="&lt;Primary&gt;&lt;Alt&gt;KP_4" type="empty"/>
+      <property name="&lt;Primary&gt;&lt;Alt&gt;KP_5" type="empty"/>
+      <property name="&lt;Primary&gt;&lt;Alt&gt;KP_6" type="empty"/>
+      <property name="&lt;Primary&gt;&lt;Alt&gt;KP_7" type="empty"/>
+      <property name="&lt;Primary&gt;&lt;Alt&gt;KP_8" type="empty"/>
+      <property name="&lt;Primary&gt;&lt;Alt&gt;KP_9" type="empty"/>
+      <property name="&lt;Alt&gt;space" type="empty"/>
+      <property name="&lt;Shift&gt;&lt;Alt&gt;Page_Up" type="empty"/>
+      <property name="&lt;Primary&gt;&lt;Alt&gt;Right" type="empty"/>
+      <property name="&lt;Primary&gt;&lt;Alt&gt;d" type="empty"/>
+      <property name="&lt;Primary&gt;&lt;Alt&gt;Up" type="empty"/>
+      <property name="&lt;Super&gt;Tab" type="empty"/>
+      <property name="&lt;Primary&gt;F1" type="empty"/>
+      <property name="&lt;Primary&gt;F2" type="empty"/>
+      <property name="&lt;Primary&gt;F3" type="empty"/>
+      <property name="&lt;Primary&gt;F4" type="empty"/>
+      <property name="&lt;Primary&gt;F5" type="empty"/>
+      <property name="&lt;Primary&gt;F6" type="empty"/>
+      <property name="&lt;Primary&gt;F7" type="empty"/>
+      <property name="&lt;Primary&gt;F8" type="empty"/>
+      <property name="&lt;Primary&gt;F9" type="empty"/>
+      <property name="&lt;Primary&gt;F10" type="empty"/>
+      <property name="&lt;Primary&gt;F11" type="empty"/>
+      <property name="&lt;Primary&gt;F12" type="empty"/>
+      <property name="&lt;Super&gt;KP_Left" type="empty"/>
+      <property name="&lt;Super&gt;KP_Right" type="empty"/>
+      <property name="&lt;Super&gt;KP_Down" type="empty"/>
+      <property name="&lt;Super&gt;KP_Up" type="empty"/>
+      <property name="&lt;Super&gt;KP_Page_Up" type="empty"/>
+      <property name="&lt;Super&gt;KP_Home" type="empty"/>
+      <property name="&lt;Super&gt;KP_End" type="empty"/>
+      <property name="&lt;Super&gt;KP_Next" type="empty"/>
     </property>
-    <property name="custom" type="empty">
-      <!-- Window Management -->
-      <property name="&lt;Super&gt;Tab" type="string" value="switch_window_key"/>
-      <property name="&lt;Alt&gt;Tab" type="string" value="cycle_windows_key"/>
-      <property name="&lt;Alt&gt;F4" type="string" value="close_window_key"/>
-      
-      <!-- Workspace Management -->
-      <property name="&lt;Super&gt;1" type="string" value="workspace_1_key"/>
-      <property name="&lt;Super&gt;2" type="string" value="workspace_2_key"/>
-      <property name="&lt;Super&gt;3" type="string" value="workspace_3_key"/>
-      <property name="&lt;Super&gt;4" type="string" value="workspace_4_key"/>
-      <property name="&lt;Super&gt;5" type="string" value="workspace_5_key"/>
-      <property name="&lt;Super&gt;6" type="string" value="workspace_6_key"/>
-      <property name="&lt;Super&gt;7" type="string" value="workspace_7_key"/>
-      <property name="&lt;Super&gt;8" type="string" value="workspace_8_key"/>
-      <property name="&lt;Super&gt;9" type="string" value="workspace_9_key"/>
-      <property name="&lt;Super&gt;0" type="string" value="workspace_10_key"/>
-      
-      <property name="&lt;Super&gt;Left" type="string" value="prev_workspace_key"/>
-      <property name="&lt;Super&gt;Right" type="string" value="next_workspace_key"/>
-      <property name="&lt;Super&gt;equal" type="string" value="add_workspace_key"/>
-      <property name="&lt;Super&gt;minus" type="string" value="del_workspace_key"/>
-      
-      <!-- Tiling (Optional but common) -->
-      <property name="&lt;Super&gt;KP_Left" type="string" value="tile_left_key"/>
-      <property name="&lt;Super&gt;KP_Right" type="string" value="tile_right_key"/>
-      <property name="&lt;Super&gt;KP_Up" type="string" value="tile_up_key"/>
-      <property name="&lt;Super&gt;KP_Down" type="string" value="tile_down_key"/>
-      
-      <property name="override" type="bool" value="true"/>
-    </property>
-  </property>
-  <property name="providers" type="array">
-    <value type="string" value="xfwm4"/>
-    <value type="string" value="commands"/>
   </property>
 </channel>
