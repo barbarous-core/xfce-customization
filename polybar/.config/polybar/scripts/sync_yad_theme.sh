@@ -16,6 +16,8 @@ PRIMARY=$(grep "^primary =" "$COLORS_CONF" | awk '{print $3}')
 SECONDARY=$(grep "^secondary =" "$COLORS_CONF" | awk '{print $3}')
 ALERT=$(grep "^alert =" "$COLORS_CONF" | awk '{print $3}')
 DISABLED=$(grep "^disabled =" "$COLORS_CONF" | awk '{print $3}')
+WARNING=$(grep "^warning =" "$COLORS_CONF" | awk '{print $3}')
+SUCCESS=$(grep "^success =" "$COLORS_CONF" | awk '{print $3}')
 
 # Default fallbacks
 [ -z "$BG" ] && BG="#141414"
@@ -25,6 +27,8 @@ DISABLED=$(grep "^disabled =" "$COLORS_CONF" | awk '{print $3}')
 [ -z "$SECONDARY" ] && SECONDARY="#00cc7f"
 [ -z "$ALERT" ] && ALERT="#ff5252"
 [ -z "$DISABLED" ] && DISABLED="#666666"
+[ -z "$WARNING" ] && WARNING="#FFA500"
+[ -z "$SUCCESS" ] && SUCCESS="#00FF00"
 
 # Generate style.css permanently
 cat > "$YAD_STYLE" <<EOF
@@ -82,9 +86,24 @@ scrolledwindow {
     margin: 30px;
 }
 
+/* Checkbox Styling */
 checkbutton {
     margin-bottom: 20px;
     margin-left: 50px;
+}
+
+checkbutton check {
+    background-color: $BG_ALT;
+    border: none;
+    color: $PRIMARY;
+    border-radius: 4px;
+    min-height: 18px;
+    min-width: 18px;
+}
+
+checkbutton check:checked {
+    background-color: $PRIMARY;
+    color: $BG;
 }
 
 #yad-form-image {
@@ -110,9 +129,9 @@ cat > "$GTK_COLORS" <<EOF
 @define-color theme_unfocused_bg_color $BG;
 @define-color theme_unfocused_fg_color $DISABLED;
 @define-color borders $SECONDARY;
-@define-color warning_color $ALERT;
+@define-color warning_color $WARNING;
 @define-color error_color $ALERT;
-@define-color success_color $PRIMARY;
+@define-color success_color $SUCCESS;
 EOF
 
 echo "YAD and GTK3 Themes synchronized with Polybar."

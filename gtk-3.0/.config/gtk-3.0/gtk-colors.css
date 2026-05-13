@@ -1,13 +1,13 @@
 /* Dynamically generated GTK colors from Polybar colors.ini */
-@define-color theme_bg_color #2e3440;
-@define-color theme_fg_color #d8dee9;
-@define-color theme_text_color #d8dee9;
-@define-color theme_base_color #3b4252;
-@define-color theme_selected_bg_color #88c0d0;
-@define-color theme_selected_fg_color #2e3440;
-@define-color theme_unfocused_bg_color #2e3440;
-@define-color theme_unfocused_fg_color #4c566a;
-@define-color borders #81a1c1;
-@define-color warning_color #bf616a;
-@define-color error_color #bf616a;
-@define-color success_color #88c0d0;
+@define-color theme_bg_color #141414;
+@define-color theme_fg_color #ffffff;
+@define-color theme_text_color #ffffff;
+@define-color theme_base_color #1f1f1f;
+@define-color theme_selected_bg_color #00ff9f;
+@define-color theme_selected_fg_color #141414;
+@define-color theme_unfocused_bg_color #141414;
+@define-color theme_unfocused_fg_color #444444;
+@define-color borders #00b8ff;
+@define-color warning_color #ffea00;
+@define-color error_color #ff0055;
+@define-color success_color #00e5ff;
