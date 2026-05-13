@@ -24,7 +24,9 @@ for i in "${!THEMES[@]}"; do
 done
 
 # 4. Calculate new index
-DIRECTION=$1
+# Handle both "next/prev" and "--next/--prev"
+DIRECTION=$(echo "$1" | sed 's/^--//')
+
 if [ "$DIRECTION" == "next" ]; then
     NEW_INDEX=$(( (INDEX + 1) % COUNT ))
 elif [ "$DIRECTION" == "prev" ]; then

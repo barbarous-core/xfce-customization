@@ -5,8 +5,8 @@ window,
 dialog,
 window.background,
 #yad-dialog-window {
-    background-color: #2e3440;
-    background: #2e3440;
+    background-color: #191724;
+    background: #191724;
     font-family: 'JetBrainsMono Nerd Font';
     border: none;
     border-radius: 0px;
@@ -16,12 +16,12 @@ label {
     font-size: 11pt;
     margin: 20px;
     text-shadow: none;
-    color: #d8dee9;
+    color: #e0def4;
 }
 
 button {
     background: transparent;
-    color: #d8dee9;
+    color: #e0def4;
     border: none;
     box-shadow: none;
     text-shadow: none;
@@ -33,9 +33,9 @@ button {
 
 button:hover,
 button:hover label {
-    background: #3b4252;
-    background-color: #3b4252;
-    color: #88c0d0;
+    background: #1f1d2e;
+    background-color: #1f1d2e;
+    color: #ebbcba;
 }
 
 scrollbar, scrollbar button, scrollbar slider {
