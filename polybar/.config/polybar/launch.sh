@@ -59,7 +59,7 @@ for arg in "$@"; do
             ;;
         --new)
             LOAD_LAST=false
-            SKIP_PROMPT=true
+            SKIP_PROMPT=false
             ;;
     esac
 done
@@ -184,6 +184,11 @@ pkill -f ws_notifier.sh
 pkill -f battery_monitor.sh
 chmod +x "$HOME/.config/polybar/scripts/battery_monitor.sh"
 "$HOME/.config/polybar/scripts/battery_monitor.sh" &
+
+# Launch monitor watcher (Detects unplug/plug)
+pkill -f monitor_watcher.sh
+chmod +x "$HOME/.config/polybar/scripts/monitor_watcher.sh"
+"$HOME/.config/polybar/scripts/monitor_watcher.sh" &
 
 
 # 5. Pre-compute and cache jgmenu positioning into .last_launch
