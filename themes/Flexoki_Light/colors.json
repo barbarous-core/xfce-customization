@@ -15,7 +15,9 @@
         "color12": "#af3029",
         "color13": "#bc5215",
         "color14": "#bc5215",
-        "color15": "#100f0f"
+        "color15": "#100f0f",
+        "warning": "#bc5215",
+        "success": "#66800b"
     },
     "special": {
         "background": "#fffcf0",
