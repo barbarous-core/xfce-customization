@@ -84,6 +84,7 @@ scrolledwindow {
 
 checkbutton {
     margin-bottom: 20px;
+    margin-left: 50px;
 }
 
 #yad-form-image {
