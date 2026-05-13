@@ -17,13 +17,13 @@ IMG_RIGHT="$CONFIG_DIR/Right_seg.png"
 IMG_COMBINED="/tmp/segments_header.png"
 
 # Canvas dimensions
-CANVAS_W=640
-PADDING=15
-GAP=10
-BOX_W=$(( (CANVAS_W - 2*PADDING - 2*GAP) / 3 ))   # ~197px each
-BOX_H=90
-TITLE_H=40
-CANVAS_H=$(( TITLE_H + BOX_H + PADDING ))   # ~145px total
+CANVAS_W=700
+PADDING=25
+GAP=20
+BOX_W=$(( (CANVAS_W - 2*PADDING - 2*GAP) / 3 ))
+BOX_H=100
+TITLE_H=50
+CANVAS_H=$(( TITLE_H + BOX_H + PADDING ))
 
 # Step 1: Resize each segment image to fit its box
 magick "$IMG_LEFT"   -resize "${BOX_W}x${BOX_H}!" /tmp/_seg_l.png
@@ -45,8 +45,8 @@ magick \
     -size ${CANVAS_W}x${CANVAS_H} xc:"#2e3440" \
     \
     -fill "#d8dee9" \
-    -font "Liberation-Sans" -pointsize 15 \
-    -annotate "+${PADDING}+28" "Selection Segment" \
+    -font "JetBrainsMonoNL-NF-Regular" -pointsize 28 \
+    -annotate "+${PADDING}+28" "Selection segment" \
     \
     -fill "#3b4252" -stroke "#5e6b7d" -strokewidth 1 \
     -draw "roundrectangle ${BOX1_X},${BOX_Y} $((BOX1_X+BOX_W)),$((BOX_Y+BOX_H)) 4,4" \
@@ -75,7 +75,7 @@ CHOICE=$(yad --form \
     --undecorated \
     --skip-taskbar \
     --css="$YAD_STYLE" \
-    --width=$CANVAS_W)
+    --width=$CANVAS_W --height=350)
 
 # Exit if cancelled
 [ $? -ne 0 ] && exit 1

@@ -77,6 +77,18 @@ scrollbar, scrollbar button, scrollbar slider {
 scrolledwindow {
     border: none;
 }
+
+#yad-form-widget {
+    margin: 30px;
+}
+
+checkbutton {
+    margin-bottom: 20px;
+}
+
+#yad-form-image {
+    margin-bottom: 15px;
+}
 EOF
 
 # Log activity
