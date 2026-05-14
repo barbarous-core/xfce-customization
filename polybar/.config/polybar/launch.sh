@@ -39,11 +39,19 @@ update_shortcuts() {
     xfconf-query -c xfce4-keyboard-shortcuts -p /commands/custom/'<Super>Return' -n -t string -s "$term"
     xfconf-query -c xfce4-keyboard-shortcuts -p /commands/custom/'<Super><Shift>b' -n -t string -s "$browser"
     xfconf-query -c xfce4-keyboard-shortcuts -p /commands/custom/'<Super>e' -n -t string -s "$file"
+    xfconf-query -c xfce4-keyboard-shortcuts -p /commands/custom/'<Super>h' -n -t string -s "bash /home/mohamed/Linux_Data/Git_Projects/xfce-customization/polybar/.config/polybar/scripts/toggle_minimal.sh"
+    xfconf-query -c xfce4-keyboard-shortcuts -p /commands/custom/'<Super><Shift>h' -n -t string -s "polybar-msg cmd toggle"
     
     # PrintScreen Shortcuts
     xfconf-query -c xfce4-keyboard-shortcuts -p /commands/custom/Print -n -t string -s "xfce4-screenshooter"
     xfconf-query -c xfce4-keyboard-shortcuts -p /commands/custom/'<Alt>Print' -n -t string -s "xfce4-screenshooter -w"
     xfconf-query -c xfce4-keyboard-shortcuts -p /commands/custom/'<Shift>Print' -n -t string -s "xfce4-screenshooter -r"
+    
+    # Mini Bar Movement
+    xfconf-query -c xfce4-keyboard-shortcuts -p /commands/custom/'<Super><Alt>Up' -n -t string -s "bash /home/mohamed/Linux_Data/Git_Projects/xfce-customization/polybar/.config/polybar/scripts/move_mini_bar.sh up"
+    xfconf-query -c xfce4-keyboard-shortcuts -p /commands/custom/'<Super><Alt>Down' -n -t string -s "bash /home/mohamed/Linux_Data/Git_Projects/xfce-customization/polybar/.config/polybar/scripts/move_mini_bar.sh down"
+    xfconf-query -c xfce4-keyboard-shortcuts -p /commands/custom/'<Super><Alt>Left' -n -t string -s "bash /home/mohamed/Linux_Data/Git_Projects/xfce-customization/polybar/.config/polybar/scripts/move_mini_bar.sh left"
+    xfconf-query -c xfce4-keyboard-shortcuts -p /commands/custom/'<Super><Alt>Right' -n -t string -s "bash /home/mohamed/Linux_Data/Git_Projects/xfce-customization/polybar/.config/polybar/scripts/move_mini_bar.sh right"
 }
 
 # 1. Show display layout visualization first (Wait for user OK)
@@ -139,11 +147,40 @@ fi
 # --- MINIMAL MODE OVERRIDE ---
 BAR_NAME="main"
 STATE_FILE="/tmp/polybar_minimal_state"
+POS_FILE="/tmp/polybar_mini_pos"
+
 if [ -f "$STATE_FILE" ]; then
     BAR_NAME="mini"
     # We keep only icon-show and powermenu on the right
     MODS_H=" | | icon-show powermenu"
     MODS_E=" | | icon-show powermenu"
+    
+    # Position override
+    if [ -f "$POS_FILE" ]; then
+        MINI_POS=$(cat "$POS_FILE")
+        MINI_VALIGN=$(echo "$MINI_POS" | cut -d'|' -f1)
+        MINI_HALIGN=$(echo "$MINI_POS" | cut -d'|' -f2)
+        
+        # Determine VALIGN
+        if [ "$MINI_VALIGN" == "top" ]; then
+            export POLYBAR_BOTTOM="false"
+            export POLYBAR_OFFSET_Y="0"
+            POS_H="false"
+            POS_E="false"
+        else
+            export POLYBAR_BOTTOM="true"
+            export POLYBAR_OFFSET_Y="0"
+            POS_H="true"
+            POS_E="true"
+        fi
+        
+        # Determine HALIGN
+        if [ "$MINI_HALIGN" == "left" ]; then
+            export POLYBAR_OFFSET_X="1%"
+        else
+            export POLYBAR_OFFSET_X="95%"
+        fi
+    fi
 fi
 
 # 3. Application Selection
@@ -245,8 +282,10 @@ save_jgmenu_cache() {
         esac
     done < <(xrandr --query | grep " connected")
 
-    # Append jgmenu cache fields to .last_launch
+    # Use a temp file to avoid duplicate appends if script is re-run
+    local tmp_conf="/tmp/jgmenu_cache_tmp"
     {
+        cat "$conf" | grep -vE "^JG_"
         echo "JG_H_MON=\"${JG_H_MON:-}\""
         echo "JG_H_OX=\"${JG_H_OX:-0}\""
         echo "JG_H_OY=\"${JG_H_OY:-0}\""
@@ -263,7 +302,8 @@ save_jgmenu_cache() {
         echo "JG_E_VALIGN=\"${JG_E_VALIGN:-top}\""
         echo "JG_E_MARGIN_Y=\"${JG_E_MARGIN_Y:-40}\""
         echo "JG_E_MARGIN_X=\"${JG_E_MARGIN_X:-5}\""
-    } >> "$conf"
+    } > "$tmp_conf"
+    mv "$tmp_conf" "$conf"
 }
 
 save_jgmenu_cache "$LAST_CONF"

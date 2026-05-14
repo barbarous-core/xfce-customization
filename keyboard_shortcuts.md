@@ -69,9 +69,12 @@ These shortcuts use the **Super** (Windows) key for fast system navigation.
 | **Super + Ctrl + Space** | **Open Theme Selector** |
 | **Super + Ctrl + ← / →** | **Cycle Themes** (Prev/Next with OSD) |
 | **Super + grave ( ` )** | **Reload Polybar** (Apply config changes) |
-| **Super + H** | Toggle Polybar visibility (Hide/Show) |
+| **Super + H** | Toggle Polybar Size (Max / Mini) |
+| **Super + Shift + H** | Hide Polybar completely (Toggle visibility) |
 | **Super + K** | Kill Polybar |
 | **Super + Shift + Q** | Force close Polybar |
+| **Super + Alt + ↑/↓** | Move Mini Bar to Top/Bottom |
+| **Super + Alt + ←/→** | Move Mini Bar to Left/Right |
 
 ### 📊 Dashboard Hotkeys (Toggle Info)
 | Shortcut | Action |

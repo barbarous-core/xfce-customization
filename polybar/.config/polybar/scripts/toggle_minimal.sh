@@ -10,4 +10,4 @@ fi
 
 # Reload Polybar with the current config
 # Since launch.sh now checks for the state file, it will toggle the modules.
-bash "$HOME/.config/polybar/launch.sh" --last
+bash /home/mohamed/Linux_Data/Git_Projects/xfce-customization/polybar/.config/polybar/launch.sh --last
