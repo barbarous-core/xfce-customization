@@ -47,8 +47,8 @@ window.background,
 }
 
 label {
-    font-size: 11pt;
-    margin: 20px;
+    font-size: 9pt;
+    margin: 5px;
     text-shadow: none;
     color: $FG;
 }
@@ -59,7 +59,7 @@ button {
     border: none;
     box-shadow: none;
     text-shadow: none;
-    font-size: 11pt;
+    font-size: 9pt;
     padding: 10px;
     margin: 5px;
     outline: none;
@@ -83,13 +83,13 @@ scrolledwindow {
 }
 
 #yad-form-widget {
-    margin: 30px;
+    margin: 10px;
 }
 
 /* Checkbox Styling */
 checkbutton {
-    margin-bottom: 20px;
-    margin-left: 50px;
+    margin-bottom: 10px;
+    margin-left: 10px;
 }
 
 checkbutton check {
@@ -107,7 +107,7 @@ checkbutton check:checked {
 }
 
 #yad-form-image {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 EOF
 
