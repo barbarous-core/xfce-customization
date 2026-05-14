@@ -5,8 +5,8 @@ window,
 dialog,
 window.background,
 #yad-dialog-window {
-    background-color: #2d353b;
-    background: #2d353b;
+    background-color: #1a1b26;
+    background: #1a1b26;
     font-family: 'JetBrainsMono Nerd Font';
     border: none;
     border-radius: 0px;
@@ -16,12 +16,12 @@ label {
     font-size: 11pt;
     margin: 20px;
     text-shadow: none;
-    color: #d3c6aa;
+    color: #c0caf5;
 }
 
 button {
     background: transparent;
-    color: #d3c6aa;
+    color: #c0caf5;
     border: none;
     box-shadow: none;
     text-shadow: none;
@@ -33,9 +33,9 @@ button {
 
 button:hover,
 button:hover label {
-    background: #343f44;
-    background-color: #343f44;
-    color: #a7c080;
+    background: #24283b;
+    background-color: #24283b;
+    color: #7aa2f7;
 }
 
 scrollbar, scrollbar button, scrollbar slider {
@@ -59,17 +59,17 @@ checkbutton {
 }
 
 checkbutton check {
-    background-color: #343f44;
+    background-color: #24283b;
     border: none;
-    color: #a7c080;
+    color: #7aa2f7;
     border-radius: 4px;
     min-height: 18px;
     min-width: 18px;
 }
 
 checkbutton check:checked {
-    background-color: #a7c080;
-    color: #2d353b;
+    background-color: #7aa2f7;
+    color: #1a1b26;
 }
 
 #yad-form-image {
