@@ -40,6 +40,7 @@ update_shortcuts() {
     xfconf-query -c xfce4-keyboard-shortcuts -p /commands/custom/'<Super><Shift>b' -n -t string -s "$browser"
     xfconf-query -c xfce4-keyboard-shortcuts -p /commands/custom/'<Super>e' -n -t string -s "$file"
     xfconf-query -c xfce4-keyboard-shortcuts -p /commands/custom/'<Super>h' -n -t string -s "bash /home/mohamed/Linux_Data/Git_Projects/xfce-customization/polybar/.config/polybar/scripts/toggle_minimal.sh"
+    xfconf-query -c xfce4-keyboard-shortcuts -p /commands/custom/'<Super>space' -n -t string -s "bash /home/mohamed/Linux_Data/Git_Projects/xfce-customization/polybar/.config/polybar/scripts/toggle_layout.sh"
     xfconf-query -c xfce4-keyboard-shortcuts -p /commands/custom/'<Super><Shift>h' -n -t string -s "polybar-msg cmd toggle"
     
     # PrintScreen Shortcuts

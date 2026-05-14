@@ -1,4 +1,4 @@
-POS_H=""
+POS_H="true"
 MODS_H=""
 POS_E="true"
 MODS_E="jgmenu themes sep xworkspaces sep add-workspace sep scroll-window sep|date|sep sys-switch sep xkeyboard sep media sep battery sep connection sep icon-hide powermenu"
