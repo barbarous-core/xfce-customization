@@ -9390,7 +9390,7 @@ window.thunar notebook scrolledwindow.frame.standard-view {
 }
 
 window.thunar notebook scrolledwindow.frame.standard-view .view:not(.rubberband) {
-  background-color: transparent;
+  background-color: var(--theme-base-color);
 }
 
 window.thunar notebook scrolledwindow.frame.standard-view widget.view {

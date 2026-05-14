@@ -152,9 +152,9 @@ POS_FILE="/tmp/polybar_mini_pos"
 
 if [ -f "$STATE_FILE" ]; then
     BAR_NAME="mini"
-    # We keep only icon-show and powermenu in the center
-    MODS_H=" | icon-show powermenu | "
-    MODS_E=" | icon-show powermenu | "
+    # We keep icon-show, media, battery, connection and powermenu in the center
+    MODS_H="icon-show media battery connection powermenu"
+    MODS_E="icon-show media battery connection powermenu"
     
     # Position override
     if [ -f "$POS_FILE" ]; then
@@ -179,7 +179,7 @@ if [ -f "$STATE_FILE" ]; then
         if [ "$MINI_HALIGN" == "left" ]; then
             export POLYBAR_OFFSET_X="1%"
         else
-            export POLYBAR_OFFSET_X="95%"
+            export POLYBAR_OFFSET_X="88%"
         fi
     fi
 fi
@@ -215,6 +215,7 @@ if [ "$HDMI_ACTIVE" == "true" ] && [ "$MODS_H" != "DISABLED" ]; then
     
     MONITOR=HDMI-1 POLYBAR_BOTTOM=$POS_H \
     POLYBAR_LEFT="$LEFT" POLYBAR_CENTER="$CENTER" POLYBAR_RIGHT="$RIGHT" \
+    IS_MINIMAL=$([[ "$BAR_NAME" == "mini" ]] && echo "true" || echo "false") \
     polybar -c "$HOME/.config/polybar/config.ini" "$BAR_NAME" &
 fi
 
@@ -226,6 +227,7 @@ if [ "$EDP_ACTIVE" == "true" ] && [ "$MODS_E" != "DISABLED" ]; then
     
     MONITOR=eDP-1 POLYBAR_BOTTOM=$POS_E \
     POLYBAR_LEFT="$LEFT" POLYBAR_CENTER="$CENTER" POLYBAR_RIGHT="$RIGHT" \
+    IS_MINIMAL=$([[ "$BAR_NAME" == "mini" ]] && echo "true" || echo "false") \
     polybar -c "$HOME/.config/polybar/config.ini" "$BAR_NAME" &
 fi
 

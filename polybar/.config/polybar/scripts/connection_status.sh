@@ -134,26 +134,36 @@ while true; do
     if [ "$ACTIVE_MODULE" == "connection" ]; then
         # Expanded View
         OUTPUT=""
-        [ $HAS_WIFI -eq 1 ] && OUTPUT="${W_ICON} ${WIFI_SSID}"
-        
-        [ $HAS_ETH -eq 1 ] && [ -n "$OUTPUT" ] && OUTPUT="${OUTPUT}  "
-        [ $HAS_ETH -eq 1 ] && OUTPUT="${OUTPUT}${E_ICON} Wired"
-        
-        [ $HAS_HOTSPOT -eq 1 ] && [ -n "$OUTPUT" ] && OUTPUT="${OUTPUT}  "
-        [ $HAS_HOTSPOT -eq 1 ] && OUTPUT="${OUTPUT}${H_ICON} Hotspot"
-        
-        # Always show Bluetooth and Airplane in expanded view
-        [ -n "$OUTPUT" ] && OUTPUT="${OUTPUT}  "
-        OUTPUT="${OUTPUT}${B_ICON} ${BT_INFO}"
+        if [ "$IS_MINIMAL" == "true" ]; then
+            [ $HAS_WIFI -eq 1 ] && OUTPUT="${W_ICON} ${WIFI_SSID}"
+            [ -n "$OUTPUT" ] && OUTPUT="${OUTPUT}  "
+            OUTPUT="${OUTPUT}${A_ICON} Airplane ${AIRPLANE_INFO}"
+        else
+            [ $HAS_WIFI -eq 1 ] && OUTPUT="${W_ICON} ${WIFI_SSID}"
+            
+            [ $HAS_ETH -eq 1 ] && [ -n "$OUTPUT" ] && OUTPUT="${OUTPUT}  "
+            [ $HAS_ETH -eq 1 ] && OUTPUT="${OUTPUT}${E_ICON} Wired"
+            
+            [ $HAS_HOTSPOT -eq 1 ] && [ -n "$OUTPUT" ] && OUTPUT="${OUTPUT}  "
+            [ $HAS_HOTSPOT -eq 1 ] && OUTPUT="${OUTPUT}${H_ICON} Hotspot"
+            
+            # Always show Bluetooth and Airplane in expanded view
+            [ -n "$OUTPUT" ] && OUTPUT="${OUTPUT}  "
+            OUTPUT="${OUTPUT}${B_ICON} ${BT_INFO}"
 
-        [ -n "$OUTPUT" ] && OUTPUT="${OUTPUT}  "
-        OUTPUT="${OUTPUT}${A_ICON} Airplane ${AIRPLANE_INFO}"
+            [ -n "$OUTPUT" ] && OUTPUT="${OUTPUT}  "
+            OUTPUT="${OUTPUT}${A_ICON} Airplane ${AIRPLANE_INFO}"
+        fi
         
         [ -z "$OUTPUT" ] && OUTPUT="${ICON_STATUS} ${TEXT_STATUS}"
         echo "$OUTPUT"
     else
         # Collapsed View
-        echo "${W_ICON} ${E_ICON} ${H_ICON} ${B_ICON} ${A_ICON}"
+        if [ "$IS_MINIMAL" == "true" ]; then
+            echo "${W_ICON} ${A_ICON}"
+        else
+            echo "${W_ICON} ${E_ICON} ${H_ICON} ${B_ICON} ${A_ICON}"
+        fi
     fi
 
     sleep 2

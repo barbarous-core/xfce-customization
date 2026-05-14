@@ -61,11 +61,19 @@ while true; do
 
     if [ "$ACTIVE_MODULE" == "media" ]; then
         # Expanded View
-        OUTPUT="${VOL_BTN} ${VOL_TEXT}  ${MIC_BTN} ${MIC_TEXT}"
+        if [ "$IS_MINIMAL" == "true" ]; then
+            OUTPUT="${VOL_BTN} ${VOL_TEXT}"
+        else
+            OUTPUT="${VOL_BTN} ${VOL_TEXT}  ${MIC_BTN} ${MIC_TEXT}"
+        fi
         echo "$OUTPUT"
     else
         # Collapsed View
-        OUTPUT="${VOL_BTN}  ${MIC_BTN}"
+        if [ "$IS_MINIMAL" == "true" ]; then
+            OUTPUT="${VOL_BTN}"
+        else
+            OUTPUT="${VOL_BTN}  ${MIC_BTN}"
+        fi
         echo "$OUTPUT"
     fi
 

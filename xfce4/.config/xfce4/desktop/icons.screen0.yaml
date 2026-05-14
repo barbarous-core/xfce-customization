@@ -28,6 +28,10 @@ configs:
     "/home/mohamed/Desktop/trash-can.desktop":
       row: 8
       col: 1
+    "AA95-205A":
+      row: 4
+      col: 2
+      last_seen: 1778790031498457
     "/home/mohamed/Desktop/er.png":
       row: 2
       col: 2

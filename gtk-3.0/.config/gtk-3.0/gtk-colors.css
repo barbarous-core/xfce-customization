@@ -1,22 +1,22 @@
 /* Dynamically generated GTK colors from Polybar colors.ini */
 /* Using standard CSS variables for maximum compatibility and IDE support */
 :root, * {
-    --theme-bg-color: #1a1a1a;
-    --theme-fg-color: #cccccc;
-    --theme-text-color: #cccccc;
-    --theme-base-color: #262626;
-    --theme-selected-bg-color: #404040;
-    --theme-selected-fg-color: #1a1a1a;
-    --theme-unfocused-bg-color: #1a1a1a;
-    --theme-unfocused-fg-color: #333333;
-    --borders: #606060;
-    --warning-color: #ffcc00;
-    --error-color: #ff3333;
-    --success-color: #33ff33;
+    --theme-bg-color: #2d353b;
+    --theme-fg-color: #d3c6aa;
+    --theme-text-color: #d3c6aa;
+    --theme-base-color: #343f44;
+    --theme-selected-bg-color: #a7c080;
+    --theme-selected-fg-color: #2d353b;
+    --theme-unfocused-bg-color: #2d353b;
+    --theme-unfocused-fg-color: #859289;
+    --borders: #83c092;
+    --warning-color: #dbbc7f;
+    --error-color: #e67e80;
+    --success-color: #83c092;
 
     /* Transparency variants */
-    --theme-bg-alpha-50: rgba(26, 26, 26, 0.5);
-    --theme-bg-alpha-10: rgba(26, 26, 26, 0.1);
-    --theme-fg-alpha-50: rgba(204, 204, 204, 0.5);
-    --theme-fg-alpha-10: rgba(204, 204, 204, 0.1);
+    --theme-bg-alpha-50: rgba(45, 53, 59, 0.5);
+    --theme-bg-alpha-10: rgba(45, 53, 59, 0.1);
+    --theme-fg-alpha-50: rgba(211, 198, 170, 0.5);
+    --theme-fg-alpha-10: rgba(211, 198, 170, 0.1);
 }
