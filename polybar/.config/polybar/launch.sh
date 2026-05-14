@@ -184,6 +184,13 @@ if [ -f "$STATE_FILE" ]; then
     fi
 fi
 
+# --- POWER SAVING OVERRIDE ---
+if [ -f "/tmp/polybar_power_saving" ]; then
+    export POLL_INTERVAL_FAST=10
+else
+    export POLL_INTERVAL_FAST=1
+fi
+
 # 3. Application Selection
 if [ "$LOAD_LAST" != "true" ]; then
     chmod +x "$HOME/.config/polybar/scripts/app_selector.sh"

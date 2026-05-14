@@ -109,19 +109,29 @@ def main():
             elif capacity <= 65: icon = "󱊢"
             else: icon = "󱊣"
 
+        # Power Saving Logic
+        POWER_SAVING_FILE = "/tmp/polybar_power_saving"
+        is_power_saving = os.path.exists(POWER_SAVING_FILE)
+
         # Define colors
         color = "#C5C8C6"
         disabled_color = theme_colors.get("disabled", "#555555")
 
         if status == "Charging":
             # Alter between electric blue and theme disabled color
-            color = "#00FFFF" if blink_state else disabled_color
+            if is_power_saving:
+                color = "#00FFFF" # No blinking in power saving
+            else:
+                color = "#00FFFF" if blink_state else disabled_color
         elif status == "Full" or capacity >= 98:
             color = theme_colors["success"]
         else:
             if capacity < 30: 
                 # Alert color with blink for low battery
-                color = theme_colors["alert"] if blink_state else disabled_color
+                if is_power_saving:
+                    color = theme_colors["alert"] # No blinking
+                else:
+                    color = theme_colors["alert"] if blink_state else disabled_color
             elif capacity < 65: 
                 color = theme_colors["warning"]
             else:
@@ -145,7 +155,11 @@ def main():
             print(f"%{{F{color}}}%{{{font_index}}}{icon}%{{T-}}%{{F-}}", flush=True)
 
         blink_state = not blink_state
-        time.sleep(1.0 if status == "Charging" or capacity < 30 else 2.0)
+        
+        if is_power_saving:
+            time.sleep(10.0) # Long sleep in power saving
+        else:
+            time.sleep(1.0 if status == "Charging" or capacity < 30 else 2.0)
 
 if __name__ == "__main__":
     main()
