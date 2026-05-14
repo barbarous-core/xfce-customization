@@ -151,9 +151,9 @@ POS_FILE="/tmp/polybar_mini_pos"
 
 if [ -f "$STATE_FILE" ]; then
     BAR_NAME="mini"
-    # We keep only icon-show and powermenu on the right
-    MODS_H=" | | icon-show powermenu"
-    MODS_E=" | | icon-show powermenu"
+    # We keep only icon-show and powermenu in the center
+    MODS_H=" | icon-show powermenu | "
+    MODS_E=" | icon-show powermenu | "
     
     # Position override
     if [ -f "$POS_FILE" ]; then
