@@ -2,7 +2,12 @@
 
 # Paths
 LAUNCH_SCRIPT="$HOME/.config/polybar/launch.sh"
+LAST_CONF="$HOME/.config/polybar/.last_launch"
+LAST_CONF_BAK="$HOME/.config/polybar/.last_launch.bak"
 YAD_STYLE="$HOME/.config/yad/style.css"
+
+# Backup last config before any changes
+[ -f "$LAST_CONF" ] && cp "$LAST_CONF" "$LAST_CONF_BAK"
 
 # Sync YAD theme before showing dialog
 bash "$HOME/.config/polybar/scripts/sync_yad_theme.sh"
@@ -51,8 +56,9 @@ yad --title="Polybar Reload" \
 
 EXIT_CODE=$?
 
-# Cleanup dimming
-kill $DIM_PID 2>/dev/null
+# Cleanup background
+kill -9 $DIM_PID 2>/dev/null
+rm /tmp/polybar_blur.png 2>/dev/null
 
 # Check exit status
 if [ $EXIT_CODE -eq 0 ]; then
@@ -62,5 +68,10 @@ elif [ $EXIT_CODE -eq 3 ]; then
     notify-send "Polybar" "Starting New Configuration..."
     bash "$LAUNCH_SCRIPT" --new
 else
-    notify-send "Polybar" "Reload Cancelled"
+    notify-send "Polybar" "Reload Cancelled - Restoring Last Config"
+    [ -f "$LAST_CONF_BAK" ] && cp "$LAST_CONF_BAK" "$LAST_CONF"
+    bash "$LAUNCH_SCRIPT" --last
 fi
+
+# Final cleanup of backup
+rm "$LAST_CONF_BAK" 2>/dev/null

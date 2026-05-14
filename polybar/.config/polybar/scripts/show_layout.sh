@@ -80,8 +80,8 @@ cat <<EOF > "$SVG_FILE"
     </linearGradient>
   </defs>
   <rect width="100%" height="100%" fill="$BG" rx="0" />
-  <text x="250" y="45" font-family="JetBrainsMono Nerd Font" font-weight="bold" font-size="18" fill="$ACCENT" text-anchor="middle">Monitor Arrangement Detected</text>
-  <text x="250" y="75" font-family="JetBrainsMono Nerd Font" font-size="12" fill="$FG" text-anchor="middle">Adjust your display settings or proceed with the current layout.</text>
+  <text x="250" y="45" font-family="JetBrainsMono Nerd Font" font-weight="bold" font-size="20" fill="$ACCENT" text-anchor="middle">Detected Screens: ${#MONITORS[@]}</text>
+  <text x="250" y="75" font-family="JetBrainsMono Nerd Font" font-size="12" fill="$FG" text-anchor="middle">Current Monitor Arrangement Layout</text>
   <g>
 EOF
 
