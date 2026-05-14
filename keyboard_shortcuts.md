@@ -73,7 +73,7 @@ These shortcuts use the **Super** (Windows) key for fast system navigation.
 | **Super + Shift + H** | Hide Polybar completely (Toggle visibility) |
 | **Super + K** | Kill Polybar |
 | **Super + Shift + Q** | Force close Polybar |
-| **Super + Alt + ↑/↓** | Move Mini Bar to Top/Bottom |
+| **Super + Alt + ↑/↓** | Move Polybar to Top/Bottom (Max & Mini) |
 | **Super + Alt + ←/→** | Move Mini Bar to Left/Right |
 
 ### 📊 Dashboard Hotkeys (Toggle Info)
