@@ -103,9 +103,9 @@ fi
 chmod +x "$HOME/.config/polybar/scripts/bar_config.sh"
 chmod +x "$HOME/.config/polybar/scripts/bar_modules.sh"
 
-# Get Monitor Status
-HDMI_ACTIVE=$(xfconf-query -c displays -p "/Default/HDMI-1/Active" 2>/dev/null)
-EDP_ACTIVE=$(xfconf-query -c displays -p "/Default/eDP-1/Active" 2>/dev/null)
+# Get Monitor Status (Using xrandr for physical detection)
+HDMI_ACTIVE=$(xrandr --query | grep "^HDMI-1 connected" >/dev/null && echo "true" || echo "false")
+EDP_ACTIVE=$(xrandr --query | grep "^eDP-1 connected" >/dev/null && echo "true" || echo "false")
 
 if [ "$LOAD_LAST" != "true" ]; then
     # --- HDMI-1 (Principal) ---
