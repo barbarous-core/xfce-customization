@@ -9,18 +9,21 @@ BG=$(grep "^background =" "$COLORS_CONF" | cut -d' ' -f3)
 FG=$(grep "^foreground =" "$COLORS_CONF" | cut -d' ' -f3)
 ACCENT=$(grep "^primary =" "$COLORS_CONF" | cut -d' ' -f3)
 
-[z "$BG" ] && BG="#1c1c1c"
-[z "$FG" ] && FG="#ecf0f1"
-[z "$ACCENT" ] && ACCENT="#3498db"
+[ -z "$BG" ] && BG="#1c1c1c"
+[ -z "$FG" ] && FG="#ecf0f1"
+[ -z "$ACCENT" ] && ACCENT="#3498db"
 
 # Define Rofi Theme for Startup
 THEME="window { width: 33%; border: 0px; border-radius: 0px; background-color: $BG; } 
-       listview { lines: 2; scrollbar: false; }
+       mainbox { border: 0px; }
+       listview { lines: 2; border: 0px; scrollbar: false; spacing: 15px; margin: 0px 50px; }
        element { padding: 10px; background-color: transparent; }
-       element-text { font: \"JetBrainsMono Nerd Font 11\"; horizontal-align: 0.5; text-color: $FG; }
+       element-text { font: \"JetBrainsMono Nerd Font 11\"; horizontal-align: 0; text-color: $FG; }
        element selected { background-color: transparent; }
        element-text selected { text-color: $ACCENT; }
-       inputbar { enabled: false; }"
+       inputbar { enabled: true; padding: 10px; background-color: $BG; border: 0px; }
+       prompt { text-color: $FG; font: \"JetBrainsMono Nerd Font 11\"; }
+       entry { enabled: false; }"
 
 
 
@@ -32,7 +35,7 @@ NO_OPT="🧹 Clean Slate (Only one WS)"
 OPTIONS="${YES_OPT}\n${NO_OPT}"
 
 # Show Rofi menu
-CHOICE=$(echo -e "$OPTIONS" | rofi -dmenu -p "Workspace Setup" -theme-str "$THEME" -location 0 -monitor -1 -pid /tmp/rofi_startup.pid)
+CHOICE=$(echo -e "$OPTIONS" | rofi -dmenu -p "Which workspace setup do you want?" -theme-str "$THEME" -location 0 -monitor -1 -pid /tmp/rofi_startup.pid)
 
 if [ "$CHOICE" == "$YES_OPT" ]; then
     # Load Preset: 9 workspaces
