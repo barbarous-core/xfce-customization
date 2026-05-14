@@ -39,6 +39,11 @@ update_shortcuts() {
     xfconf-query -c xfce4-keyboard-shortcuts -p /commands/custom/'<Super>Return' -n -t string -s "$term"
     xfconf-query -c xfce4-keyboard-shortcuts -p /commands/custom/'<Super><Shift>b' -n -t string -s "$browser"
     xfconf-query -c xfce4-keyboard-shortcuts -p /commands/custom/'<Super>e' -n -t string -s "$file"
+    
+    # PrintScreen Shortcuts
+    xfconf-query -c xfce4-keyboard-shortcuts -p /commands/custom/Print -n -t string -s "xfce4-screenshooter"
+    xfconf-query -c xfce4-keyboard-shortcuts -p /commands/custom/'<Alt>Print' -n -t string -s "xfce4-screenshooter -w"
+    xfconf-query -c xfce4-keyboard-shortcuts -p /commands/custom/'<Shift>Print' -n -t string -s "xfce4-screenshooter -r"
 }
 
 # 1. Show display layout visualization first (Wait for user OK)

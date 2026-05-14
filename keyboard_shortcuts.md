@@ -51,6 +51,9 @@ These shortcuts use the **Super** (Windows) key for fast system navigation.
 | **Super + Escape** | Open App Menu (Jgmenu) |
 | **Super + Tab** | Switch between open windows |
 | **Super + Space** | Toggle Keyboard Layout (US/Other) |
+| **PrintScreen** | Open Screenshot Dialog (Select Region/Window/Full) |
+| **Alt + PrintScreen** | Take Window Screenshot |
+| **Shift + PrintScreen** | Take Region Screenshot |
 
 ### 🖥️ Workspace Management
 | Shortcut | Action |

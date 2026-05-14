@@ -3,7 +3,7 @@
 # Default modules definitions
 DEF_LEFT="jgmenu themes sep xworkspaces sep add-workspace sep scroll-window sep"
 DEF_CENTER="date"
-DEF_RIGHT="sep sys-switch sep xkeyboard sep media sep battery sep connection sep powermenu"
+DEF_RIGHT="sep sys-switch sep xkeyboard sep media sep battery sep connection sep icon-hide powermenu"
 
 # CONFIG DIR
 CONFIG_DIR="$HOME/.config/polybar"
@@ -18,7 +18,7 @@ CHOICE=$(yad --form \
     --columns=3 \
     --field=" [   Start Menu | 󰏘 Theme |  Workspace 1 2 3 | 󰖯 Window Title ] :CHK"   "TRUE" \
     --field=" [ 󰃰 Time & Date ] :CHK" "TRUE" \
-    --field=" [  System Monitoring | 󰌌 Keyboard | 󰕾 Media | 󰁹 Battery |   Connections |  Power ] :CHK"  "TRUE" \
+    --field=" [  System Monitoring | 󰌌 Keyboard | 󰕾 Media | 󰁹 Battery |   Connections | 󱙜 Hide |  Power ] :CHK"  "TRUE" \
     --button="Cancel:1" \
     --button="Save:0" \
     --center \
