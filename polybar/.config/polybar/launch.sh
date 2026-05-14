@@ -136,6 +136,16 @@ SEL_FILE="$SEL_FILE"
 EOF
 fi
 
+# --- MINIMAL MODE OVERRIDE ---
+BAR_NAME="main"
+STATE_FILE="/tmp/polybar_minimal_state"
+if [ -f "$STATE_FILE" ]; then
+    BAR_NAME="mini"
+    # We keep only icon-show and powermenu on the right
+    MODS_H=" | | icon-show powermenu"
+    MODS_E=" | | icon-show powermenu"
+fi
+
 # 3. Application Selection
 if [ "$LOAD_LAST" != "true" ]; then
     chmod +x "$HOME/.config/polybar/scripts/app_selector.sh"
@@ -167,7 +177,7 @@ if [ "$HDMI_ACTIVE" == "true" ] && [ "$MODS_H" != "DISABLED" ]; then
     
     MONITOR=HDMI-1 POLYBAR_BOTTOM=$POS_H \
     POLYBAR_LEFT="$LEFT" POLYBAR_CENTER="$CENTER" POLYBAR_RIGHT="$RIGHT" \
-    polybar -c "$HOME/.config/polybar/config.ini" main &
+    polybar -c "$HOME/.config/polybar/config.ini" "$BAR_NAME" &
 fi
 
 # Launch eDP-1
@@ -178,7 +188,7 @@ if [ "$EDP_ACTIVE" == "true" ] && [ "$MODS_E" != "DISABLED" ]; then
     
     MONITOR=eDP-1 POLYBAR_BOTTOM=$POS_E \
     POLYBAR_LEFT="$LEFT" POLYBAR_CENTER="$CENTER" POLYBAR_RIGHT="$RIGHT" \
-    polybar -c "$HOME/.config/polybar/config.ini" main &
+    polybar -c "$HOME/.config/polybar/config.ini" "$BAR_NAME" &
 fi
 
 # Launch workspace notifier
