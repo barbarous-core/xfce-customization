@@ -53,6 +53,13 @@ update_shortcuts() {
     xfconf-query -c xfce4-keyboard-shortcuts -p /commands/custom/'<Super><Alt>Down' -n -t string -s "bash /home/mohamed/Linux_Data/Git_Projects/xfce-customization/polybar/.config/polybar/scripts/move_mini_bar.sh down"
     xfconf-query -c xfce4-keyboard-shortcuts -p /commands/custom/'<Super><Alt>Left' -n -t string -s "bash /home/mohamed/Linux_Data/Git_Projects/xfce-customization/polybar/.config/polybar/scripts/move_mini_bar.sh left"
     xfconf-query -c xfce4-keyboard-shortcuts -p /commands/custom/'<Super><Alt>Right' -n -t string -s "bash /home/mohamed/Linux_Data/Git_Projects/xfce-customization/polybar/.config/polybar/scripts/move_mini_bar.sh right"
+    
+    # Dashboard Toggles
+    xfconf-query -c xfce4-keyboard-shortcuts -p /commands/custom/'<Super><Ctrl>1' -n -t string -s "bash $HOME/.config/polybar/scripts/toggle_module.sh system"
+    xfconf-query -c xfce4-keyboard-shortcuts -p /commands/custom/'<Super><Ctrl>2' -n -t string -s "bash $HOME/.config/polybar/scripts/toggle_module.sh media"
+    xfconf-query -c xfce4-keyboard-shortcuts -p /commands/custom/'<Super><Ctrl>3' -n -t string -s "bash $HOME/.config/polybar/scripts/toggle_module.sh battery"
+    xfconf-query -c xfce4-keyboard-shortcuts -p /commands/custom/'<Super><Ctrl>4' -n -t string -s "bash $HOME/.config/polybar/scripts/toggle_module.sh connection"
+    xfconf-query -c xfce4-keyboard-shortcuts -p /commands/custom/'<Super><Ctrl>5' -n -t string -s "bash $HOME/.config/polybar/scripts/toggle_module.sh themes"
 }
 
 # 1. Show display layout visualization first (Wait for user OK)

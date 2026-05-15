@@ -13,10 +13,17 @@ def read_file(path):
 STATE_FILE = "/tmp/battery_toggle_state"
 
 def toggle():
-    if not os.path.exists(STATE_FILE) or read_file(STATE_FILE) == "icon":
-        with open(STATE_FILE, 'w') as f: f.write("full")
-    else:
-        with open(STATE_FILE, 'w') as f: f.write("icon")
+    GLOBAL_STATE_FILE = "/tmp/polybar_active_module"
+    current = ""
+    if os.path.exists(GLOBAL_STATE_FILE):
+        with open(GLOBAL_STATE_FILE, 'r') as f:
+            current = f.read().strip()
+    
+    with open(GLOBAL_STATE_FILE, 'w') as f:
+        if current == "battery":
+            f.write("none")
+        else:
+            f.write("battery")
 
 def get_theme_colors():
     colors_conf = os.path.expanduser("~/.config/polybar/colors.ini")
